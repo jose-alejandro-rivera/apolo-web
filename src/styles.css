@@ -1,1 +1,185 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
+.apolo{}
+
+.apolo .ag-theme-balham .ag-header {
+    background-color: #00b6f0;
+    color: #fff;
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+.apolo .ag-theme-balham .ag-ltr .ag-cell {
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+}
+.apolo .ag-body-viewport .ag-center-cols-container {
+    width: 100% !important;
+}
+.apolo-icono-usuario{
+    width: 100%;
+    float: left;
+    color: #FFF;
+    height: 100px;
+}
+.apolo-icono-mov {
+    float: left;
+    height: 100px;
+    width: 50%
+}
+.apolo-usuario {
+    float: left;
+    text-align: right;
+    color: #00A9E0;
+    height: 100px;
+}
+.apolo-centrado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.apolo-centrado-left {
+    display: flex;
+    align-items: center;
+}
+.apolo-centrado-right {
+    padding-top: 45px;
+    text-align: right;
+    width: 50%
+}
+.apolo-fuente {
+    font-family: "telefonicaReg", Arial, Helvetica, sans-serif;
+    color: #FFF;
+}
+.apolo-tprincipales {
+    width: 100%;
+    float: left;
+    background-color: #5BC500;
+    font-size: 25px;
+    height: 65px;
+}
+
+
+/* Estilos para dispositivos moviles */
+
+
+@media only screen and (max-width: 240px) {
+    .apolo-icono-mov {
+        width: 100%;
+        height: 50px;
+    }
+    .apolo-usuario {
+        float: left;
+        height: 50px;
+        width: 100%;
+        text-align: left;
+    } 
+    .apolo-centrado-right {
+        padding-top: 10px;
+        width: 100%
+    }    
+
+}
+@media only screen and (max-width: 320px) {
+    .apolo-icono-mov {
+        width: 100%;
+        height: 50px;
+    }
+    .apolo-usuario {
+        float: left;
+        height: 50px;
+        width: 100%;
+        text-align: left;
+    }   
+    .apolo-centrado-right {
+        padding-top: 10px;
+        width: 100%
+    }      
+	
+}
+
+@media only screen and (max-width: 480px) {
+    .apolo-icono-mov {
+        width: 100%;
+        height: 50px;
+    }
+    .apolo-usuario {
+        float: left;
+        height: 50px;
+        width: 100%;
+        text-align: left;
+    }  
+    .apolo-centrado-right {
+        padding-top: 10px;
+        width: 100%
+    }       
+	
+}
+
+@media only screen and (max-width: 768px) {
+    .apolo-icono-mov {
+        width: 100%;
+        height: 50px;
+    }
+    .apolo-usuario {
+        float: left;
+        height: 50px;
+        width: 100%;
+        text-align: left;
+    }    
+    .apolo-centrado-right {
+        padding-top: 10px;
+        width: 100%
+    }  
+    
+    
+    .apolo-img {
+        display: none;
+    
+    }
+    .apolo-img1 {
+        display: block;
+    
+    }
+    .apolo-title{
+        background:#0029A6 ;
+    }
+    .apolo-title-centrado {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .apolo-title-principales {
+        width: 100%;
+        float: left;
+        background-color: #0029A6;
+        font-size: 25px;
+        height: 65px;
+    }
+    .telefonica .apolo-tprincipales {
+        
+        /* width: 100%; */
+        /* float: left; */
+        background-color: #0029A6;
+        /* font-size: 25px;
+        height: 65px; */
+    }
+
+}
+@media only screen and (max-width: 980px) and (min-width: 821px) {
+
+
+}
+@media only screen and (max-width: 1280px) {
+
+
+}
+/* Horizontal */
+@media only screen (max-width: 500px) and (orientation: landscape) {
+
+}
+@media only screen (max-width: 680px) and (orientation: landscape) {
+
+}

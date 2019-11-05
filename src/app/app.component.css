@@ -1,0 +1,49 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
+.apolo{}
+
+.apolo-text {
+    display: none;
+}
+.apolo-app-title {
+    display: block;
+}
+@media only screen and (max-width: 768px) {    
+    .apolo-label {
+        display: none;
+    }
+    .apolo-title{
+        background:#0029A6 ;
+    }
+    .apolo-title-centrado {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .apolo-text-centrado {
+        display: flex;
+        justify-content: right;
+        align-items: right;
+    }
+
+    .apolo-title-principales {
+        width: 100%;
+        float: left;
+        background-color: #0029A6;
+        font-size: 25px;
+        height: 65px;
+    }   
+    .apolo-text {
+        display: block;
+    }
+
+    .apolo-text-type {
+        font-weight: bold;
+        color: #000000;
+        font-family: "telefonica", Arial, Helvetica, sans-serif;
+        font-size: 16px;
+    }
+
+}
