@@ -23,6 +23,7 @@
     }
 
     .flujo-title-principales {
+        margin-bottom: 20px;
         width: 100%;
         float: left;
         background-color: #0029A6;
@@ -30,12 +31,14 @@
         font-family: "telefonica", Arial, Helvetica, sans-serif;
         font-weight: bold;
         font-size: 25px;
-        height: 35px;
     }   
     .flujo-text {
         display: block;
         margin-top: 15px;
         
+    }
+    .flujo-pasos{
+        display: initial
     }
 
     .flujo-title-Text {
@@ -47,6 +50,11 @@
     }  
     .flujo-cuadriula{
         margin-top: 3px;
+        float: left;
+    }
+    .flujo-margen{
+        border: 1px solid #0029A6;
+        width: 100%;
     }
     .flujo-text-type {
         font-weight: bold;
@@ -56,5 +64,53 @@
         font-family: "telefonica", Arial, Helvetica, sans-serif;
 
     }
+    .flujo-text-title-content {
+        font-weight: bold;
+        color: #000000;
+        font-family: "telefonica", Arial, Helvetica, sans-serif;
+        font-size: 12px;
+    }
+
+    .flujo-text-content {
+        color: #000000;
+        font-size: 12px;
+    }
+    .flujo-button-atras{
+        width: 80px; 
+        background-color: #1e9ef4;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 12px;
+        padding: 5px;
+        cursor: pointer;
+        margin: 5px;
+        margin-bottom: 20px;
+    }
+    .flujo-button-siguiente{
+        width: 80px; 
+        /* float:left; */
+        float: right; 
+        background-color: #1e9ef4;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 12px;
+        padding: 5px;
+        cursor: pointer;
+        margin: 5px;
+        margin-bottom: 20px;
+    }
+
+    .flujo-button {
+       
+    }
+  
 
 }
+
+/* Horizontal */
+/* @media only screen (max-width: 500px) and (orientation: landscape) {
+
+}
+@media only screen (max-width: 680px) and (orientation: landscape) {
+
+}*/
