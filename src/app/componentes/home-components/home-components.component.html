@@ -1,1 +1,47 @@
 <p>home-components works!</p>
+<div class="apolo">
+
+
+    <div class="apolo-tprincipales apolo-fuente apolo-centrado">
+      Categoría flujo
+  
+    </div>
+  
+    <div class="apolo-formulario">
+      <form novalidate  [formGroup]="oppoSuitsForm" (ngSubmit)="onSubmit()">
+  
+        <select formControlName="name">
+          suit
+          <option *ngFor="let suit of filas" value="{{ suit.id }}">{{ suit.nombre }} {{suit.id}}</option>
+        </select>
+        
+        <div class="apolo-button apolo-centrado">
+          <button class="apolo-button-crear apolo-fuente">Crear</button>
+        </div>
+  
+      </form>
+    </div>
+  
+  
+  </div>
+  
+  
+  
+  
+  <!--table class="table table-hover">
+    <thead>
+    <tr>
+        <td>{{ headers.headers[1].NAME }}</td>
+        <td>{{ headers.headers[2].NAME }}</td>
+        <td>{{ headers.headers[3].NAME }}</td>
+    </tr>
+    </thead>
+  
+    <tbody>
+        <tr *ngFor="let bodyTable of body.body">
+            <td>{{ bodyTable.nombre }}</td>
+            <td>{{ bodyTable.apellido }}</td>
+            <td>{{ bodyTable.usuario }}</td>
+        </tr>
+    </tbody>
+  </table-->
