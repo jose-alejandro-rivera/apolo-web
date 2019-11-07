@@ -1,6 +1,6 @@
 <div class="container flujo">
 
-    <div class="flujo-title-principales rounded">
+    <div class="flujo-title-principales flujo-margen rounded">
         <label class="flujo-text-type">
             Flujos
         </label>
@@ -40,7 +40,7 @@
                                 <label>
                                     seleccione: {{cuestionario.campos.Nombre}}
                                 </label>
-                                <select (change)="changeSuit($event)" id="selectCuestionario">
+                                <select formControlName="name" (change)="changeSuit($event)" id="selectCuestionario">
                                     <option value="0">--All--</option>
                                     <!-- ngfort="let select of pasos.cuestionario.CuestionarioCampo" -->
                                     <option>{{select}}</option>
