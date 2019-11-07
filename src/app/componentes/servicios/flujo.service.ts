@@ -4,11 +4,12 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
+/* Consume el servicio que carga los flujos */
 export class FlujoService {
-  urlFlujo = 'http://localhost:3000/api//flujos/por/categorias/1';
+  urlFlujo = 'http://localhost:3000/api//flujos/por/categorias/';
   constructor(private http: HttpClient) { }
 
-  getFlujos() {
-    return this.http.get(this.urlFlujo);
+  getFlujos(id) {
+    return this.http.get(this.urlFlujo+id);
   }
 }
