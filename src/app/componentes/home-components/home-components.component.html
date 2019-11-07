@@ -8,6 +8,16 @@
     </div>
   
     <div class="apolo-formulario">
+        <select formControlName="name" ng-model="type" ng-change="">
+            suit
+            <option *ngFor="let categoria of listCategoria" value="{{categoria.Id_CategoriaFlujo}}">{{categoria.NomCategoriaFlujo}} </option>
+          </select>
+
+          <select ng-model="thing">
+            <option value="" selected>Seleccionar</option>
+            <option *ngFor="let varflujo of flujo" value="{{varflujo.Id_Flujo}}">{{varflujo.NomFlujo}} </option>
+          </select>          
+      
       <!--form novalidate  [formGroup]="oppoSuitsForm" (ngSubmit)="onSubmit()">
   
         <select formControlName="name">
