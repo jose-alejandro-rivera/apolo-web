@@ -3,21 +3,6 @@ import { FormBuilder } from "@angular/forms";
 import { HttpClient } from '@angular/common/http';
 import { CategoriasService } from '../servicios/categorias.service';
 import { FlujoService } from '../servicios/flujo.service';
-import { FORMERR } from 'dns';
-
-
-
-class body {
-/*  ProductName: string;
-  ProductDescription: string;
-  ProductPrice: number; */
-}
-
-class headers {
- /* ProductName: string;
-  ProductDescription: string;
-  ProductPrice: number; */
-}
 
 @Component({
   selector: 'app-home-components',
@@ -26,32 +11,39 @@ class headers {
 })
 export class HomeComponent implements OnInit {
 
-  listCategoria: any;
-  listFlujos: any ;
-  flujo: any[]=[];
-
-
-
-  constructor(private http: HttpClient, private categoriasService: CategoriasService, private flujoService: FlujoService ) {   }
+  listCategoria: any; // variable para el cargue de categorias
+  listFlujos: any ; // variable para el cargue de todos los flujos
+  flujo: any[]=[]; // 
+  flujo2: any; // 
+  constructor(private http: HttpClient, private categoriasService: CategoriasService, private flujoService: FlujoService ) { 
+   
+  }
   
-
   ngOnInit() {
-    console.log('init del home');
-    this.categoriasService.getCategorias().subscribe((data: body[]) => {
+    /* Esta funcion permite cargar el servicio para alimentar el select  de todas las categorias*/
+    this.categoriasService.getCategorias().subscribe((data) => {
      this.listCategoria = data;
-      //console.log(data);
     });
-
-    this.flujoService.getFlujos().subscribe((data: body[]) => {
+    /* Esta funcion permite cargar el servicio para alimentar el select  de todas los flujos*/
+    this.flujoService.getFlujos().subscribe((data) => {
       this.listFlujos = data;
       for(let x of this.listFlujos){
         this.flujo.push(x)
       }
-      console.log(this.flujo);
-   //   console.log('Listado de flujos ' +JSON.parse(JSON.stringify(this.listFlujos)));
     })
+    }
+/* Esta funcion permite realizar el filtro de los flujos segun la categoria seleccionada*/
+  cargueFlujo(event){
+    let idCatefgoria = event.target.value;
+    this.flujo2 = this.flujo.filter((e) => {
+      if(e.Id_Flujo == idCatefgoria){
+        return e;
+      }
+    })
+    console.log(this.flujo2);
     
-
   }
+
+  
 
 }
