@@ -1,20 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from "@angular/forms";
-
-
-
-
-class body {
-  ProductName: string;
-  ProductDescription: string;
-  ProductPrice: number;
-}
-
-class headers {
-  ProductName: string;
-  ProductDescription: string;
-  ProductPrice: number;
-}
+import { HttpClient } from '@angular/common/http';
+import { CategoriasService } from '../servicios/categorias.service';
+import { FlujoService } from '../servicios/flujo.service';
 
 @Component({
   selector: 'app-home-components',
@@ -22,84 +10,40 @@ class headers {
   styleUrls: ['./home-components.component.css']
 })
 export class HomeComponent implements OnInit {
-	body : body[];
-  headers : headers[];
-  private rowSelection;
-  private autoGroupColumnDef;
-  private domLayout;
 
-  oppoSuits: any = [];
-  filas: any = [];
-
-  columnDefs = [
-    {
-      headerName: "Seleccionar",
-      field: "athlete",
-      headerCheckboxSelection: true,
-      headerCheckboxSelectionFilteredOnly: true,
-      checkboxSelection: true,
-    },
-    {headerName: 'Make', field: 'make', sortable: true, filter: true,  resizable: true },
-    {headerName: 'Make', field: 'make', sortable: true, filter: true, resizable: true },
-    {headerName: 'Model', field: 'model', sortable: true, filter: true, resizable: true },
-    {headerName: 'Price', field: 'price', sortable: true, filter: true, resizable: true},
-    {headerName: 'Pricexxx', field: 'pricexxx', sortable: true, filter: true, resizable: true},
-];
-
-rowData = [
-    { checkboxSelection: true, make: 'Toyota', model: 'Celica', price: 35000, pricexxx: 20000 },
-    { checkboxSelection: true, make: 'Ford', model: 'Mondeo', price: 32000, pricexxx: 369888 },
-    { checkboxSelection: true, make: 'Porsche', model: 'Boxter', price: 72000, pricexxx: 92540000 }
-
-];
-  constructor(private fb: FormBuilder) { 
-    setTimeout (()=> {
-     // this.selectPrueba()
-    },500) 
-
-    this.rowSelection = "multiple";
-    this.autoGroupColumnDef = {
-      headerName: "Athlete",
-      field: "athlete",
-      cellRenderer: "agGroupCellRenderer",
-      cellRendererParams: { checkbox: true }
-    };
+  listCategoria: any; // variable para el cargue de categorias
+  listFlujos: any ; // variable para el cargue de todos los flujos
+  flujo: any[]=[]; // 
+  flujo2: any; // 
+  constructor(private http: HttpClient, private categoriasService: CategoriasService, private flujoService: FlujoService ) { 
+   
   }
   
-
   ngOnInit() {
-
-  	/*this.ps
-      .getusers()
-      .subscribe((data: body[]) => {
-        console.log(data);
-      	if(data){
-            //console.log(data, 'if');
-            this.body = data;
-            this.headers = data
-
-      	}
-       
-
-    });*/
-
+    /* Esta funcion permite cargar el servicio para alimentar el select  de todas las categorias*/
+    this.categoriasService.getCategorias().subscribe((data) => {
+     this.listCategoria = data;
+    });
+    /* Esta funcion permite cargar el servicio para alimentar el select  de todas los flujos*/
+    this.flujoService.getFlujos().subscribe((data) => {
+      this.listFlujos = data;
+      for(let x of this.listFlujos){
+        this.flujo.push(x)
+      }
+    })
+    }
+/* Esta funcion permite realizar el filtro de los flujos segun la categoria seleccionada*/
+  cargueFlujo(event){
+    let idCatefgoria = event.target.value;
+    this.flujo2 = this.flujo.filter((e) => {
+      if(e.Id_Flujo == idCatefgoria){
+        return e;
+      }
+    })
+    console.log(this.flujo2);
+    
   }
 
- /* selectPrueba(){
-    this.cf
-    .getusers()
-    .subscribe((data) => {
-      this.oppoSuits = data;
-      for(let arreglo of this.oppoSuits.body){
-          this.filas.push(
-            {
-              id: arreglo.id,
-              nombre: arreglo.nombre, 
-              apellido: arreglo.apellido
-            }
-          )
-      }
-      console.log(this.filas, 'HGASHDGHASD');
-    })
-  } */
+  
+
 }
