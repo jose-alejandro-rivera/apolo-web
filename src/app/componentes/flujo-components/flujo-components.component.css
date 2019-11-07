@@ -4,6 +4,29 @@
 
 .flujo{}
 
+.flujo .input, select, optgroup, textarea {
+    border-radius: 6px;
+    border-color: #00A9E0;
+    min-width: 400px;
+    margin-bottom: 10px;
+}
+.flujo .select {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: 0;
+  }
+  .flujo select {
+    word-wrap: normal;
+    color: #00A9E0;
+    border: 1px solid #00A9E0;
+    font-size: 16px;
+}
+
 @media only screen and (max-width: 768px) {    
     .flujo-label {
         display: none;
@@ -26,11 +49,12 @@
         margin-bottom: 20px;
         width: 100%;
         float: left;
-        background-color: #0029A6;
+        background-color: #ffffff;
         text-align: center;
         font-family: "telefonica", Arial, Helvetica, sans-serif;
         font-weight: bold;
         font-size: 25px;
+        height: auto;
     }   
     .flujo-text {
         display: block;
@@ -60,7 +84,7 @@
         font-weight: bold;
         text-align: center;
         justify-content: center;
-        color: #ffffff;
+        color: #0029A6;
         font-family: "telefonica", Arial, Helvetica, sans-serif;
 
     }
@@ -98,6 +122,20 @@
         cursor: pointer;
         margin: 5px;
         margin-bottom: 20px;
+    }
+    .flujo .input, select, optgroup, textarea {
+        
+        border-radius: 6px;
+        border-color: #00A9E0;
+        min-width: 100%;
+        margin-bottom: 15px;
+    }
+    
+    .flujo select {
+        word-wrap: normal;
+        color: #00A9E0;
+        border: 1px solid #00A9E0;
+        font-size: 15px;
     }
 
     .flujo-button {
