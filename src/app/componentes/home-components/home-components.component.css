@@ -1,0 +1,206 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
+.apolo{}
+
+.apolo .ag-theme-balham .ag-header {
+    background-color: #00b6f0;
+    color: #fff;
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+.apolo .ag-theme-balham .ag-ltr .ag-cell {
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+}
+.apolo .ag-body-viewport .ag-center-cols-container {
+    width: 100% !important;
+}
+.apolo-icono-usuario{
+    width: 100%;
+    float: left;
+    color: #FFF;
+    height: 100px;
+}
+.apolo-icono-mov {
+    float: left;
+    height: 100px;
+    width: 50%
+}
+.apolo-usuario {
+    float: left;
+    text-align: right;
+    color: #00A9E0;
+    height: 100px;
+}
+.apolo-centrado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.apolo-centrado-left {
+    display: flex;
+    align-items: center;
+}
+.apolo-centrado-right {
+    padding-top: 45px;
+    text-align: right;
+    width: 50%
+}
+.apolo-fuente {
+    font-family: "telefonicaReg", Arial, Helvetica, sans-serif;
+    color: #FFF;
+}
+.apolo-tprincipales {
+    width: 100%;
+    float: left;
+    background-color: #5BC500;
+    font-size: 25px;
+    height: 65px;
+}
+.apolo .input, select, optgroup, textarea {
+    height: 40px;
+    border-radius: 6px;
+    border-color: #00A9E0;
+    min-width: 400px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.apolo .option {
+    height: 40px;
+}
+.apolo-formulario {
+width: 100%;
+float: left;
+margin-top: 20px;
+scroll-margin-bottom: 20px;
+}
+.apolo-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.apolo-button-crear {
+    border-radius: 8px !important;
+    background-color: #5BC500;
+    width: 200px;
+    height: 50px;
+    font-size: 20px;
+}
+
+.apolo .apolo-button-crear:hover {
+    box-shadow: inset 0 0 20px rgba(49, 138, 172, 0.5), 0 0 20px rgba(49, 138, 172, 0.4);
+    outline-color: rgba(49, 138, 172, 0);
+    outline-offset: 80px;
+    text-shadow: 1px 1px 6px #fff;
+  }
+  .apolo .select {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: 0;
+  }
+  .apolo select {
+    word-wrap: normal;
+    color: #00A9E0;
+    border: 1px solid #00A9E0;
+    font-size: 16px;
+}
+
+/* Estilos para dispositivos moviles */
+
+
+@media only screen and (max-width: 240px) {
+    .apolo-centrado-left {
+        display: none;
+    }
+    .apolo-icono-mov {
+        display: none;
+    }
+    .apolo-usuario {
+        display: none;
+    } 
+    .apolo-centrado-right {
+        padding-top: 10px;
+        width: 100%
+    }    
+
+}
+@media only screen and (max-width: 320px) {
+    .apolo-icono-mov {
+        display: none;
+    }
+    .apolo-usuario {
+        display: none;
+    }   
+    .apolo-centrado-right {
+        padding-top: 10px;
+        width: 100%
+    }      
+	
+}
+
+@media only screen and (max-width: 480px) {
+    .apolo-centrado-right {
+        padding-top: 10px;
+        width: 100%
+    }       
+	
+}
+
+@media only screen and (max-width: 768px) {  
+    .apolo-centrado-left {
+        display: none;
+    }
+    .apolo-icono-mov {
+        display: none;
+    }
+    .apolo-usuario {
+        display: none;
+    }   
+    .apolo-img1 {
+        display: block;
+    
+    }
+    .apolo-title{
+        background:#0029A6 ;
+    }
+    .apolo-title-centrado {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .apolo-title-principales {
+        width: 100%;
+        float: left;
+        background-color: #0029A6;
+        font-size: 25px;
+        height: 65px;
+    }
+    .telefonica .apolo-tprincipales {
+        
+        background-color: #0029A6;
+
+    }
+
+}
+@media only screen and (max-width: 980px) and (min-width: 821px) {
+
+
+}
+@media only screen and (max-width: 1280px) {
+
+
+}
+/* Horizontal */
+/* @media only screen (max-width: 500px) and (orientation: landscape) {
+
+}
+@media only screen (max-width: 680px) and (orientation: landscape) {
+
+}*/

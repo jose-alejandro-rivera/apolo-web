@@ -1,1 +1,40 @@
 <p>home-components works!</p>
+<div class="apolo">
+
+
+    <div class="apolo-tprincipales apolo-fuente apolo-centrado">
+      Categoría flujo
+  
+    </div>
+  
+    <div class="apolo-formulario">
+        <select formControlName="name"  (change)="cargueFlujo($event)" ng-model="type">
+            suit
+            <option *ngFor="let categoria of listCategoria" value="{{categoria.Id_CategoriaFlujo}}">{{categoria.NomCategoriaFlujo}} </option>
+          </select>
+
+          <select ng-model="thing">
+            <option value="" selected>Seleccionar</option>
+            <option *ngFor="let varflujo of flujo2" value="{{varflujo.Id_Flujo}}">{{varflujo.NomFlujo}} </option>
+          </select>          
+      
+      <!--form novalidate  [formGroup]="oppoSuitsForm" (ngSubmit)="onSubmit()">
+  
+        <select formControlName="name">
+          suit
+          <option *ngFor="let suit of filas" value="{{ suit.id }}">{{ suit.nombre }} {{suit.id}}</option>
+        </select>
+        
+        <div class="apolo-button apolo-centrado">
+          <button class="apolo-button-crear apolo-fuente">Crear</button>
+        </div>
+  
+      </form-->
+    </div>
+  
+    <div class="apolo-button apolo-centrado">
+        <button class="apolo-button-crear apolo-fuente">Crear</button>
+      </div>
+  </div>
+  
+  

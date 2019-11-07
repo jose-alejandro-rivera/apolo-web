@@ -11,7 +11,7 @@
     display: block;
 }
 @media only screen and (max-width: 768px) {    
-    .apolo-label {
+    .apolo-img {
         display: none;
     }
     .apolo-title{
