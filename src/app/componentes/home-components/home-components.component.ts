@@ -24,25 +24,27 @@ export class HomeComponent implements OnInit {
     this.categoriasService.getCategorias().subscribe((data) => {
      this.listCategoria = data;
     });
-    /* Esta funcion permite cargar el servicio para alimentar el select  de todas los flujos*/
-    this.flujoService.getFlujos().subscribe((data) => {
-      this.listFlujos = data;
-      for(let x of this.listFlujos){
-        this.flujo.push(x)
-      }
-    })
+
     }
-/* Esta funcion permite realizar el filtro de los flujos segun la categoria seleccionada*/
+/* Esta funcion permite realizar el filtro de los flujos segun la categoria que se haya seleccionada*/
   cargueFlujo(event){
     let idCatefgoria = event.target.value;
-    this.flujo2 = this.flujo.filter((e) => {
+    console.log(idCatefgoria);
+        /* Esta funcion permite cargar el servicio para alimentar el select  de todas los flujos*/
+        this.flujoService.getFlujos(idCatefgoria).subscribe((data) => {
+          this.flujo2 = data;
+         /* for(let x of this.listFlujos){
+            this.flujo.push(x)
+          } */
+        })
+ /*   this.flujo2 = this.flujo.filter((e) => {
       if(e.Id_Flujo == idCatefgoria){
         return e;
       }
-    })
-    console.log(this.flujo2);
-    
+    }) */
   }
+
+  /* Esta funcion permite realizar el filtro para que se muestren los pasos, segun */
 
   
 
