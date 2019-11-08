@@ -15,8 +15,12 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  componentFlujo:Boolean; 
+  componentCategoria: Boolean;
   title = 'apolo-web';
   constructor(private router: Router) {
+    this.componentFlujo = false;
+    this.componentCategoria = true;
     this.router.events.subscribe((event: Event) => {
     });
 }

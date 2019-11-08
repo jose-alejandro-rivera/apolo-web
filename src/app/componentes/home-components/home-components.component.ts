@@ -10,7 +10,6 @@ import { FlujoService } from '../servicios/flujo.service';
   styleUrls: ['./home-components.component.css']
 })
 export class HomeComponent implements OnInit {
-
   listCategoria: any; // variable para el cargue de categorias
   listFlujos: any ; // variable para el cargue de todos los flujos
   flujo: any[]=[]; // 
@@ -33,19 +32,6 @@ export class HomeComponent implements OnInit {
         /* Esta funcion permite cargar el servicio para alimentar el select  de todas los flujos*/
         this.flujoService.getFlujos(idCatefgoria).subscribe((data) => {
           this.flujo2 = data;
-         /* for(let x of this.listFlujos){
-            this.flujo.push(x)
-          } */
         })
- /*   this.flujo2 = this.flujo.filter((e) => {
-      if(e.Id_Flujo == idCatefgoria){
-        return e;
-      }
-    }) */
-  }
-
-  /* Esta funcion permite realizar el filtro para que se muestren los pasos, segun */
-
-  
-
+ }
 }
