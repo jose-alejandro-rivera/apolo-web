@@ -3,6 +3,7 @@ import { FormBuilder } from "@angular/forms";
 import { HttpClient } from '@angular/common/http';
 import { CategoriasService } from '../../servicios/categorias.service';
 import { FlujoService } from '../../servicios/flujo.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-components',
@@ -14,7 +15,7 @@ export class HomeComponent implements OnInit {
   listFlujos: any ; // variable para el cargue de todos los flujos
   flujo: any[]=[]; // 
   flujo2: any; // 
-  constructor(private http: HttpClient, private categoriasService: CategoriasService, private flujoService: FlujoService ) { 
+  constructor(private http: HttpClient, private categoriasService: CategoriasService, private flujoService: FlujoService, private router: Router ) { 
    
   }
   
@@ -35,4 +36,17 @@ export class HomeComponent implements OnInit {
           this.flujo2 = data;
         })
  }
+
+ public creaAtencion(id) {
+   console.log('------- ' + id);
+  this.router.navigate([id]).then( (e) => {
+    if (e) {
+      console.log("Navigation is successful!");
+    } else {
+      console.log("Navigation has failed!");
+    }
+  });
+}
+
+
 }
