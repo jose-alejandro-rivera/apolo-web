@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit {
     }
 /* Esta funcion permite realizar el filtro de los flujos segun la categoria que se haya seleccionada*/
   cargueFlujo(event){
+    debugger;
     let idCatefgoria = event.target.value;
     console.log(idCatefgoria);
         /* Esta funcion permite cargar el servicio para alimentar el select  de todas los flujos*/
