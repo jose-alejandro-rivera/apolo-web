@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from "@angular/forms";
 import { HttpClient } from '@angular/common/http';
-import { CategoriasService } from '../servicios/categorias.service';
-import { FlujoService } from '../servicios/flujo.service';
+import { CategoriasService } from '../../servicios/categorias.service';
+import { FlujoService } from '../../servicios/flujo.service';
 
 @Component({
   selector: 'app-home-components',

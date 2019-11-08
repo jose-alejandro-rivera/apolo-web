@@ -1,32 +1,33 @@
 
 
 <div class="container">
-  <div class="apolo-title-principales apolo-title-centrado">
-    <img src="/assets/imagenes apoloweb/logo_pcpc_white.png">
-  </div>
-  <div class="col-12 float-right ">
-    <div class=" apolo-text float-right ">
-      <label class="apolo-text-type">
-        dsanches
-      </label>
-      <img src="/assets/imagenes apoloweb/icon_mimovistar.png">
+    <div class="apolo-title-principales apolo-title-centrado">
+      <img src="/assets/imagenes apoloweb/logo_pcpc_white.png">
     </div>
-
-  </div>
-
-    <div class="apolo-icono-mov apolo-centrado-left">
-      <img src="/assets/imagenes apoloweb/logo-pcpc1.png">
+    <div class="col-12 float-right ">
+      <div class=" apolo-text float-right ">
+        <label class="apolo-text-type">
+          dsanches
+        </label>
+        <img src="/assets/imagenes apoloweb/icon_mimovistar.png">
+      </div>
+  
     </div>
-    <div class="apolo-usuario apolo-centrado-right">
-      usuario-prueba
+  
+      <div class="apolo-icono-mov apolo-centrado-left">
+        <img src="/assets/imagenes apoloweb/logo-pcpc1.png">
+      </div>
+      <div class="apolo-usuario apolo-centrado-right">
+        usuario-prueba
+      </div>
+  
+    <div>
+      <app-home-components></app-home-components>
     </div>
-
-  <div>
-    <app-home-components></app-home-components>
+    <div *ngIf="componentFlujo">
+      <app-flujo-components></app-flujo-components>
+    </div>
   </div>
-  <div *ngIf="componentFlujo">
-    <app-flujo-components></app-flujo-components>
-  </div>
-</div>
-
-
+  
+  
+  

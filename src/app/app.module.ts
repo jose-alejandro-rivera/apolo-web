@@ -7,14 +7,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './componentes/home-components/home-components.component';
-import { FlujoComponentsComponent } from './componentes/flujo-components/flujo-components.component';
+import { AtencionComponentsComponent } from './componentes/atencion-components/atencion-components.component';
+import { PasoComponentsComponent } from './componentes/paso-components/paso-components.component';
+import { CuestionarioComponentsComponent } from './componentes/cuestionario-components/cuestionario-components.component';
+import { ProcesoComponentsComponent } from './componentes/proceso-components/proceso-components.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AppComponent,
     HomeComponent,
-    FlujoComponentsComponent,
+    AtencionComponentsComponent,
+    PasoComponentsComponent,
+    CuestionarioComponentsComponent,
+    ProcesoComponentsComponent,
   ],
   imports: [
     BrowserModule,
