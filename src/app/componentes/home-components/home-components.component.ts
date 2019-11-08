@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit {
     }
 /* Esta funcion permite realizar el filtro de los flujos segun la categoria seleccionada*/
   cargueFlujo(event){
+    debugger;
     let idCatefgoria = event.target.value;
     this.flujo2 = this.flujo.filter((e) => {
       if(e.Id_Flujo == idCatefgoria){
