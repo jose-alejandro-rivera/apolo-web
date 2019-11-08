@@ -1,0 +1,67 @@
+<div class="container flujo">
+
+    <div class="flujo-title-principales flujo-margen rounded">
+        <label class="flujo-text-type">
+            Flujos
+        </label>
+    </div>
+
+    <div class="flujo-cuadriula flujo-margen rounded">
+        <div class="">
+
+            <div class="col-12 flujo-text">
+                <label class="flujo-text-title-content"> Tipo de categoria: &nbsp; </label>
+                <label class="flujo-text-content"> Instalacion de componentes aleatorios{{flujo.tipocategoria}}</label>
+            </div>
+            <div class="col-12 flujo-text ">
+                <label class="flujo-text-title-content">Nombre Flujo: &nbsp; </label>
+                <label class="flujo-text-content"> Instalacion cableado tipo cobre {{flujo.nombreflujo}}</label>
+            </div>
+
+
+            <div class="col-12">
+                <!-- *ngfor="pasos item of pasos" -->
+                <div class="flujo-text-content">
+                    <label>Paso 1
+                        {{pasos.pasosProceso.NomPaso}}
+                    </label>
+
+                    <!-- *ngfor="cuestionario item of pasos.cuestionario.CuestionarioCampo" -->
+                    <div class="flujo-pasos">
+                        <ul>
+                            <li>
+                                <label>verificar el cableado que se va a utilizar
+                                    {{cuestionario.campos.Descripcion}}
+                                </label>
+
+                            </li>
+
+                            <li>
+                                <label>
+                                    seleccione: {{cuestionario.campos.Nombre}}
+                                </label>
+                                <select formControlName="name" (change)="changeSuit($event)" id="selectCuestionario">
+                                    <option value="0">--All--</option>
+                                    <!-- ngfort="let select of pasos.cuestionario.CuestionarioCampo" -->
+                                    <option>{{select}}</option>
+                                </select>
+                            </li>
+                            <li>
+                                <textarea name="" id=""></textarea>
+                            </li>
+
+                        </ul>
+
+
+                    </div>
+
+                    <div class="flujo-button">
+                        <button type="button" class="flujo-button-atras ">atras</button>
+                        <button type="button" class="flujo-button-siguiente ">Siguiente</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

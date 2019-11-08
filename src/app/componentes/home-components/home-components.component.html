@@ -1,40 +1,41 @@
-<p>home-components works!</p>
 <div class="apolo">
 
 
-    <div class="apolo-tprincipales apolo-fuente apolo-centrado">
-      Categoría flujo
-  
-    </div>
-  
-    <div class="apolo-formulario">
-        <select formControlName="name"  (change)="cargueFlujo($event)" ng-model="type">
-            suit
-            <option *ngFor="let categoria of listCategoria" value="{{categoria.Id_CategoriaFlujo}}">{{categoria.NomCategoriaFlujo}} </option>
-          </select>
-
-          <select ng-model="thing">
-            <option value="" selected>Seleccionar</option>
-            <option *ngFor="let varflujo of flujo2" value="{{varflujo.Id_Flujo}}">{{varflujo.NomFlujo}} </option>
-          </select>          
-      
-      <!--form novalidate  [formGroup]="oppoSuitsForm" (ngSubmit)="onSubmit()">
-  
-        <select formControlName="name">
-          suit
-          <option *ngFor="let suit of filas" value="{{ suit.id }}">{{ suit.nombre }} {{suit.id}}</option>
-        </select>
-        
-        <div class="apolo-button apolo-centrado">
-          <button class="apolo-button-crear apolo-fuente">Crear</button>
-        </div>
-  
-      </form-->
-    </div>
-  
-    <div class="apolo-button apolo-centrado">
-        <button class="apolo-button-crear apolo-fuente">Crear</button>
-      </div>
+  <div class="apolo-tprincipales apolo-margen apolo-fuente apolo-centrado rounded">
+    Categoría flujo
   </div>
-  
-  
+
+
+  <div class="apolo-cuadriula apolo-margen rounded">
+
+    <div class="apolo-formulario apolo-text">
+      <div class="col-12 ">
+        <label class="col-lg-2 col-sm-12 apolo-text-title-content">
+          Tipo de categoria: &nbsp;
+        </label>
+        <select class="col-lg-9 col-sm-12" formControlName="name" (change)="cargueFlujo($event)" ng-model="type">
+          <option value=""  selected>Seleccionar</option>
+          <option *ngFor="let categoria of listCategoria" value="{{categoria.Id_CategoriaFlujo}}">
+            {{categoria.NomCategoriaFlujo}} </option>
+        </select>
+      </div>
+
+      <div class="col-12 ">
+        <label class=" col-2 apolo-text-title-content">
+          Flujo
+        </label>
+        <select class="col-9" ng-model="thing">
+          <option value="" selected>Seleccionar</option>
+          <option *ngFor="let varflujo of flujo2" value="{{varflujo.Id_Flujo}}">{{varflujo.NomFlujo}} </option>
+        </select>
+      </div>
+
+      <div class="apolo-button apolo-centrado">
+        <button class="apolo-button-crear apolo-fuente" [routerLink]="['/flujo-components.component']"
+          (click)="clickAddTodo()">Crear</button>
+      </div>
+    </div>
+
+
+  </div>
+</div>
