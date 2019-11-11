@@ -5,38 +5,43 @@
     Categoría flujo
   </div>
 
-  <form [formGroup]="formGroup">
-  <div class="apolo-cuadriula apolo-margen rounded">
+  <form [formGroup]="formCategoriasSelect" (ngSubmit)="onSubmit ()">
+    <div class="form-group">
+      <div class="apolo-cuadriula apolo-margen rounded">
 
-    <div class="apolo-formulario apolo-text">
-      <div class="col-12 ">
-        <label class="col-lg-2 col-sm-12 apolo-text-title-content">
-          Tipo de categoria: &nbsp;
-        </label>
-        <select class="col-lg-9 col-sm-12" formControlName="name" (change)="cargueFlujo($event)" ng-model="type">
-          <option value=""  selected>Seleccionar</option>
-          <option *ngFor="let categoria of listCategoria" value="{{categoria.Id_CategoriaFlujo}}">
-            {{categoria.NomCategoriaFlujo}} </option>
-        </select>
-      </div>
+        <div class="apolo-formulario apolo-text">
+          <div class="col-12 ">
+            <label class="col-lg-2 col-sm-12 apolo-text-title-content">
+              Tipo de categoria: &nbsp;
+            </label>
+            <select class="col-lg-9 col-sm-12" formControlName="categoria" (change)="cargueFlujo($event)" ng-model="type">
+              <option value="" selected>Seleccionar</option>
+              <option *ngFor="let categoria of listCategoria" value="{{categoria.Id_CategoriaFlujo}}">
+                {{categoria.NomCategoriaFlujo}} </option>
+            </select>
+          </div>
 
-      <div class="col-12 ">
-        <label class=" col-2 apolo-text-title-content">
-          Flujo
-        </label>
-        <select class="col-9" ng-model="thing">
-          <option value="" selected>Seleccionar</option>
-          <option *ngFor="let varflujo of flujo2" value="{{varflujo.Id_Flujo}}">{{varflujo.NomFlujo}} </option>
-        </select>
-      </div>
+          <div class="col-12 ">
+            <label class=" col-2 apolo-text-title-content">
+              Flujo
+            </label>
+            <select class="col-9" formControlName="flujo" ng-model="thing">
+              <option value="" selected>Seleccionar</option>
+              <option *ngFor="let varflujo of flujo2" value="{{varflujo.Id_Flujo}}">{{varflujo.NomFlujo}} </option>
+            </select>
+          </div>
 
-      <div class="apolo-button apolo-centrado">
-        <button class="apolo-button-crear apolo-fuente" [routerLink]="['/flujo-components.component']"
-          (click)="crearAtencion()">Crear</button>
+          <div class="apolo-button apolo-centrado">
+            <button class="apolo-button-crear apolo-fuente" [disabled]="categoriasSelect.invalid" [routerLink]="['/flujo-components.component']"
+              (click)="crearAtencion()">Crear</button>
+              <div *ngIf="selectInvalido" class="error">
+                <div>Debe seleccionar una oopción</div>
+              </div>              
+          </div>
+        </div>
+
+
       </div>
     </div>
-
-
-  </div>
-</form>
+  </form>
 </div>
