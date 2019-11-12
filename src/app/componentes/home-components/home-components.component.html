@@ -5,38 +5,32 @@
     Categoría flujo
   </div>
 
-  <form [formGroup]="formCategoriasSelect" (ngSubmit)="onSubmit ()">
-    <div class="form-group">
-      <div class="apolo-cuadriula apolo-margen rounded">
 
   <div class="apolo-cuadriula apolo-margen rounded">
-    <div [formGroup]="myForm" (ngSubmit)=creaAtencion() novalidate>
+    <form  novalidate>
       <div class="apolo-formulario apolo-text">
-        <div class="col-12 ">
+        <div class="form-group col-12 ">
           <label class="col-lg-2 col-sm-12 apolo-text-title-content">
-            Tipo de categoria: &nbsp;
+            Tipo de categoria:
           </label>
-          <select class="col-lg-9 col-sm-12" formControlName="name" (change)="cargueFlujo($event)" ng-model="type">
-            <option selected>Seleccionar</option>
-            <option *ngFor="let categoria of listCategoria" value="{{categoria.Id_CategoriaFlujo}}">
-              {{categoria.NomCategoriaFlujo}} </option>
+          <select class="col-lg-9 col-sm-12" formControlName="categoria" (change)="cargueFlujo($event)" [(ngModel)]="categorias">
+            <option [value]="categoria.Id_CategoriaFlujo" *ngFor="let categoria of arregloCat;let i = index" >{{categoria.NomCategoriaFlujo}}</option>
           </select>
         </div>
 
-        <div class="col-12 ">
+        <div class="form-group  col-12 ">
           <label class=" col-2 apolo-text-title-content">
-            Flujo
+            Flujo : {{ flujo }}
           </label>
-          <select class="col-9" ng-model="thing">
-            <option value="" selected>Seleccionar</option>
-            <option *ngFor="let varflujo of flujo2" value="{{varflujo.Id_Flujo}}">{{varflujo.NomFlujo}} </option>
+          <select class="col-9" formControlName="flujo" [(ngModel)]="flujo">
+            <option  [value]="varflujo.Id_Flujo" *ngFor="let varflujo of flujo2">{{varflujo.NomFlujo}} </option>
           </select>
         </div>
         <div class="apolo-button apolo-centrado">
-          <button class="apolo-button-crear apolo-fuente" [routerLink]="['/atencion-components']"
-            (click)="creaAtencion(varflujo.Id_Flujo')">Crear</button>
+          <!--button class="apolo-button-crear apolo-fuente" [routerLink]="['atencion-components']" -->
+          <button  class="apolo-button-crear apolo-fuente" (click)="creaAtencion($event)">Crear atención</button>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>

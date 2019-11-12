@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { HttpClient } from '@angular/common/http';
 import { CategoriasService } from '../../servicios/categorias.service';
 import { FlujoService } from '../../servicios/flujo.service';
@@ -11,42 +11,70 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-components.component.css']
 })
 export class HomeComponent implements OnInit {
-  listCategoria: any; // variable para el cargue de categorias
+  listCategoria: any[] = []; // variable para el cargue de categorias
   listFlujos: any; // variable para el cargue de todos los flujos
-  flujo: any[] = []; // 
-  flujo2: any; // 
-  constructor(private http: HttpClient, private categoriasService: CategoriasService, private flujoService: FlujoService, private router: Router ) { 
+ // flujo: any[] = []; // 
+  flujo2:any; // 
+  categoria:any;
+  flujo:any;
+  categorias:any;
+  formCategorias: FormGroup;
+  arregloCat:any[] = [];
+ 
+  constructor(private http: HttpClient, private categoriasService: CategoriasService, private flujoService: FlujoService, private router: Router, private formBuilder: FormBuilder ) { 
    
   }
 
   ngOnInit() {
     /* Esta funcion permite cargar el servicio para alimentar el select  de todas las categorias*/
     this.categoriasService.getCategorias().subscribe((data) => {
-      this.listCategoria = data;
+
+      setTimeout(()=>{
+        this.listCategoria.push(data);
+        for(let x in data){ 
+          if(data[x].Id_CategoriaFlujo != undefined){
+            this.arregloCat.push({
+              Id_CategoriaFlujo :  data[x].Id_CategoriaFlujo,
+              NomCategoriaFlujo : data[x].NomCategoriaFlujo,
+            })
+          }          
+        }
+
+      },100)
     });
 
   }
   /* Esta funcion permite realizar el filtro de los flujos segun la categoria que se haya seleccionada*/
   cargueFlujo(event) {
-    debugger;
     let idCatefgoria = event.target.value;
     console.log(idCatefgoria);
-        /* Esta funcion permite cargar el servicio para alimentar el select  de todas los flujos*/
         this.flujoService.getFlujos(idCatefgoria).subscribe((data) => {
           this.flujo2 = data;
         })
  }
 
- public creaAtencion(id) {
-   console.log('------- ' + id);
-  this.router.navigate([id]).then( (e) => {
-    if (e) {
-      console.log("Navigation is successful!");
-    } else {
-      console.log("Navigation has failed!");
-    }
-  });
-}
+    //formCategorias = new FormGroup({
+      
+     /* categoria = new FormControl('',Validators.required),
+      flujo = new FormControl('',Validators.required) */
+    //});
 
+    validaCampos (){
+      this.formCategorias = this.formBuilder.group({
+        categoria: ['', Validators.required],
+        flujo: ['', Validators.required]
+      });
+    }
+
+    public creaAtencion(e) {
+      console.log(this.flujo)
+      e.preventDefault();
+     
+      return false;
+      
+        //this.categoriasService.crearAtencion(this.formCategorias.value).subscribe( data => {
+          
+        //})
+    }
 
 }
