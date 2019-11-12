@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpClient } from '@angular/common/http';
 import { CategoriasService } from '../../servicios/categorias.service';
 import { FlujoService } from '../../servicios/flujo.service';
@@ -12,22 +12,22 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   listCategoria: any; // variable para el cargue de categorias
-  listFlujos: any ; // variable para el cargue de todos los flujos
-  flujo: any[]=[]; // 
+  listFlujos: any; // variable para el cargue de todos los flujos
+  flujo: any[] = []; // 
   flujo2: any; // 
   constructor(private http: HttpClient, private categoriasService: CategoriasService, private flujoService: FlujoService, private router: Router ) { 
    
   }
-  
+
   ngOnInit() {
     /* Esta funcion permite cargar el servicio para alimentar el select  de todas las categorias*/
     this.categoriasService.getCategorias().subscribe((data) => {
-     this.listCategoria = data;
+      this.listCategoria = data;
     });
 
-    }
-/* Esta funcion permite realizar el filtro de los flujos segun la categoria que se haya seleccionada*/
-  cargueFlujo(event){
+  }
+  /* Esta funcion permite realizar el filtro de los flujos segun la categoria que se haya seleccionada*/
+  cargueFlujo(event) {
     debugger;
     let idCatefgoria = event.target.value;
     console.log(idCatefgoria);
