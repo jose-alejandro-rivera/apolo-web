@@ -47,6 +47,8 @@ export class HomeComponent implements OnInit {
       console.log('Si entraaaaaaaa----');
     }
 
+  
+
     const datosSeleccionados = {
       username: this.formCategoriasSelect.controls.categoria.value,
       password: this.formCategoriasSelect.controls.flujo.value
