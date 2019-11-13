@@ -1,36 +1,46 @@
 <div class="apolo">
 
 
-  <div class="apolo-tprincipales apolo-margen apolo-fuente apolo-centrado rounded">
-    Categoría flujo
+    <div class="apolo-tprincipales apolo-margen apolo-fuente apolo-centrado rounded">
+      Categoría flujo
+    </div>
+  
+  <form [formGroup]="formCategorias" (ngSubmit)="validaCampos()">
+    <div class="apolo-cuadriula apolo-margen rounded">
+        <div class="apolo-formulario apolo-text">
+          <div class="form-group col-12 ">
+            <label class="col-lg-2 col-sm-12 apolo-text-title-content">
+              Categorias: 
+            </label>
+
+            <select class="col-lg-9 col-sm-12 form-control" (change)="cargueFlujo($event)" formControlName="idCategoria" [ngClass]="{ 'is-invalid': submitted && f.idCategoria.errors }">
+              <option value="">Seleccione una categoria</option>
+              <option [value]="categoria.Id_CategoriaFlujo" *ngFor="let categoria of arregloCat;let i = index" >{{categoria.NomCategoriaFlujo}}</option>
+            </select>
+                <div *ngIf="submitted && f.idCategoria.errors" class="invalid-feedback">
+                    <div *ngIf="f.idCategoria.errors.required">Seleccione una categoria</div>
+                </div>            
+          </div>
+
+  
+          <div class="form-group  col-12 ">
+            <label class=" col-2 apolo-text-title-content">
+              Flujo :
+            </label>
+            <select class="col-9 form-control" formControlName="idflujo" [ngClass]="{ 'is-invalid': submitted && f.idflujo.errors }">
+              <option value="">Seleccione un flujo</option>
+              <option [value]="varflujo.Id_Flujo" *ngFor="let varflujo of flujo2">{{varflujo.NomFlujo}} </option>
+            </select>
+              <div *ngIf="submitted && f.idflujo.errors" class="invalid-feedback">
+                  <div *ngIf="f.idflujo.errors.required">Seleccione un flujo</div>
+              </div>               
+          </div>
+          <div class="apolo-button apolo-centrado">
+            <button  class="apolo-button-crear apolo-fuente" >Crear atención</button>
+          </div>
+        </div>
+    </div>
+  </form>
   </div>
 
-
-  <div class="apolo-cuadriula apolo-margen rounded">
-    <form  novalidate>
-      <div class="apolo-formulario apolo-text">
-        <div class="form-group col-12 ">
-          <label class="col-lg-2 col-sm-12 apolo-text-title-content">
-            Tipo de categoria:
-          </label>
-          <select class="col-lg-9 col-sm-12" formControlName="categoria" (change)="cargueFlujo($event)" [(ngModel)]="categorias">
-            <option [value]="categoria.Id_CategoriaFlujo" *ngFor="let categoria of arregloCat;let i = index" >{{categoria.NomCategoriaFlujo}}</option>
-          </select>
-        </div>
-
-        <div class="form-group  col-12 ">
-          <label class=" col-2 apolo-text-title-content">
-            Flujo : {{ flujo }}
-          </label>
-          <select class="col-9" formControlName="flujo" [(ngModel)]="flujo">
-            <option  [value]="varflujo.Id_Flujo" *ngFor="let varflujo of flujo2">{{varflujo.NomFlujo}} </option>
-          </select>
-        </div>
-        <div class="apolo-button apolo-centrado">
-          <!--button class="apolo-button-crear apolo-fuente" [routerLink]="['atencion-components']" -->
-          <button  class="apolo-button-crear apolo-fuente" (click)="creaAtencion($event)">Crear atención</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+  
