@@ -5,9 +5,6 @@ import { CategoriasService } from '../../servicios/categorias.service';
 import { FlujoService } from '../../servicios/flujo.service';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 
-const URL = 'http://localhost:8080/api';
-
-
 @Component({
   selector: 'app-home-components',
   templateUrl: './home-components.component.html',
@@ -38,11 +35,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.categoriasService.testBackEnd(URL).subscribe((data:Response) => {
-      console.log('Respuesta del servicio en angular 8 :', data);
-    });
-
     /* Esta funcion permite cargar el servicio para alimentar el select  de todas las categorias*/
     this.categoriasService.getCategorias().subscribe((data) => {
 
@@ -59,6 +51,7 @@ export class HomeComponent implements OnInit {
 
       }, 100)
     });
+
   }
   get f() {
     return this.formCategorias.controls;
@@ -76,15 +69,18 @@ export class HomeComponent implements OnInit {
   }
   /* Valida el formulario de la pagina home-components.componentes.html */
   validaCampos() {
-    this.homeComponent = false;
+    
     if (this.formCategorias.invalid) {
       this.submitted = true;
       return;
+    }else{
+      this.homeComponent = false;
+      setTimeout(()=>{
+        localStorage.setItem('dataFlujoCat',JSON.stringify(this.flujo2));
+        this.router.navigate(['flujo/list']);
+      },500)
     }
-    setTimeout(()=>{
-      localStorage.setItem('dataFlujoCat',JSON.stringify(this.flujo2));
-      this.router.navigate(['flujo/list']);
-    },500)
+ 
   }
   /* Este metodo permite conectarse al servicio CategoriasService */
   public creaAtencion(e, state: RouterStateSnapshot) {
