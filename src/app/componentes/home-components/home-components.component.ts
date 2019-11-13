@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
   /* Este metodo permite conectarse al servicio CategoriasService */
   public creaAtencion(e, state: RouterStateSnapshot) {
     this.categoriasService.crearAtencion(this.crearCategoria).subscribe(data => {
-        this.router.navigate(['/atencion-components'], { queryParams: { data: 'crearCategoria' }});
+        this.router.navigate(['flujo/list'], { queryParams: { data: 'crearCategoria' }});
         return false;
     })
   }
