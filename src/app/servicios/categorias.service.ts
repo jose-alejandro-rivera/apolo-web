@@ -18,5 +18,10 @@ export class CategoriasService {
   crearAtencion(datosCatFlu){
     return this.http.post(this.crearCatUrl, datosCatFlu);
   }
+
+  testBackEnd(url){
+    return this.http.get(url);
+  }
+  
 }
 
