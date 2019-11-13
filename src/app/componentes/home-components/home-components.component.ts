@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   categoria: any;
   categorias: any;
   formCategorias: FormGroup;
+  homeComponent: Boolean;
   submitted = false;
   arregloCat: any[] = [];
   public crearCategoria = {
@@ -25,7 +26,8 @@ export class HomeComponent implements OnInit {
   };
 
   constructor(private http: HttpClient, private categoriasService: CategoriasService, private flujoService: FlujoService, private router: Router, private formBuilder: FormBuilder) {
-
+    this.homeComponent = true;
+    localStorage.setItem('dataFlujoCat','');
     this.formCategorias = this.formBuilder.group({
       idCategoria: ['', Validators.required],
       idflujo: ['', Validators.required]
@@ -67,15 +69,20 @@ export class HomeComponent implements OnInit {
   }
   /* Valida el formulario de la pagina home-components.componentes.html */
   validaCampos() {
+    this.homeComponent = false;
     if (this.formCategorias.invalid) {
       this.submitted = true;
       return;
     }
+    setTimeout(()=>{
+      localStorage.setItem('dataFlujoCat',JSON.stringify(this.flujo2));
+      this.router.navigate(['flujo/list']);
+    },500)
   }
   /* Este metodo permite conectarse al servicio CategoriasService */
   public creaAtencion(e, state: RouterStateSnapshot) {
     this.categoriasService.crearAtencion(this.crearCategoria).subscribe(data => {
-        this.router.navigate(['/atencion-components'], { queryParams: { data: 'crearCategoria' }});
+        this.router.navigate(['flujo/list'], { queryParams: { data: 'crearCategoria' }});
         return false;
     })
   }
