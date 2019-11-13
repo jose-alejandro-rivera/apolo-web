@@ -7,17 +7,16 @@ import {ICategoria} from '../../interfaces/categoria'
   styleUrls: ['./atencion-components.component.css']
 })
 export class AtencionComponentsComponent implements OnInit {
-  // private hcate:ICategoria = [];
-
+  dataAtencion: any;
   constructor() { }
 
   ngOnInit() {
+    this.dataAtencion = JSON.parse(localStorage.getItem('dataFlujoCat'));
+    console.log(this.dataAtencion)
   }
   
   changeSuit(e) {
-    // this.ngOnInit.toString('name').setValue(e.target.value, {
-    //    onlySelf: true
-    // })
+
   }
 
 }
