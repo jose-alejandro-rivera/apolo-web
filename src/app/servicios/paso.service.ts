@@ -9,7 +9,7 @@ export class PasoService {
   pasosUrl = 'http://localhost:3000/api//flujo/list/';
   constructor(private http: HttpClient) { }
 
-  getCategorias(id) {
+  getPasos(id) {
     return this.http.get(this.pasosUrl+id);
   }
 }
