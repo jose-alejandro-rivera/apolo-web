@@ -76,18 +76,15 @@ export class HomeComponent implements OnInit {
   }
   /* Valida el formulario de la pagina home-components.componentes.html */
   validaCampos() {
-    
+    this.homeComponent = false;
     if (this.formCategorias.invalid) {
       this.submitted = true;
       return;
-    }else{
-      this.homeComponent = false;
-      setTimeout(()=>{
-        localStorage.setItem('dataFlujoCat',JSON.stringify(this.flujo2));
-        this.router.navigate(['flujo/list']);
-      },500)
     }
- 
+    setTimeout(()=>{
+      localStorage.setItem('dataFlujoCat',JSON.stringify(this.flujo2));
+      this.router.navigate(['flujo/list']);
+    },500)
   }
   /* Este metodo permite conectarse al servicio CategoriasService */
   public creaAtencion(e, state: RouterStateSnapshot) {
