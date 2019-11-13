@@ -101,9 +101,7 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
   changeSuit(e) {
-    // this.ngOnInit.toString('name').setValue(e.target.value, {
-    //    onlySelf: true
-    // })
+
   }
 
 }
