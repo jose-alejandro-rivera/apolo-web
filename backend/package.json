@@ -10,5 +10,9 @@
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^1.19.4"
+  },
+  "dependencies": {
+    "http": "0.0.0",
+    "request": "^2.88.0"
   }
 }

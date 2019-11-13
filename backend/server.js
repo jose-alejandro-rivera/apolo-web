@@ -3,6 +3,8 @@ const express = require('express'),
   cors = require('cors'),
   multer = require('multer'),
   bodyParser = require('body-parser');
+  http = require('http');
+  Request = require("request");
 
 // File upload settings  
 const PATH = './uploads';
@@ -29,9 +31,14 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/api', function (req, res) {
-  console.log("ingreso api del backend");
-  //res.end('File catcher');
-  return res.status(200).json({ 'status': 200, 'response': "conexion con node js exitosa" });
+
+Request.get("http://localhost:3000/api/flujo/categorias", (error, response, body) => {
+    if(error) {
+        return console.dir(error);
+    }
+    console.dir(JSON.parse(body));
+});
+  //return res.status(200).json({ 'status': 200, 'response': "conexion con node js exitosa" });
 });
 
 // POST File
