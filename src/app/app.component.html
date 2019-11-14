@@ -1,36 +1,32 @@
-
-
 <div class="container">
-    <div class="apolo-title-principales apolo-title-centrado">
-      <img src="/assets/imagenes apoloweb/logo_pcpc_white.png">
+
+
+  <div class="col-12 float-right apolo-text">
+    <div class=" apolo-text float-right ">
+      <label class="apolo-text-type">
+          usuario-prueba
+      </label>
+      <img src="/assets/imagenes apoloweb/icon_mimovistar.png">
     </div>
-    <div class="col-12 float-right ">
-      <div class=" apolo-text float-right ">
-        <label class="apolo-text-type">
-          dsanches
-        </label>
-        <img src="/assets/imagenes apoloweb/icon_mimovistar.png">
-      </div>
-  
-    </div>
-  
-      <div class="apolo-icono-mov apolo-centrado-left">
-        <img src="/assets/imagenes apoloweb/logo-pcpc1.png">
-      </div>
-      <div class="apolo-usuario apolo-centrado-right">
-        usuario-prueba
-      </div>
-  
-    <div>
-            <app-home-components></app-home-components>
-    </div>
-    <div *ngIf="atencionComponet">
-      <app-atencion-components></app-atencion-components>
-    </div>
- 
-        <router-outlet></router-outlet>
- 
   </div>
-  
-  
-  
+
+  <div class="apolo-label">
+    <div class="apolo-icono-mov apolo-centrado-left">
+      <img src="/assets/imagenes apoloweb/logo-pcpc1.png">
+    </div>
+    <div class="apolo-usuario apolo-centrado-right">
+      usuario-prueba
+    </div>
+  </div>
+
+
+  <div>
+    <app-home-components></app-home-components>
+  </div>
+  <div *ngIf="atencionComponet">
+    <app-atencion-components></app-atencion-components>
+  </div>
+
+  <router-outlet></router-outlet>
+
+</div>
