@@ -13,10 +13,11 @@ import { Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/rou
 export class HomeComponent implements OnInit {
   listCategoria: any[] = []; // variable para el cargue de categorias
   listFlujos: any; // variable para el cargue de todos los flujos
-  flujo2: any; // 
+  flujo2: any; //
   categoria: any;
   categorias: any;
   formCategorias: FormGroup;
+  homeComponent: Boolean;
   submitted = false;
   arregloCat: any[] = [];
   public crearCategoria = {
@@ -25,7 +26,8 @@ export class HomeComponent implements OnInit {
   };
 
   constructor(private http: HttpClient, private categoriasService: CategoriasService, private flujoService: FlujoService, private router: Router, private formBuilder: FormBuilder) {
-
+    this.homeComponent = true;
+    localStorage.setItem('dataFlujoCat','');
     this.formCategorias = this.formBuilder.group({
       idCategoria: ['', Validators.required],
       idflujo: ['', Validators.required]
@@ -67,10 +69,18 @@ export class HomeComponent implements OnInit {
   }
   /* Valida el formulario de la pagina home-components.componentes.html */
   validaCampos() {
+   
     if (this.formCategorias.invalid) {
       this.submitted = true;
       return;
+    }else{
+      this.homeComponent = false;
+      setTimeout(()=>{
+        localStorage.setItem('dataFlujoCat',JSON.stringify(this.flujo2));
+        this.router.navigate(['flujo/list']);
+      },500)
     }
+ 
   }
   /* Este metodo permite conectarse al servicio CategoriasService */
   public creaAtencion(e, state: RouterStateSnapshot) {
