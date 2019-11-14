@@ -1,4 +1,4 @@
-<div class="container flujo">
+<div class="container flujo" *ngIf="atencionCom">
 
     <div class="flujo-title-principales flujo-margen rounded">
         <label class="flujo-text-type">
@@ -11,7 +11,7 @@
 
             <div class="col-12 flujo-text ">
                 <label class="flujo-text-title-content"> Flujo: &nbsp; </label>
-                <label class="flujo-text-content"> Instalacion cableado tipo cobre {{flujo.nombreflujo}}</label>
+                <label class="flujo-text-content"> {{dataFlujoCat.NomFlujo}}</label>
             </div>
 
 
@@ -19,16 +19,19 @@
                 <div >
                     <div class="flujo-text-subtitle">
                         <label>
-                            {{definicionPaso.NomPaso}}
+                            {{definicionPaso}}
                         </label>
                     </div>
 
                     <div class="flujo-text-content flujo-text-contenido ">
                         <div *ngFor="let cuestionario of subsPasos">
                             <div *ngIf="cuestionario.tipoCampo=='input'">
-                                <label>
-                                    {{cuestionario.descripcionActividad}}
-                                </label>
+                                <div>
+                                    <label>
+                                        {{cuestionario.descripcionActividad}}
+                                    </label>
+                                </div>
+                               
                                 <input class="flujo-input" type="text" value="{{cuestionario.input}}">
                             </div>
 
@@ -58,7 +61,7 @@
                     </div>
 
                     <div class="flujo-button">
-                        <button type="button" class="flujo-button-atras ">atras</button>
+                        <button type="button" class="flujo-button-atras  flujo-fuente" (click)="pageHome()">atras</button>
                         <button type="button" class="flujo-button-siguiente flujo-fuente ">Siguiente</button>
                     </div>
 

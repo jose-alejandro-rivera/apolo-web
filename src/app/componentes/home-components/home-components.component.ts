@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   flujo2: any; //
   categoria: any;
   categorias: any;
+  idFlujo:any;
   formCategorias: FormGroup;
   homeComponent: Boolean;
   submitted = false;
@@ -36,6 +37,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     /* Esta funcion permite cargar el servicio para alimentar el select  de todas las categorias*/
+    debugger;
     this.categoriasService.getCategorias().subscribe((data) => {
 
       setTimeout(() => {
@@ -67,16 +69,25 @@ export class HomeComponent implements OnInit {
       this.flujo2 = data;
     })
   }
+
+  cargueIdFlujo(event){
+    
+    let jsonFlujo=this.flujo2.find((e)=>{
+      return e.Id_Flujo == event.target.value
+    })
+    this.idFlujo=jsonFlujo;
+
+  }
   /* Valida el formulario de la pagina home-components.componentes.html */
-  validaCampos() {
-   
+  validaCampos(e) {
+    
     if (this.formCategorias.invalid) {
       this.submitted = true;
       return;
     }else{
       this.homeComponent = false;
       setTimeout(()=>{
-        localStorage.setItem('dataFlujoCat',JSON.stringify(this.flujo2));
+        localStorage.setItem('dataFlujoCat',JSON.stringify(this.idFlujo));
         this.router.navigate(['flujo/list']);
       },500)
     }
@@ -84,6 +95,7 @@ export class HomeComponent implements OnInit {
   }
   /* Este metodo permite conectarse al servicio CategoriasService */
   public creaAtencion(e, state: RouterStateSnapshot) {
+    debugger;
     this.categoriasService.crearAtencion(this.crearCategoria).subscribe(data => {
         this.router.navigate(['flujo/list'], { queryParams: { data: 'crearCategoria' }});
         return false;
