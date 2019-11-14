@@ -5,8 +5,11 @@ import { CategoriasService } from '../../servicios/categorias.service';
 import { FlujoService } from '../../servicios/flujo.service';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 
+<<<<<<< HEAD
 const URL = 'http://localhost:8080/api/';
 
+=======
+>>>>>>> 0ad1d724e2c83d672e2f4d03611c854c74632a63
 @Component({
   selector: 'app-home-components',
   templateUrl: './home-components.component.html',
@@ -15,7 +18,7 @@ const URL = 'http://localhost:8080/api/';
 export class HomeComponent implements OnInit {
   listCategoria: any[] = []; // variable para el cargue de categorias
   listFlujos: any; // variable para el cargue de todos los flujos
-  flujo2: any; // 
+  flujo2: any; //
   categoria: any;
   categorias: any;
   formCategorias: FormGroup;
@@ -37,11 +40,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-
-   /* this.categoriasService.testBackEnd(URL+'flujo/categorias').subscribe((data:Response) => {
-      console.log('Respuesta del servicio en angular 8 :', data);
-    });*/
-
     /* Esta funcion permite cargar el servicio para alimentar el select  de todas las categorias*/
     this.categoriasService.testBackEnd(URL+'flujo/categorias').subscribe((data) => {
       setTimeout(() => {
@@ -57,7 +55,9 @@ export class HomeComponent implements OnInit {
 
       }, 100)
     });
+
     console.log(this.arregloCat);
+    
   }
   get f() {
     return this.formCategorias.controls;
@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
   }
   /* Valida el formulario de la pagina home-components.componentes.html */
   validaCampos() {
-    
+   
     if (this.formCategorias.invalid) {
       this.submitted = true;
       return;
