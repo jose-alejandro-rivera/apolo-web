@@ -65,20 +65,20 @@ export class AtencionComponentsComponent implements OnInit {
 
   }
 
-  // cargeuPasoFlujo(){
+  cargeuPasoFlujo(){
 
-  //   debugger;
-  //   this.seleccion = 1;
-  //   this.pasosFlujo.getPasos(1).subscribe((data) => {
+    debugger;
+    this.seleccion = 1;
+    this.pasosFlujo.getPasos(1).subscribe((data) => {
       
-  //       //validacion existencia de datos
-  //     if (data) {
-  //       this.listFlujoPaso = data;
+        //validacion existencia de datos
+      if (data) {
+        this.listFlujoPaso = data;
 
-  //     }
+      }
 
-  //   });
-  // }
+    });
+  }
 
   carguePasoSiguienteFlujo(element) {
     debugger;

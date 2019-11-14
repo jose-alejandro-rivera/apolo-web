@@ -144,6 +144,9 @@ scroll-margin-bottom: 20px;
         padding-top: 10px;
         width: 100%
     }    
+    .apolo-button-crear{
+        width: 80%;
+    }
 
 }
 @media only screen and (max-width: 320px) {
@@ -156,7 +159,10 @@ scroll-margin-bottom: 20px;
     .apolo-centrado-right {
         padding-top: 10px;
         width: 100%
-    }      
+    }   
+    .apolo-button-crear{
+        width: 60% ;
+    }   
 	
 }
 
@@ -164,11 +170,17 @@ scroll-margin-bottom: 20px;
     .apolo-centrado-right {
         padding-top: 10px;
         width: 100%
-    }       
+    }   
+    .apolo-button-crear{
+        width: 50%;
+    }    
 	
 }
 
 @media only screen and (max-width: 768px) {  
+    .apolo-button-crear{
+        width: 30%;
+    }
     .apolo-centrado-left {
         display: none;
     }
@@ -241,10 +253,11 @@ scroll-margin-bottom: 20px;
     }
     .apolo-text-title-content {
         font-weight: bold;
-        color: #000000;
+        color: #00A9E0;
         font-family: "telefonica", Arial, Helvetica, sans-serif;
         font-size: 12px;
         height: auto;
+        width: 100%;
     }
     .apolo-text {
         display: block;
@@ -260,7 +273,7 @@ scroll-margin-bottom: 20px;
     .apolo-button-crear {
         border-radius: 8px !important;
         background-color: #00A9E0;
-        width: 120px;
+        width: 50%;
         height: 30px;
         color: #ffffff;
         font-size: 12px;
