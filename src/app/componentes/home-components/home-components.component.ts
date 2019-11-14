@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { HttpClient } from '@angular/common/http';
 import { CategoriasService } from '../../servicios/categorias.service';
 import { FlujoService } from '../../servicios/flujo.service';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 
-const URL = 'http://localhost:8080/api';
-
+const URL = 'http://localhost:8080/api/';
 
 @Component({
   selector: 'app-home-components',
@@ -39,17 +38,16 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
-    this.categoriasService.testBackEnd(URL).subscribe((data:Response) => {
+   /* this.categoriasService.testBackEnd(URL+'flujo/categorias').subscribe((data:Response) => {
       console.log('Respuesta del servicio en angular 8 :', data);
-    });
+    });*/
 
     /* Esta funcion permite cargar el servicio para alimentar el select  de todas las categorias*/
-    this.categoriasService.getCategorias().subscribe((data) => {
-
+    this.categoriasService.testBackEnd(URL+'flujo/categorias').subscribe((data) => {
       setTimeout(() => {
-        this.listCategoria.push(data);
         for (let x in data) {
           if (data[x].Id_CategoriaFlujo != undefined) {
+            console.log(data[x].Id_CategoriaFlujo);
             this.arregloCat.push({
               Id_CategoriaFlujo: data[x].Id_CategoriaFlujo,
               NomCategoriaFlujo: data[x].NomCategoriaFlujo,
@@ -59,6 +57,7 @@ export class HomeComponent implements OnInit {
 
       }, 100)
     });
+    console.log(this.arregloCat);
   }
   get f() {
     return this.formCategorias.controls;

@@ -20,7 +20,9 @@ export class CategoriasService {
   }
 
   testBackEnd(url){
-    return this.http.get(url);
+    let res = this.http.get(url);
+    console.log(res);
+    return res;
   }
   
 }
