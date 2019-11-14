@@ -13,7 +13,7 @@ import { Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/rou
 export class HomeComponent implements OnInit {
   listCategoria: any[] = []; // variable para el cargue de categorias
   listFlujos: any; // variable para el cargue de todos los flujos
-  flujo2: any; // 
+  flujo2: any; //
   categoria: any;
   categorias: any;
   formCategorias: FormGroup;
@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit {
   }
   /* Valida el formulario de la pagina home-components.componentes.html */
   validaCampos() {
-    
+   
     if (this.formCategorias.invalid) {
       this.submitted = true;
       return;
