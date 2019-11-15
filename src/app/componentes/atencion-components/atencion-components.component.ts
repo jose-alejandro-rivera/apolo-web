@@ -67,7 +67,6 @@ export class AtencionComponentsComponent implements OnInit {
 
   cargeuPasoFlujo(){
 
-    debugger;
     this.seleccion = 1;
     this.pasosFlujo.getPasos(1).subscribe((data) => {
       

@@ -7,23 +7,6 @@ const express = require('express'),
   request = require("request");
   axios = require("axios");
 
-
-// File upload settings  
-const PATH = './uploads';
-
-let storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, PATH);
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now())
-  }
-});
-
-let upload = multer({
-  storage: storage
-});
-
 // Express settings
 const app = express();
 app.use(cors());
@@ -32,37 +15,39 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-app.get('/api/flujo/categorias', function (req, res) {
-  axios.get('http://localhost:3000/api/flujo/categorias')
-  .then(function (response) {
-    // handle success
-    return response;
-  })
-  .catch(function (error) {
-    // handle error
-    return error
-  })
-  .finally(function () {
-    // always executed
-  });
+
+app.get('/api/testConnection', function (req, res) {
+  return res.status(200).json('testConnection OK');
+});
+
+app.get('/api/flujo/categorias',  async (request, response) => {
+  const data = await getCategoriasFlujo();
+  return response.send(data);
+});
   
+app.get('/api/flujos/por/categorias/:id',  async (request, response) => {
+  const data = await getFlujoPorCategoria(request.params.id);
+  return response.send(data);
 });
 
-// POST File
-app.post('/api/upload', upload.single('image'), function (req, res) {
-  if (!req.file) {
-    console.log("No file is available!");
-    return res.send({
-      success: false
-    });
-
-  } else {
-    console.log('File is available!');
-    return res.send({
-      success: true
-    })
+async function getCategoriasFlujo() {
+  try {
+    res = await axios.get('http://localhost:3000/api/flujo/categorias');
+    return res.data;
+  } catch (error) {
+    console.error(error)
   }
-});
+}
+
+async function getFlujoPorCategoria(id) {
+  try {
+    var url="http://localhost:3000/api/flujos/por/categorias/" + id;
+    res = await axios.get(url);
+    return res.data;
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 // Create PORT
 const PORT = process.env.PORT || 8080;
