@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   flujo2: any; //
   categoria: any;
   categorias: any;
+  idFlujo:any;
   formCategorias: FormGroup;
   homeComponent: Boolean;
   submitted = false;
@@ -66,16 +67,25 @@ export class HomeComponent implements OnInit {
       this.flujo2 = data;
     })
   }
+
+  cargueIdFlujo(event){
+    
+    let jsonFlujo=this.flujo2.find((e)=>{
+      return e.Id_Flujo == event.target.value
+    })
+    this.idFlujo=jsonFlujo;
+
+  }
   /* Valida el formulario de la pagina home-components.componentes.html */
-  validaCampos() {
-   
+  validaCampos(e) {
+    
     if (this.formCategorias.invalid) {
       this.submitted = true;
       return;
     }else{
       this.homeComponent = false;
       setTimeout(()=>{
-        localStorage.setItem('dataFlujoCat',JSON.stringify(this.flujo2));
+        localStorage.setItem('dataFlujoCat',JSON.stringify(this.idFlujo));
         this.router.navigate(['flujo/list']);
       },500)
     }

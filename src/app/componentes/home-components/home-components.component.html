@@ -3,7 +3,7 @@
     Categoría flujo
   </div>
 
-<form [formGroup]="formCategorias" (ngSubmit)="validaCampos()">
+<form [formGroup]="formCategorias" (ngSubmit)="validaCampos($event)">
   <div class="apolo-cuadriula apolo-margen rounded">
       <div class="apolo-formulario apolo-text">
         <div class="form-group col-12 ">
@@ -23,7 +23,8 @@
           <label class=" apolo-text-title-content">
             Flujo :
           </label>
-          <select class="col-9 form-control" formControlName="idflujo" [ngClass]="{ 'is-invalid': submitted && f.idflujo.errors }">
+          <select class="col-9 form-control" formControlName="idflujo" [ngClass]="{ 'is-invalid': submitted && f.idflujo.errors }"
+          (change)="cargueIdFlujo($event)">
             <option value="">Seleccione un flujo</option>
             <option [value]="varflujo.Id_Flujo" *ngFor="let varflujo of flujo2">{{varflujo.NomFlujo}} </option>
           </select>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ICategoria } from '../../interfaces/categoria'
 import { PasoService } from '../../servicios/paso.service';
 import { Ipasos } from '../../interfaces/pasos'
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 
 
 @Component({
@@ -10,7 +10,6 @@ import { Ipasos } from '../../interfaces/pasos'
   styleUrls: ['./atencion-components.component.css']
 })
 export class AtencionComponentsComponent implements OnInit {
-  // private hcate:ICategoria = [];
 
   flujo: any[] = []; // 
   seleccion: number;
@@ -19,20 +18,24 @@ export class AtencionComponentsComponent implements OnInit {
   definicionPaso: any; // 
   cuestionarioPasos: any;
   pasoCargue: any;
+  atencionCom: Boolean;
   subsPasos: any[] = [];
   pasos: Ipasos[] = [];
-  // pasoCargue:Ipasos;
+  dataFlujoCat:any;
 
 
 
-  constructor(private pasosFlujo: PasoService,
+  constructor(private pasosFlujo: PasoService, private router: Router
     //  private pasos: Ipasos 
-  ) { }
+  ) {
+    this.atencionCom = true;
+   }
 
   ngOnInit() {
     debugger;
     this.seleccion = 1;
-    this.pasosFlujo.getPasos(1).subscribe((data) => {
+    this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
+    this.pasosFlujo.getPasos(this.dataFlujoCat.Id_Flujo).subscribe((data) => {
       
         //validacion existencia de datos
       if (data) {
@@ -41,7 +44,7 @@ export class AtencionComponentsComponent implements OnInit {
           for (let elemento of listPasos.pasos) {
             this.pasos = elemento;
             if (elemento.pasosProceso.Id_Paso == this.seleccion) {
-              this.definicionPaso = elemento.pasosProceso;
+              this.definicionPaso = elemento.pasosProceso.NomPaso;
               for (let cuestionarioPasos of elemento.cuestionario.CuestionarioCampo) {
                 this.pasoCargue = {
                   "descripcionActividad": cuestionarioPasos.campos.Descripcion,
@@ -49,16 +52,13 @@ export class AtencionComponentsComponent implements OnInit {
                   "Longitud": cuestionarioPasos.campos.Longitud,
                   "Obligatorio": cuestionarioPasos.CuestionarioCampo.Obligatorio
                 };
-                
                 this.subsPasos.push(this.pasoCargue);
-                
-                console.log(this.subsPasos);
               }
             }
           }
         }
+        localStorage.setItem('dataFlujoCat','');
       } else {
-
         console.log("proceso seleccionado sin pasos");
       }
     });
@@ -83,24 +83,7 @@ export class AtencionComponentsComponent implements OnInit {
     debugger;
     this.seleccion+=1;
 
-    for (let paso of element) {
-      if (paso.id_paso == this.seleccion) {
-
-        let leftpaso = {
-          "select": true,
-          "key": paso.id_paso,
-          "value": paso.NomPaso,
-          "description": paso.Descripcion
-        };
-        this.seleccion += 1;
-
-      }
-
-    }
   }
 
-  changeSuit(e) {
-
-  }
 
 }
