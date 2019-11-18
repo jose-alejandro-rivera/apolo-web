@@ -48,3 +48,5 @@ testem.log
 Thumbs.db
 
 .vscode/launch.json
+
+api.apoloWeb/database.json
