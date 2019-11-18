@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpClient } from '@angular/common/http';
-import { CategoriasService } from '../../servicios/categorias.service';
-import { FlujoService } from '../../servicios/flujo.service';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import { Router, RouterStateSnapshot} from '@angular/router';
+import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
+
+const URL = 'http://localhost:8080/api/';
 
 @Component({
   selector: 'app-home-components',
@@ -20,13 +21,19 @@ export class HomeComponent implements OnInit {
   formCategorias: FormGroup;
   homeComponent: Boolean;
   submitted = false;
-  arregloCat: any[] = [];
+  arregloCat: any;
+
   public crearCategoria = {
     idflujo: null,
     idCategoria: null
   };
 
-  constructor(private http: HttpClient, private categoriasService: CategoriasService, private flujoService: FlujoService, private router: Router, private formBuilder: FormBuilder) {
+  constructor(
+    private http: HttpClient, 
+    private ejecucionAtencionService: EjecucionAtencionService, 
+    private router: Router, 
+    private formBuilder: FormBuilder) {
+
     this.homeComponent = true;
     localStorage.setItem('dataFlujoCat','');
     this.formCategorias = this.formBuilder.group({
@@ -36,25 +43,14 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    /* Esta funcion permite cargar el servicio para alimentar el select  de todas las categorias*/
-    debugger;
-    this.categoriasService.getCategorias().subscribe((data) => {
-
-      setTimeout(() => {
-        this.listCategoria.push(data);
-        for (let x in data) {
-          if (data[x].Id_CategoriaFlujo != undefined) {
-            this.arregloCat.push({
-              Id_CategoriaFlujo: data[x].Id_CategoriaFlujo,
-              NomCategoriaFlujo: data[x].NomCategoriaFlujo,
-            })
-          }
-        }
-
-      }, 100)
+    /* Esta funcion permite cargar el servicio para alimentar el select de todas las categorias activas*/
+    this.ejecucionAtencionService.getData(URL+'flujo/categorias').subscribe((res: any) => {
+      setTimeout(() => {this.arregloCat = res; }, 100)
+    }, err => {
+      console.log(err);
     });
-
   }
+
   get f() {
     return this.formCategorias.controls;
   }
@@ -65,7 +61,9 @@ export class HomeComponent implements OnInit {
       this.flujo2 = [];
       return
     }
-    this.flujoService.getFlujos(idCatefgoria).subscribe((data) => {
+    let url = URL + 'flujos/por/categorias/' + idCatefgoria;
+    console.log(url);
+    this.ejecucionAtencionService.getData(url).subscribe((data) => {
       this.flujo2 = data;
     })
   }
@@ -95,8 +93,7 @@ export class HomeComponent implements OnInit {
   }
   /* Este metodo permite conectarse al servicio CategoriasService */
   public creaAtencion(e, state: RouterStateSnapshot) {
-    debugger;
-    this.categoriasService.crearAtencion(this.crearCategoria).subscribe(data => {
+    this.ejecucionAtencionService.postData(URL,this.crearCategoria).subscribe(data => {
         this.router.navigate(['flujo/list'], { queryParams: { data: 'crearCategoria' }});
         return false;
     })

@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PasoService } from '../../servicios/paso.service';
 import { Ipasos } from '../../interfaces/pasos'
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 
+const URL = 'http://localhost:8080/api/';
 
 @Component({
   selector: 'app-atencion-components',
@@ -65,13 +67,18 @@ export class AtencionComponentsComponent implements OnInit {
 
   }
 
-  public pageHome() {
-    debugger;
-    this.atencionCom=false;
-    setTimeout(()=>{
-      this.router.navigate(['home']);
-        return false;
-    },500);
+  cargeuPasoFlujo(){
+
+    this.seleccion = 1;
+    this.pasosFlujo.getPasos(1).subscribe((data) => {
+      
+        //validacion existencia de datos
+      if (data) {
+        this.listFlujoPaso = data;
+
+      }
+
+    });
   }
 
   carguePasoSiguienteFlujo(element) {
