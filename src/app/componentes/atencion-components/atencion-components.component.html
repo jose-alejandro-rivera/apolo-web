@@ -11,7 +11,7 @@
 
             <div class="col-12 flujo-text ">
                 <label class="flujo-text-title-content"> Flujo: &nbsp; </label>
-                <label class="flujo-text-content"> {{dataFlujoCat.NomFlujo}}</label>
+                <label class="flujo-text-content"> {{nombreFlujo}}</label>
             </div>
 
 
@@ -19,9 +19,12 @@
                 <div >
                     <div class="flujo-text-subtitle">
                         <label>
-                            {{definicionPaso}}
+                            {{tipoPaso}}
                         </label>
                     </div>
+                    <label>
+                        {{definicionPaso}}
+                    </label>
 
                     <div class="flujo-text-content flujo-text-contenido ">
                         <div *ngFor="let cuestionario of subsPasos">
