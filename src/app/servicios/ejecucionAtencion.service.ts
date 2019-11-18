@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-
 @Injectable({
   providedIn: 'root'
 })
 
-/* Consume el servicio que carga las categorias */
-export class CategoriasService {
-  crearCatUrl = '';
+/* Consume el servicios asociados al registro y  flujo de una atencion */
+export class EjecucionAtencionService {
   constructor(private http: HttpClient) { }
 
-  crearAtencion(datosCatFlu){
-    return this.http.post(this.crearCatUrl, datosCatFlu);
+  getData(url){
+      console.log(url);
+    return this.http.get(url);
   }
 
-  getData(url){
-    return this.http.get(url);
+  postData(url, body){
+    return this.http.post(url,body);
   }
 
 } 

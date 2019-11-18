@@ -1,4 +1,4 @@
-<div class="container flujo">
+<div class="container flujo" *ngIf="atencionCom">
 
     <div class="flujo-title-principales flujo-margen rounded">
         <label class="flujo-text-type">
@@ -9,55 +9,63 @@
     <div class="flujo-cuadriula flujo-margen rounded">
         <div class="">
 
-            <div class="col-12 flujo-text">
-                <label class="flujo-text-title-content"> Tipo de categoria: &nbsp; </label>
-                <label class="flujo-text-content"> Instalacion de componentes aleatorios{{flujo.tipocategoria}}</label>
-            </div>
             <div class="col-12 flujo-text ">
-                <label class="flujo-text-title-content">Nombre Flujo: &nbsp; </label>
-                <label class="flujo-text-content"> Instalacion cableado tipo cobre {{flujo.nombreflujo}}</label>
+                <label class="flujo-text-title-content"> Flujo: &nbsp; </label>
+                <label class="flujo-text-content"> {{nombreFlujo}}</label>
             </div>
 
 
             <div class="col-12">
-                <!-- *ngfor="pasos item of pasos" -->
-                <div class="flujo-text-content">
-                    <label>Paso 1
-                        {{pasos.pasosProceso.NomPaso}}
+                <div >
+                    <div class="flujo-text-subtitle">
+                        <label>
+                            {{tipoPaso}}
+                        </label>
+                    </div>
+                    <label>
+                        {{definicionPaso}}
                     </label>
 
-                    <!-- *ngfor="cuestionario item of pasos.cuestionario.CuestionarioCampo" -->
-                    <div class="flujo-pasos">
-                        <ul>
-                            <li>
-                                <label>verificar el cableado que se va a utilizar
-                                    {{cuestionario.campos.Descripcion}}
-                                </label>
+                    <div class="flujo-text-content flujo-text-contenido ">
+                        <div *ngFor="let cuestionario of subsPasos">
+                            <div *ngIf="cuestionario.tipoCampo=='input'">
+                                <div>
+                                    <label>
+                                        {{cuestionario.descripcionActividad}}
+                                    </label>
+                                </div>
+                               
+                                <input class="flujo-input" type="text" value="{{cuestionario.input}}">
+                            </div>
 
-                            </li>
-
-                            <li>
-                                <label>
-                                    seleccione: {{cuestionario.campos.Nombre}}
+                            <div *ngIf="cuestionario.tipoCampo=='select'">
+                                <div>
+                                    {{cuestionario.descripcionActividad}}
+                                </div>
+                                <label >
+                                    seleccione:
                                 </label>
-                                <select formControlName="name" (change)="changeSuit($event)" id="selectCuestionario">
-                                    <option value="0">--All--</option>
-                                    <!-- ngfort="let select of pasos.cuestionario.CuestionarioCampo" -->
+                                <select formControlName="flujo" ng-model="thing" (change)="changeSuit($event)"
+                                    id="selectCuestionario">
+                                    <option value="0" selected>seleccione</option>
                                     <option>{{select}}</option>
                                 </select>
-                            </li>
-                            <li>
-                                <textarea name="" id=""></textarea>
-                            </li>
+                            </div>
 
-                        </ul>
+                            <div *ngIf="cuestionario.tipoCampo=='text'">
+                                <label>
+                                    {{cuestionario.descripcionActividad}}
+                                </label>
+                            </div>
+
+                        </div>
 
 
                     </div>
 
                     <div class="flujo-button">
-                        <button type="button" class="flujo-button-atras ">atras</button>
-                        <button type="button" class="flujo-button-siguiente ">Siguiente</button>
+                        <button type="button" class="flujo-button-atras  flujo-fuente" (click)="pageHome()">atras</button>
+                        <button type="button" class="flujo-button-siguiente flujo-fuente ">Siguiente</button>
                     </div>
 
                 </div>
