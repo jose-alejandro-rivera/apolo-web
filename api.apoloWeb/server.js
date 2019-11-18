@@ -1,7 +1,5 @@
 const express = require('express'),
-  path = require('path'),
   cors = require('cors'),
-  multer = require('multer'),
   bodyParser = require('body-parser');
   http = require('http');
   request = require("request");
