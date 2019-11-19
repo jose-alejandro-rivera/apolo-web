@@ -77,10 +77,6 @@ describe('AtencionComponentsComponent', () => {
 
 
 
-
-
-
-
     beforeEach(() => {
       fixture = TestBed.createComponent(AtencionComponentsComponent);
       component = fixture.componentInstance;
