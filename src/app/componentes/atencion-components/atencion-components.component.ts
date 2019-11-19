@@ -65,13 +65,18 @@ export class AtencionComponentsComponent implements OnInit {
 
   }
 
-  public pageHome() {
-    debugger;
-    this.atencionCom=false;
-    setTimeout(()=>{
-      this.router.navigate(['home']);
-        return false;
-    },500);
+  cargeuPasoFlujo(){
+
+    this.seleccion = 1;
+    this.pasosFlujo.getPasos(1).subscribe((data) => {
+      
+        //validacion existencia de datos
+      if (data) {
+        this.listFlujoPaso = data;
+
+      }
+
+    });
   }
 
   carguePasoSiguienteFlujo(element) {

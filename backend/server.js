@@ -4,23 +4,8 @@ const express = require('express'),
   multer = require('multer'),
   bodyParser = require('body-parser');
   http = require('http');
-  Request = require("request");
-
-// File upload settings  
-const PATH = './uploads';
-
-let storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, PATH);
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now())
-  }
-});
-
-let upload = multer({
-  storage: storage
-});
+  request = require("request");
+  axios = require("axios");
 
 // Express settings
 const app = express();
@@ -30,32 +15,39 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-app.get('/api', function (req, res) {
 
-Request.get("http://localhost:3000/api/flujo/categorias", (error, response, body) => {
-    if(error) {
-        return console.dir(error);
-    }
-    console.dir(JSON.parse(body));
-});
-  //return res.status(200).json({ 'status': 200, 'response': "conexion con node js exitosa" });
+app.get('/api/testConnection', function (req, res) {
+  return res.status(200).json('testConnection OK');
 });
 
-// POST File
-app.post('/api/upload', upload.single('image'), function (req, res) {
-  if (!req.file) {
-    console.log("No file is available!");
-    return res.send({
-      success: false
-    });
+app.get('/api/flujo/categorias',  async (request, response) => {
+  const data = await getCategoriasFlujo();
+  return response.send(data);
+});
+  
+app.get('/api/flujos/por/categorias/:id',  async (request, response) => {
+  const data = await getFlujoPorCategoria(request.params.id);
+  return response.send(data);
+});
 
-  } else {
-    console.log('File is available!');
-    return res.send({
-      success: true
-    })
+async function getCategoriasFlujo() {
+  try {
+    res = await axios.get('http://localhost:3000/api/flujo/categorias');
+    return res.data;
+  } catch (error) {
+    console.error(error)
   }
-});
+}
+
+async function getFlujoPorCategoria(id) {
+  try {
+    var url="http://localhost:3000/api/flujos/por/categorias/" + id;
+    res = await axios.get(url);
+    return res.data;
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 // Create PORT
 const PORT = process.env.PORT || 8080;
