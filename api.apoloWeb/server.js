@@ -28,6 +28,12 @@ app.get('/api/flujos/por/categorias/:id',  async (request, response) => {
   return response.send(data);
 });
 
+app.get('/api/flujo/list/:id',  async (request, response) => {
+  const data = await getPasosCategoria(request.params.id);
+  return response.send(data);
+});
+
+
 async function getCategoriasFlujo() {
   try {
     res = await axios.get('http://localhost:3000/api/flujo/categorias');
@@ -40,6 +46,16 @@ async function getCategoriasFlujo() {
 async function getFlujoPorCategoria(id) {
   try {
     var url="http://localhost:3000/api/flujos/por/categorias/" + id;
+    res = await axios.get(url);
+    return res.data;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+async function getPasosCategoria(id) {
+  try {
+    var url="http://localhost:3000/api/flujo/list/" + id;
     res = await axios.get(url);
     return res.data;
   } catch (error) {
