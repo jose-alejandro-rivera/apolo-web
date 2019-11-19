@@ -18,12 +18,10 @@
 }
 .apolo-text-title-content {
     font-weight: bold;
-    color: #003245;
+    color: #00A9E0;
     font-family: "telefonica", Arial, Helvetica, sans-serif;
     font-size: 16px;
     height: auto;
-    width: 10%;
-    float: left;
 }
 .apolo-icono-usuario{
     width: 100%;
@@ -63,13 +61,13 @@
 .apolo-tprincipales {
     width: 100%;
     float: left;
+    background-color: #5BC500;
     font-size: 25px;
     height: 65px;
-
 }
 .apolo .input, select, optgroup, textarea {
     border-radius: 6px;
-    border-color: #003245;
+    border-color: #00A9E0;
     min-width: 400px;
     margin-bottom: 10px;
 }
@@ -89,7 +87,7 @@ scroll-margin-bottom: 20px;
 }
 .apolo-button-crear {
     border-radius: 8px !important;
-    background-color: #0082B3;
+    background-color: #5BC500;
     width: 200px;
     height: 50px;
     font-size: 20px;
@@ -113,8 +111,8 @@ scroll-margin-bottom: 20px;
   }
   .apolo select {
     word-wrap: normal;
-    color: #003245;
-    border: 1px solid #003245;
+    color: #00A9E0;
+    border: 1px solid #00A9E0;
     font-size: 18px;
     height: 40px;
 }
@@ -124,10 +122,9 @@ scroll-margin-bottom: 20px;
     
 }
 
-.apolo .form-group {
-    margin-top: 20px;
-    float: left;
-    width: 100%;    
+.apolo-label-select{
+
+
 }
 
 /* Estilos para dispositivos moviles */
@@ -150,9 +147,6 @@ scroll-margin-bottom: 20px;
     .apolo-button-crear{
         width: 80%;
     }
-    .apolo-text-title-content {
-        width: 100%;
-    }    
 
 }
 @media only screen and (max-width: 320px) {
@@ -169,9 +163,6 @@ scroll-margin-bottom: 20px;
     .apolo-button-crear{
         width: 60% ;
     }   
-    .apolo-text-title-content {
-        width: 100%;
-    }     
 	
 }
 
@@ -182,10 +173,7 @@ scroll-margin-bottom: 20px;
     }   
     .apolo-button-crear{
         width: 50%;
-    } 
-    .apolo-text-title-content {
-        width: 100%;
-    }        
+    }    
 	
 }
 
@@ -226,22 +214,32 @@ scroll-margin-bottom: 20px;
         font-weight: bold;
         text-align: center;
         justify-content: center;
-        color: #FFF;
+        color: #0029A6;
         font-family: "telefonica", Arial, Helvetica, sans-serif;
     }
-
+    .apolo-tprincipales {
+        margin-bottom: 20px;
+        width: 100%;
+        float: left;
+        background-color: #ffffff;
+        text-align: center;
+        font-family: "telefonica", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 25px;
+        height: auto;
+    }
     .apolo .input, select, optgroup, textarea {
         
         border-radius: 6px;
-        border-color: #003245;
+        border-color: #00A9E0;
         min-width: 100%;
         margin-bottom: 15px;
     }
 
     .apolo select {
         word-wrap: normal;
-        color: #003245;
-        border: 1px solid #003245;
+        color: #00A9E0;
+        border: 1px solid #00A9E0;
         font-size: 15px;
     }
     .apolo-cuadriula{
@@ -252,9 +250,13 @@ scroll-margin-bottom: 20px;
     .apolo-margen{
         border: 1px solid #0029A6;
         width: 100%;
-        padding: 20px;
     }
     .apolo-text-title-content {
+        font-weight: bold;
+        color: #00A9E0;
+        font-family: "telefonica", Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        height: auto;
         width: 100%;
     }
     .apolo-text {
