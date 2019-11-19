@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-
+//parametros de consulta
 app.get('/api/testConnection', function (req, res) {
   return res.status(200).json('testConnection OK');
 });
@@ -35,8 +35,7 @@ app.get('/api/flujo/list/:id',  async (request, response) => {
 
 
 
-//parametros de envio para la creacion 
-
+//parametros de creacion 
 
 app.post('/api/atencion/create/',  async (request, response) => {
   console.log(request.body);
@@ -45,7 +44,7 @@ app.post('/api/atencion/create/',  async (request, response) => {
 });
 
 
-
+//funciones de solicitudes al back
 
 async function getCategoriasFlujo() {
   try {
