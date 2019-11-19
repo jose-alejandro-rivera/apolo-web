@@ -34,6 +34,19 @@ app.get('/api/flujo/list/:id',  async (request, response) => {
 });
 
 
+
+//parametros de envio para la creacion 
+
+
+app.post('/api/atencion/create/',  async (request, response) => {
+  console.log(request.body);
+  const data = await postCrearAtencion(request.body);
+  return response.send(data);
+});
+
+
+
+
 async function getCategoriasFlujo() {
   try {
     res = await axios.get('http://localhost:3000/api/flujo/categorias');
@@ -57,6 +70,16 @@ async function getPasosCategoria(id) {
   try {
     var url="http://localhost:3000/api/flujo/list/" + id;
     res = await axios.get(url);
+    return res.data;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+async function postCrearAtencion(params) {
+  try {
+    var url="http://localhost:3000/api/atencion/create";
+    res = await axios.post(url,params);
     return res.data;
   } catch (error) {
     console.error(error)
