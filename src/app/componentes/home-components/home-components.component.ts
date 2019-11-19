@@ -92,7 +92,7 @@ export class HomeComponent implements OnInit {
       return;
     } else {
       this.crearCategoria = {
-        "CodLogin":3,
+        "CodLogin":1,
         "CodFlujo":this.idFlujo.Id_Flujo
       };
       this.homeComponent = false;
