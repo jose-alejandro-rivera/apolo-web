@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+const URL = 'http://localhost:8080/api/';
 
 describe('HomeComponentsComponent', () => {
   let component: HomeComponent;

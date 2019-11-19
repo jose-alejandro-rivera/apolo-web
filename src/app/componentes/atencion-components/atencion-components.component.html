@@ -1,4 +1,4 @@
-<div class="container flujo" *ngIf="atencionCom">
+<div class="container flujo" *ngIf="atencionComponente">
 
     <div class="flujo-title-principales flujo-margen rounded">
         <label class="flujo-text-type">
@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="flujo-button">
-                        <button type="button" class="flujo-button-atras  flujo-fuente" (click)="pageHome()">atras</button>
+                        <button type="button" class="flujo-button-atras  flujo-fuente" *ngIf="botonAtras" (click)="pageHome()">atras</button>
                         <button type="button" class="flujo-button-siguiente flujo-fuente ">Siguiente</button>
                     </div>
 

@@ -14,12 +14,13 @@ export class AtencionComponentsComponent implements OnInit {
 
   flujo: any[] = []; // 
   seleccion: number;
-  input: number;
+  tipoPaso: any;
   listFlujoPaso: any;
   definicionPaso: any; // 
   cuestionarioPasos: any;
   pasoCargue: any;
-  atencionCom: Boolean;
+  atencionComponente: Boolean;
+  botonAtras: Boolean;
   subsPasos: any[] = [];
   dataFlujoCat: any;
   idFlujo: any;
@@ -27,29 +28,31 @@ export class AtencionComponentsComponent implements OnInit {
 
 
 
-  constructor(private pasosFlujo: PasoService, private router: Router
+  constructor(private pasosFlujo: PasoService, private atencionService: EjecucionAtencionService, private router: Router
 
   ) {
-    this.atencionCom = true;
+    this.atencionComponente = true;
+    this.botonAtras = false;
   }
-
+  //metodo que valida el listado de los campos 
   ngOnInit() {
     debugger;
     this.seleccion = 1;
     this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
-
-    this.pasosFlujo.getPasos(this.idFlujo).subscribe((data) => {
+    let url = URL + 'flujo/list/' + this.idFlujo;
+    this.atencionService.getData(url).subscribe((data: any) => {
 
       //validacion existencia de datos
       if (data) {
         this.listFlujoPaso = data;
         for (let listPasos of this.listFlujoPaso[0]) {
-          for (let elemento of listPasos.pasos) {
-            if (elemento.pasosProceso.Id_Paso == this.seleccion) {
-              this.definicionPaso = elemento.pasosProceso.NomPaso;
-              for (let cuestionarioPasos of elemento.cuestionario.CuestionarioCampo) {
+          for (let listaPaso of listPasos.pasos) {
+            if (listaPaso.pasosProceso.Id_Paso == this.seleccion) {
+              this.tipoPaso = listaPaso.pasosProceso.NomPaso;
+              this.definicionPaso = listaPaso.pasosProceso.describcion;
+              for (let cuestionarioPasos of listaPaso.cuestionario.CuestionarioCampo) {
                 this.pasoCargue = {
                   "descripcionActividad": cuestionarioPasos.campos.Descripcion,
                   "tipoCampo": cuestionarioPasos.campos.tipo,
@@ -83,11 +86,6 @@ export class AtencionComponentsComponent implements OnInit {
     });
   }
 
-  carguePasoSiguienteFlujo(element) {
-    debugger;
-    this.seleccion += 1;
-
-  }
 
 
 }
