@@ -1,13 +1,13 @@
 <div class="apolo" *ngIf="homeComponent">
-  <div class="apolo-tprincipales apolo-margen apolo-fuente apolo-centrado rounded">
+  <div class="flujo-title-principales flujo-margen rounded">
     Categoría flujo
   </div>
 
 <form [formGroup]="formCategorias" (ngSubmit)="validaCampos($event)">
   <div class="apolo-cuadriula apolo-margen rounded">
-      <div class="apolo-formulario apolo-text">
-        <div class="form-group col-12 ">
-          <label class="col-lg-2 col-sm-12 apolo-text-title-content">
+      <div class="apolo-formulario apolo-text flujo-actividades-principales">
+        <div class="form-group">
+          <label class="apolo-text-title-content">
             Categorias:
           </label>
 
@@ -19,7 +19,7 @@
                   <div *ngIf="f.idCategoria.errors.required">Seleccione una categoria</div>
               </div>            
         </div>
-        <div class="form-group  col-12 ">
+        <div class="form-group">
           <label class=" apolo-text-title-content">
             Flujo:
           </label>
