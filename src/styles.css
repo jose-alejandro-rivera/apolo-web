@@ -98,7 +98,6 @@
 .titulo-lineamientos {
     background-color: #0082B3;
     color: #FFF;
-    font-size: 25px;
     text-align: center;
     padding: 15px;
     float: left;
@@ -128,6 +127,9 @@
         padding-top: 10px;
         width: 100%
     }    
+    .titulo-lineamientos {
+        font-size: 16px;
+    }    
 
 }
 @media only screen and (max-width: 320px) {
@@ -145,7 +147,10 @@
     .apolo-centrado-right {
         padding-top: 10px;
         width: 100%
-    }      
+    }  
+    .titulo-lineamientos {
+        font-size: 16px;
+    }         
 	
 }
 
@@ -164,6 +169,9 @@
     .apolo-centrado-right {
         padding-top: 10px;
         width: 100%
+    } 
+    .titulo-lineamientos {
+        font-size: 18px;
     }       
 	
 }
