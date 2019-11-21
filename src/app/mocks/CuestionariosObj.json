@@ -1,0 +1,12 @@
+{
+    "Cuestionarios":[
+       {
+          "Id_Cuestionario":2,
+          "NomCuestionario":"La casa está en un conjunto cerrado",
+          "Descripcion":"Cuestionario para definir si la casa está en un conjunto cerrado",
+          "Activo":true,
+          "Fecha":"2019-11-18T14:42:00",
+          "Usuario":"dbo"
+       }
+    ]
+ }

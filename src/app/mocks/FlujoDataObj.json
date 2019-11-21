@@ -1,0 +1,91 @@
+[{
+    "Pasos":[
+        {
+           "Id_Paso":3,
+           "NomPaso":"¿La casa del cliente está en un conjunto cerrado?",
+           "Descripcion":"Se debe evaluar si la casa del cliente está en un conjunto cerrado",
+           "Activo":true,
+           "CodCuestionario":2,
+           "Fecha":"2019-11-18T14:43:00",
+           "Usuario":"dbo",
+           "CodTipoPaso":2
+        },
+        {
+           "Id_Paso":4,
+           "NomPaso":"Presentación en portería",
+           "Descripcion":"Se debe presentar en la portería",
+           "Activo":true,
+           "Fecha":"2019-11-18T15:02:00",
+           "Usuario":"dbo",
+           "CodTipoPaso":1
+        },
+        {
+           "Id_Paso":5,
+           "NomPaso":"Presentación ante el cliente",
+           "Descripcion":"Se debe presentar ante el cliente",
+           "Activo":true,
+           "CodProceso":2,
+           "Fecha":"2019-11-18T15:07:00",
+           "Usuario":"dbo",
+           "CodTipoPaso":1
+        }
+     ],
+     "FlujoPasos":[
+        {
+           "Id_FlujoPaso":2,
+           "CodFlujo":1,
+           "CodPaso_Origen":2,
+           "CodPaso_Destino":3,
+           "Orden":1,
+           "Activo":true,
+           "Finaliza":false,
+           "Fecha":"2019-11-18T14:44:00",
+           "Usuario":"dbo"
+        },
+        {
+           "Id_FlujoPaso":3,
+           "CodFlujo":1,
+           "CodPaso_Origen":3,
+           "CodPaso_Destino":4,
+           "Orden":1,
+           "ExpresionEjecucion":"@2.CasaEnConjunto==1",
+           "Activo":true,
+           "Finaliza":false,
+           "Fecha":"2019-11-18T15:13:00",
+           "Usuario":"dbo"
+        },
+        {
+           "Id_FlujoPaso":4,
+           "CodFlujo":1,
+           "CodPaso_Origen":3,
+           "CodPaso_Destino":5,
+           "Orden":2,
+           "ExpresionEjecucion":"@2.CasaEnConjunto==0",
+           "Activo":true,
+           "Finaliza":false,
+           "Fecha":"2019-11-18T15:14:00",
+           "Usuario":"dbo"
+        }
+     ],
+     "Procesos":[
+        {
+           "Id_Proceso":2,
+           "NomProceso":"Grabador de voz para presentación",
+           "Descripcion":"Grabar la voz para la presentación",
+           "TipoServicio":"rest|get",
+           "Servicio":"http:\/\/www.google.com",
+           "Fecha":"2019-11-18T15:05:00",
+           "Usuario":"dbo"
+        }
+     ],
+     "Cuestionarios":[
+        {
+           "Id_Cuestionario":2,
+           "NomCuestionario":"La casa está en un conjunto cerrado",
+           "Descripcion":"Cuestionario para definir si la casa está en un conjunto cerrado",
+           "Activo":true,
+           "Fecha":"2019-11-18T14:42:00",
+           "Usuario":"dbo"
+        }
+     ]
+}]
