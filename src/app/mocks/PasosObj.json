@@ -1,0 +1,33 @@
+{
+    "Pasos":[
+       {
+          "Id_Paso":3,
+          "NomPaso":"¿La casa del cliente está en un conjunto cerrado?",
+          "Descripcion":"Se debe evaluar si la casa del cliente está en un conjunto cerrado",
+          "Activo":true,
+          "CodCuestionario":2,
+          "Fecha":"2019-11-18T14:43:00",
+          "Usuario":"dbo",
+          "CodTipoPaso":2
+       },
+       {
+          "Id_Paso":4,
+          "NomPaso":"Presentación en portería",
+          "Descripcion":"Se debe presentar en la portería",
+          "Activo":true,
+          "Fecha":"2019-11-18T15:02:00",
+          "Usuario":"dbo",
+          "CodTipoPaso":1
+       },
+       {
+          "Id_Paso":5,
+          "NomPaso":"Presentación ante el cliente",
+          "Descripcion":"Se debe presentar ante el cliente",
+          "Activo":true,
+          "CodProceso":2,
+          "Fecha":"2019-11-18T15:07:00",
+          "Usuario":"dbo",
+          "CodTipoPaso":1
+       }
+    ]
+ }

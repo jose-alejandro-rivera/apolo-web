@@ -1,0 +1,13 @@
+{
+    "Procesos":[
+       {
+          "Id_Proceso":2,
+          "NomProceso":"Grabador de voz para presentación",
+          "Descripcion":"Grabar la voz para la presentación",
+          "TipoServicio":"rest|get",
+          "Servicio":"http:\/\/www.google.com",
+          "Fecha":"2019-11-18T15:05:00",
+          "Usuario":"dbo"
+       }
+    ]
+ }
