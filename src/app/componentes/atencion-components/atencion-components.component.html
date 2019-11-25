@@ -24,7 +24,7 @@
                             <p>{{decisionActual.pasoCuestionarioCampo.NomCuestionarioCampo}} </p>
                         </div>
                         <div class="col-4">
-                            <select name="select"  (change)="DecisionSeleccionada($event.target.value)" *ngIf="decisionActual.pasoCampo.NomCampo=='ListaSiNo'" required>
+                            <select name="select" (change)="DecisionSeleccionada($event.target.value)" *ngIf="decisionActual.pasoCampo.NomCampo=='ListaSiNo'" required>
                                 <option value="" selected aria-placeholder="--"></option>
                                 <option value="1">SI</option>
                                 <option value="0">NO</option>
