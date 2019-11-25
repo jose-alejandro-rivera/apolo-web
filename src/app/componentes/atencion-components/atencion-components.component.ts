@@ -31,6 +31,10 @@ export class AtencionComponentsComponent implements OnInit {
   pasoActual: any;
   decisionActual: any;
   decisionSeleccionada: any;
+  cuestionarioPaso: any[] = [];
+  codCuestionario: any;
+  atencionCuestionario: any;
+
 
   constructor(private pasosFlujo: PasoService,
     private atencionService: EjecucionAtencionService,
@@ -57,7 +61,7 @@ export class AtencionComponentsComponent implements OnInit {
           for (let listaPaso of listPasos.pasos) {
             if (listaPaso.pasosProceso.Id_Paso == this.seleccion) {
               this.tipoPaso = listaPaso.pasosProceso.NomPaso;
-              this.definicionPaso = listaPaso.pasosProceso.describcion;
+              this.definicionPaso = listaPaso.pasosProceso.Descripcion;
               for (let cuestionarioPasos of listaPaso.cuestionario.CuestionarioCampo) {
                 this.pasoCargue = {
                   "descripcionActividad": cuestionarioPasos.campos.Descripcion,
@@ -77,10 +81,34 @@ export class AtencionComponentsComponent implements OnInit {
     });
 
     console.log("Informacion nuevo arreglo");
+    console.log(this.pasoMockService.FlujoData);
     this.info = this.pasoMockService.FlujoData[0];
     //inicializacion del paso actual o primer paso
     this.pasoActual = this.info.Flujo[0].CodPaso_Inicial;
+    this.codCuestionario = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
+    if (this.codCuestionario.CodCuestionario) {
+      this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codCuestionario.CodCuestionario);
+    }
     this.decisionActual = this.info.paso_cuestionario[2];
+  }
+
+  resultadoCuestionario(event) {
+    // this.decisionSeleccionada = value;
+
+    for (let campoCuestionario of this.cuestionarioPaso) {
+      if (campoCuestionario.pasoCuestionarioCampo.Id_CuestionarioCampo == event.getItem) {
+        const pasoCuestionarioCampo = {
+          "CodAtencionCampo": campoCuestionario,
+          "CodCuestionarioCampo": campoCuestionario,
+          "ValoCampo": event.target.value,
+        };
+        this.atencionCuestionario.push(pasoCuestionarioCampo);
+
+      }
+
+    }
+
+
   }
 
   DecisionSeleccionada(value) {
@@ -100,10 +128,14 @@ export class AtencionComponentsComponent implements OnInit {
       const opcionesSiguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso); //lista de posibles pasos siguientes
       console.log(opcionesSiguientePaso);
       //evaluar expresion de ejecucion para saber que paso sigue 
-      for(let op of opcionesSiguientePaso){
+      for (let op of opcionesSiguientePaso) {
         let exp = '@' + actualPaso.CodCuestionario + '.' + this.decisionActual.pasoCuestionarioCampo.Sigla + '==' + this.decisionSeleccionada;
-        if(op.ExpresionEjecucion == exp){
+        if (op.ExpresionEjecucion == exp) {
           this.pasoActual = op.CodPaso_Destino;
+          this.codCuestionario = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
+          if (this.codCuestionario.CodCuestionario) {
+            this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codCuestionario.CodCuestionario);
+          }
         }
       }
       //this.decisionActual = this.info.paso_cuestionario.find(x => x.paso_cuestionario.Id_Paso == Id_Paso);
@@ -111,6 +143,12 @@ export class AtencionComponentsComponent implements OnInit {
     } else {
       //paso tipo actividad
       this.pasoActual = siguientePaso.CodPaso_Destino;
+      this.codCuestionario = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
+      if (this.codCuestionario.CodCuestionario) {
+        this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codCuestionario.CodCuestionario);
+      }
+
+      this.decisionActual = this.info.paso_cuestionario[2];
     }
 
   }
@@ -125,20 +163,6 @@ export class AtencionComponentsComponent implements OnInit {
     //limpiar variables 
     this.pasoActual = 0;
     this.decisionSeleccionada = 0;
-  }
-
-  cargeuPasoFlujo() {
-
-    this.seleccion = 1;
-    this.pasosFlujo.getPasos(1).subscribe((data) => {
-
-      //validacion existencia de datos
-      if (data) {
-        this.listFlujoPaso = data;
-
-      }
-
-    });
   }
 
 

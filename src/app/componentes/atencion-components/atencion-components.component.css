@@ -50,6 +50,20 @@
     color: #FFF;
 }
 
+.apolo-actividades-principales {
+    width: 100%;
+    float: left;
+    background-color: #ffffff;
+    text-align: left;
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    height: auto;
+    border: 1px solid #0029A6;
+    padding: 15px;
+    margin-top: 37px;
+    border-radius: 8px;
+} 
 @media only screen and (max-width: 768px) {    
     .flujo-label {
         display: none;
@@ -69,15 +83,19 @@
     }
 
     .flujo-title-principales {
-        margin-bottom: 20px;
         width: 100%;
         float: left;
         background-color: #ffffff;
-        text-align: center;
+        text-align: left;
         font-family: "telefonica", Arial, Helvetica, sans-serif;
         font-weight: bold;
-        font-size: 25px;
+        font-size: 20px;
         height: auto;
+        border: 1px solid #0029A6;
+        padding: 15px;
+        margin-top: 37px;
+        border-radius: 8px;
+        margin-bottom: 20px;
     }   
     .flujo-text {
         display: block;
