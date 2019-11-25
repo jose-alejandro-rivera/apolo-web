@@ -56,6 +56,7 @@ export class PasoMockService {
         "NomPaso": "Presentación en portería",
         "Descripcion": "Se debe presentar en la portería",
         "Activo": true,
+        "CodCuestionario": 3,
         "Fecha": "2019-11-18T15:02:00",
         "Usuario": "dbo",
         "CodTipoPaso": 1
