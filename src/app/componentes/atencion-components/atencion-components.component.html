@@ -1,22 +1,76 @@
-<div class="container flujo" *ngIf="atencionComponente">
+<div class="flujo" *ngIf="atencionComponente">
 
-    <div class="flujo-title-principales flujo-margen rounded">
-        <label class="flujo-text-type">
-            Flujos
-        </label>
+    <div class="flujo-title-principales flujo-margen apolo-actividades-principales  rounded">
+        Flujos
     </div>
 
-    <div class="flujo-cuadriula flujo-margen rounded">
+    <div class="flujo-cuadriula flujo-margen apolo-actividades-principales  rounded">
         <div class="">
-
+            <!--Informacion de Flujo-->
             <div class="col-12 flujo-text ">
                 <label class="flujo-text-title-content"> Flujo: &nbsp; </label>
                 <label class="flujo-text-content"> {{nombreFlujo}}</label>
             </div>
+            <!--iteracion de pasos-->
+            <div *ngFor="let paso of info.Pasos">
+                <div *ngIf="pasoActual==paso.Id_Paso">
+                    {{paso.Id_Paso}}
+                    <!--Paso tipo desicion-->
+                    <div *ngIf="paso.CodTipoPaso==2">
+                        <div class="col-8">
+                            <h5>Paso tipo desicion</h5>
+                            <p>{{decisionActual.pasoCuestionarioCampo.NomCuestionarioCampo}} </p>
+                        </div>
+                        <div class="col-4">
+                            <select name="select" (change)="DecisionSeleccionada($event.target.value)"
+                                *ngIf="decisionActual.pasoCampo.NomCampo=='ListaSiNo'" required>
+                                <option value="" selected aria-placeholder="--"></option>
+                                <option value="1">SI</option>
+                                <option value="0">NO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--Paso tipo actividad-->
+                    <div *ngIf="paso.CodTipoPaso==1">
+                        <h5>Paso tipo actividad</h5>
+                        <label>{{paso.Id_Paso}} - {{paso.NomPaso}}</label>
+                        <div *ngIf="paso.CodCuestionario!=null">
+                            cuestionario
+                            <div *ngIf="paso.CodTipoPaso==1">
+                                <div *ngFor="let cuestionarioCampo of cuestionarioPaso">
+                                    <div class="col-8">
+                                        <p>{{cuestionarioCampo.pasoCuestionarioCampo.Id_CuestionarioCampo}} - {{cuestionarioCampo.pasoCuestionarioCampo.NomCuestionarioCampo}} </p>
+                                    </div>
+                                    <div class="col-4">
+                                        <select name="select" (change)="resultadoCuestionario($event)"
+                                            *ngIf="cuestionarioCampo.pasoCampo.NomCampo=='ListaSiNo'" required>
+                                            <option value="" selected aria-placeholder="--"></option>
+                                            <option value="1">SI</option>
+                                            <option value="0">NO</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
 
 
+                        </div>
+                        <div *ngIf="paso.CodProceso!=null">proceso</div>
+                    </div>
+
+
+                    <!--Registro informacion de flujo-->
+                    <button type="button" class="flujo-button-siguiente flujo-fuente"
+                        (click)="Siguiente(paso.Id_Paso)">Siguiente</button>
+                    <button type="button" class="flujo-button-siguiente flujo-fuente"
+                        *ngIf="paso.Id_Paso != info.Flujo[0].CodPaso_Inicial"
+                        (click)="Atras(paso.Id_Paso)">Atras</button>
+                </div>
+            </div>
+
+            <!--
             <div class="col-12">
-                <div >
+                <div>
                     <div class="flujo-text-subtitle">
                         <label>
                             {{tipoPaso}}
@@ -34,7 +88,7 @@
                                         {{cuestionario.descripcionActividad}}
                                     </label>
                                 </div>
-                               
+
                                 <input class="flujo-input" type="text" value="{{cuestionario.input}}">
                             </div>
 
@@ -42,7 +96,7 @@
                                 <div>
                                     {{cuestionario.descripcionActividad}}
                                 </div>
-                                <label >
+                                <label>
                                     seleccione:
                                 </label>
                                 <select formControlName="flujo" ng-model="thing" (change)="changeSuit($event)"
@@ -64,12 +118,14 @@
                     </div>
 
                     <div class="flujo-button">
-                        <button type="button" class="flujo-button-atras  flujo-fuente" *ngIf="botonAtras" (click)="pageHome()">atras</button>
+                        <button type="button" class="flujo-button-atras  flujo-fuente" *ngIf="botonAtras"
+                            (click)="pageHome()">atras</button>
                         <button type="button" class="flujo-button-siguiente flujo-fuente ">Siguiente</button>
                     </div>
 
                 </div>
-            </div>
+            </div>-->
+
         </div>
     </div>
 </div>

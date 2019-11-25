@@ -50,3 +50,4 @@ Thumbs.db
 .vscode/launch.json
 
 api.apoloWeb/database.json
+api.apoloWeb/node_modules

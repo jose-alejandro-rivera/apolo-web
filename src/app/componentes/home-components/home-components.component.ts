@@ -86,7 +86,6 @@ export class HomeComponent implements OnInit {
   }
   /* Valida el formulario de la pagina home-components.componentes.html */
   crearAtencion(e) {
-    debugger;
     if (this.formCategorias.invalid) {
       this.submitted = true;
       return;
