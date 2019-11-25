@@ -36,7 +36,7 @@ export class PasoMockService {
         "NomPaso": "Llamar al cliente para confirmar cita",
         "Descripcion": "Se debe llamar al cliente para confirmar cita",
         "Activo": true,
-        "CodProceso": 2,
+        "CodProceso": 1,
         "Fecha": "2019-11-18T11:21:00",
         "Usuario": "dbo",
         "CodTipoPaso": 1
@@ -56,6 +56,7 @@ export class PasoMockService {
         "NomPaso": "Presentación en portería",
         "Descripcion": "Se debe presentar en la portería",
         "Activo": true,
+        "CodCuestionario": 3,
         "Fecha": "2019-11-18T15:02:00",
         "Usuario": "dbo",
         "CodTipoPaso": 1
@@ -76,6 +77,15 @@ export class PasoMockService {
         "Descripcion": "Novedad comercial",
         "Activo": true,
         "CodCuestionario": 4,
+        "Fecha": "2019-11-18T15:52:00",
+        "Usuario": "dbo",
+        "CodTipoPaso": 1
+      },
+      {
+        "Id_Paso": 7,
+        "NomPaso": "Proceso QC Linea de rescate",
+        "Descripcion": "Proceso QC Linea de rescate",
+        "Activo": true,
         "Fecha": "2019-11-18T15:52:00",
         "Usuario": "dbo",
         "CodTipoPaso": 1
