@@ -32,9 +32,15 @@ export class AtencionComponentsComponent implements OnInit {
   decisionActual: any;
   decisionSeleccionada: any;
   cuestionarioPaso: any[] = [];
-  codCuestionario: any;
+  procesoPaso: any;
+  flujoPaso: any;
+  codComponentePasos: any;
   atencionCuestionario: any;
+  response: any;
+  finflujo: Boolean;
+  consumirProceso: any;
 
+  pruebaproceso:any;
 
   constructor(private pasosFlujo: PasoService,
     private atencionService: EjecucionAtencionService,
@@ -85,16 +91,22 @@ export class AtencionComponentsComponent implements OnInit {
     this.info = this.pasoMockService.FlujoData[0];
     //inicializacion del paso actual o primer paso
     this.pasoActual = this.info.Flujo[0].CodPaso_Inicial;
-    this.codCuestionario = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
-    if (this.codCuestionario.CodCuestionario) {
-      this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codCuestionario.CodCuestionario);
+    this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
+    //se evalua la existencia de cuestionario o proceso en el paso
+    this.codComponentePasos = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
+    //se verifica la relacion de los pasos 
+    if (this.codComponentePasos.CodCuestionario) {
+      this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codComponentePasos.CodCuestionario);
+    } else if (this.codComponentePasos.CodProceso) {
+      this.procesoPaso = this.info.Procesos.find(x => x.Id_Proceso == this.codComponentePasos.CodProceso);
     }
     this.decisionActual = this.info.paso_cuestionario[2];
   }
 
+
+
   resultadoCuestionario(event) {
     // this.decisionSeleccionada = value;
-
     for (let campoCuestionario of this.cuestionarioPaso) {
       if (campoCuestionario.pasoCuestionarioCampo.Id_CuestionarioCampo == event.getItem) {
         const pasoCuestionarioCampo = {
@@ -103,12 +115,8 @@ export class AtencionComponentsComponent implements OnInit {
           "ValoCampo": event.target.value,
         };
         this.atencionCuestionario.push(pasoCuestionarioCampo);
-
       }
-
     }
-
-
   }
 
   DecisionSeleccionada(value) {
@@ -132,24 +140,49 @@ export class AtencionComponentsComponent implements OnInit {
         let exp = '@' + actualPaso.CodCuestionario + '.' + this.decisionActual.pasoCuestionarioCampo.Sigla + '==' + this.decisionSeleccionada;
         if (op.ExpresionEjecucion == exp) {
           this.pasoActual = op.CodPaso_Destino;
-          this.codCuestionario = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
-          if (this.codCuestionario.CodCuestionario) {
-            this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codCuestionario.CodCuestionario);
+
+          //se evalua la existencia de cuestionario en el paso
+          this.codComponentePasos = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
+          if (this.codComponentePasos.CodCuestionario) {
+            this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codComponentePasos.CodCuestionario);
+          } else if (this.codComponentePasos.CodProceso) {
+            this.procesoPaso = this.info.Procesos.find(x => x.Id_Proceso == this.codComponentePasos.CodProceso);
           }
+          this.finflujo = siguientePaso.Finaliza;
         }
       }
-      //this.decisionActual = this.info.paso_cuestionario.find(x => x.paso_cuestionario.Id_Paso == Id_Paso);
-
     } else {
       //paso tipo actividad
       this.pasoActual = siguientePaso.CodPaso_Destino;
-      this.codCuestionario = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
-      if (this.codCuestionario.CodCuestionario) {
-        this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codCuestionario.CodCuestionario);
+      //se evalua la existencia de cuestionario en el paso
+      this.codComponentePasos = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
+      if (this.codComponentePasos.CodCuestionario) {
+        this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codComponentePasos.CodCuestionario);
+      } else if (this.codComponentePasos.CodProceso) {
+        this.procesoPaso = this.info.Procesos.find(x => x.Id_Proceso == this.codComponentePasos.CodProceso);
       }
+      this.finflujo = siguientePaso.Finaliza;
 
       this.decisionActual = this.info.paso_cuestionario[2];
     }
+
+  }
+
+  ejecutarProceso(event) {
+    // this.decisionSeleccionada = value;
+    this.consumirProceso = {
+      "Id_Proceso":this.procesoPaso.Id_Proceso,
+      "TipoServicio":this.procesoPaso.Servicio,
+      "Servicio": "http://localhost:3000/api/proceso/fake/ok"
+     };
+    this.response = true;
+    let url = URL + 'proceso/fake/';
+    this.atencionService.postData(url, this.consumirProceso).subscribe(data => {
+      this.pruebaproceso=data;
+
+      return this.pruebaproceso;
+    })
+
 
   }
 
@@ -157,6 +190,13 @@ export class AtencionComponentsComponent implements OnInit {
     console.log(Id_Paso);
     const anteriorPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso).CodPaso_Origen;
     this.pasoActual = anteriorPaso;
+    this.codComponentePasos = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
+    if (this.codComponentePasos.CodCuestionario) {
+      this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codComponentePasos.CodCuestionario);
+    } else if (this.codComponentePasos.CodProceso) {
+      this.procesoPaso = this.info.Procesos.find(x => x.Id_Proceso == this.codComponentePasos.CodProceso);
+    }
+    this.finflujo = anteriorPaso.Finaliza;
   }
 
   RegistrarAtencion() {
@@ -165,6 +205,12 @@ export class AtencionComponentsComponent implements OnInit {
     this.decisionSeleccionada = 0;
   }
 
+  finalizarAtencion(event){
+
+    this.pasoActual = 0;
+    this.decisionSeleccionada = 0;
+
+  }
 
 
 }
