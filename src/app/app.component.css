@@ -10,8 +10,17 @@
 .apolo-app-title {
     display: block;
 }
+
+.apolo-text-type {
+    font-weight: bold;
+    color: #000000;
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    margin-top: 30px;
+}
+
 @media only screen and (max-width: 768px) {    
-    .apolo-label {
+    .apolo-img {
         display: none;
     }
     .apolo-title{
@@ -44,6 +53,7 @@
         color: #000000;
         font-family: "telefonica", Arial, Helvetica, sans-serif;
         font-size: 16px;
+        margin-top: 30px;
     }
 
 }

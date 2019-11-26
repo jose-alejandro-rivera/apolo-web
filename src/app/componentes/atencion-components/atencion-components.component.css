@@ -1,0 +1,243 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
+.flujo{}
+
+.flujo .input, select, optgroup, textarea {
+    border-radius: 6px;
+    border-color: #00A9E0;
+    min-width: 400px;
+    margin-bottom: 10px;
+}
+.flujo .select {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: 0;
+  }
+  .flujo select {
+    word-wrap: normal;
+    color: #00A9E0;
+    border: 1px solid #00A9E0;
+    font-size: 16px;
+}
+.flujo-text-subtitle{
+    margin-top: 30px;
+    font-weight: bold;
+    text-align: center;
+    color: #000000;
+    font-size: 12px;
+}
+.flujo .flujo-button-siguiente:hover {
+    box-shadow: inset 0 0 20px rgba(49, 138, 172, 0.5), 0 0 20px rgba(49, 138, 172, 0.4);
+    outline-color: rgba(49, 138, 172, 0);
+    outline-offset: 80px;
+    text-shadow: 1px 1px 6px #fff;
+  }
+  .flujo .flujo-button-atras:hover {
+    box-shadow: inset 0 0 20px rgba(49, 138, 172, 0.5), 0 0 20px rgba(49, 138, 172, 0.4);
+    outline-color: rgba(49, 138, 172, 0);
+    outline-offset: 80px;
+    text-shadow: 1px 1px 6px #fff;
+  }
+  .flujo .flujo-button-procesar:hover {
+    box-shadow: inset 0 0 20px rgba(49, 138, 172, 0.5), 0 0 20px rgba(49, 138, 172, 0.4);
+    outline-color: rgba(49, 138, 172, 0);
+    outline-offset: 80px;
+    text-shadow: 1px 1px 6px #fff;
+  }
+  .flujo-fuente {
+    font-family: "telefonicaReg", Arial, Helvetica, sans-serif;
+    color: #FFF;
+}
+
+.apolo-actividades-principales {
+    width: 100%;
+    float: left;
+    background-color: #ffffff;
+    text-align: left;
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+    /* font-weight: bold; */
+    font-size: 16px;
+    height: auto;
+    border: 1px solid #0029A6;
+    padding: 15px;
+    margin-top: 37px;
+    border-radius: 8px;
+} 
+.apolo-text-title-content {
+    font-weight: bold;
+    color: #003245;
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    height: auto;
+    width: 100%;
+    float: left;
+}
+@media only screen and (max-width: 768px) {    
+    .flujo-label {
+        display: none;
+    }
+    .flujo-title{
+        background:#0029A6 ;
+    }
+    .flujo-title-centrado {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .flujo-text-centrado {
+        display: flex;
+        justify-content: right;
+        align-items: right;
+    }
+
+    .flujo-title-principales {
+        width: 100%;
+        float: left;
+        background-color: #ffffff;
+        text-align: left;
+        font-family: "telefonica", Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+        height: auto;
+        border: 1px solid #0029A6;
+        padding: 15px;
+        margin-top: 37px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }   
+    .flujo-text {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+        color: #003245;
+        font-family: "telefonica", Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        height: auto;
+        width: 100%;
+        float: left;
+        
+    }
+    .flujo-pasos{
+        display: initial
+    }
+
+    .flujo-title-Text {
+        float: left;
+        justify-content: center;
+        margin-top: 7px;
+        font-size: 20px;
+        height: 65px;
+    }  
+    .flujo-cuadriula{
+        margin-top: 3px;
+        float: left;
+    }
+    .flujo-margen{
+        border: 1px solid #0029A6;
+        width: 100%;
+    }
+    .flujo-text-type {
+        font-weight: bold;
+        text-align: center;
+        justify-content: center;
+        color: #0029A6;
+        font-family: "telefonica", Arial, Helvetica, sans-serif;
+
+    }
+    .flujo-text-title-content {
+        font-weight: bold;
+        color: #000000;
+        font-family: "telefonica", Arial, Helvetica, sans-serif;
+        font-size: 12px;
+    }
+
+    .flujo-text-content {
+        margin-top: 1px;
+        text-align: center;
+        color: #000000;
+        font-size: 12px;
+    }
+    .flujo-text-subtitle{
+        margin-top: 30px;
+        font-weight: bold;
+        text-align: center;
+        color: #000000;
+        font-size: 12px;
+    }
+
+    .flujo-text-contenido{
+        margin-bottom: 90px;
+    }
+    .flujo-button-atras{
+        width: 80px; 
+        border-radius: 8px !important;
+        background-color: #00A9E0;
+        width: 120px;
+        height: 30px;
+        color: #ffffff;
+        font-size: 12px;
+    }
+    .flujo-button-siguiente{
+        float: right;
+        border-radius: 8px !important;
+        background-color: #00A9E0;
+        width: 120px;
+        height: 30px;
+        color: #ffffff;
+        font-size: 12px;
+    }
+    .flujo-button-procesar{
+        float: center;
+        border-radius: 8px !important;
+        background-color: #00A9E0;
+        width: 120px;
+        height: 30px;
+        color: #ffffff;
+        font-size: 12px;
+    }
+    .flujo .input, select, optgroup, textarea {
+        
+        border-radius: 6px;
+        border-color: #00A9E0;
+        min-width: 100%;
+        margin-bottom: 15px;
+    }
+    
+    .flujo select {
+        word-wrap: normal;
+        color: #00A9E0;
+        border: 1px solid #00A9E0;
+        font-size: 15px;
+    }
+    
+    .flujo-input{
+        word-wrap: normal;
+        border: 1px solid #00A9E0;
+        font-size: 12px;
+    }
+    
+    .apolo-button-crear {
+        border-radius: 8px !important;
+        background-color: #00A9E0;
+        width: 120px;
+        height: 30px;
+        color: #ffffff;
+        font-size: 12px;
+    }
+
+}
+
+/* Horizontal */
+/* @media only screen (max-width: 500px) and (orientation: landscape) {
+
+}
+@media only screen (max-width: 680px) and (orientation: landscape) {
+
+}*/

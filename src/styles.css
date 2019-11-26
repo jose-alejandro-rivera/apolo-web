@@ -5,6 +5,10 @@
 
 .apolo{}
 
+
+.apolo-text {
+    display: none;
+}
 .apolo .ag-theme-balham .ag-header {
     background-color: #00b6f0;
     color: #fff;
@@ -55,11 +59,59 @@
 .apolo-tprincipales {
     width: 100%;
     float: left;
-    background-color: #5BC500;
+    background-color: #0082B3;
     font-size: 25px;
     height: 65px;
+    border-radius: 8px;
 }
+.apolo-icono-user {
+    width: 100%;
+    height: 50px;
+    display: none;
+} 
 
+.flujo-title-principales {
+    width: 100%;
+    float: left;
+    background-color: #ffffff;
+    text-align: left;
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    height: auto;
+    border: 1px solid #0029A6;
+    padding: 15px;
+    margin-top: 37px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+} 
+.flujo-actividades-principales {
+    width: 100%;
+    float: left;
+    background-color: #ffffff;
+    text-align: left;
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    height: auto;
+    border: 1px solid #0029A6;
+    padding: 15px;
+    margin-top: 37px;
+    border-radius: 8px;
+} 
+
+.titulo-lineamientos {
+    background-color: #0082B3;
+    color: #FFF;
+    text-align: center;
+    padding: 15px;
+    float: left;
+    width: 100%;
+    border-radius: 10px;
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
 
 /* Estilos para dispositivos moviles */
 
@@ -68,6 +120,7 @@
     .apolo-icono-mov {
         width: 100%;
         height: 50px;
+        display: none;
     }
     .apolo-usuario {
         float: left;
@@ -79,13 +132,17 @@
         padding-top: 10px;
         width: 100%
     }    
+    .titulo-lineamientos {
+        font-size: 16px;
+    }    
 
 }
 @media only screen and (max-width: 320px) {
     .apolo-icono-mov {
         width: 100%;
         height: 50px;
-    }
+        display: none;
+    } 
     .apolo-usuario {
         float: left;
         height: 50px;
@@ -95,7 +152,10 @@
     .apolo-centrado-right {
         padding-top: 10px;
         width: 100%
-    }      
+    }  
+    .titulo-lineamientos {
+        font-size: 16px;
+    }         
 	
 }
 
@@ -103,7 +163,8 @@
     .apolo-icono-mov {
         width: 100%;
         height: 50px;
-    }
+        display: none;
+    } 
     .apolo-usuario {
         float: left;
         height: 50px;
@@ -113,15 +174,14 @@
     .apolo-centrado-right {
         padding-top: 10px;
         width: 100%
+    } 
+    .titulo-lineamientos {
+        font-size: 18px;
     }       
 	
 }
 
 @media only screen and (max-width: 768px) {
-    .apolo-icono-mov {
-        width: 100%;
-        height: 50px;
-    }
     .apolo-usuario {
         float: left;
         height: 50px;

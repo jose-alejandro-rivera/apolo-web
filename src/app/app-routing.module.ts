@@ -1,9 +1,24 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AppComponent } from '../app/app.component'; 
+import { HomeComponent } from './componentes/home-components/home-components.component';
+import { AtencionComponentsComponent } from './componentes/atencion-components/atencion-components.component';
 
-
-const routes: Routes = [];
-
+const routes: Routes = [
+  
+  {
+    path: 'home',
+   	component: AppComponent
+  },
+  {
+    path: 'home/componet',
+   	component: HomeComponent
+  },
+  {
+    path: 'flujo/list',
+    component: AtencionComponentsComponent
+  }
+ ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

@@ -1,41 +1,29 @@
-<!-- <nav class="navbar navbar-expand-sm bg-light">
-  <div class="container-fluid">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a routerLink="table/list" class="logo"> <span class="icon-home"></span> <span>Create Product</span> </a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="home" class="nav-link" routerLinkActive="active">
-          Products
-        </a>
-      </li> 
-    </ul>
-  </div>
-</nav> -->
-<div>
-
-
-  <div class="apolo-title-principales apolo-title-centrado">
-    <img src="/assets/imagenes apoloweb/logo_pcpc_white.png">
-  </div>
-  <div class="col-12 float-right ">
-    <div class=" apolo-text float-right ">
-        <label class="apolo-text-type">
-        dsanches
-      </label>
-      <img src="/assets/imagenes apoloweb/icon_mimovistar.png">
-  </div>
-
-</div>
-
 <div class="container">
 
-  <div class="apolo-label">
-    <app-home-components></app-home-components>
+  <div class="">
+    <div class="apolo-icono-mov apolo-centrado-left">
+      <img src="/assets/imagenes apoloweb/logo-pcpc1.png">
+    </div>
+    
+    <div class="float-right ">
+      <label class="apolo-text-type">
+          usuario-prueba
+      </label>
+      <img src="/assets/imagenes apoloweb/icon_mimovistar.png">
+    </div>
+
+    <div class="titulo-lineamientos">
+      Lineamiento de actividades
+    </div>
   </div>
 
-  <div class="apolo-text">
-    <app-flujo-components></app-flujo-components>
+  <div>
+    <app-home-components></app-home-components>
   </div>
+  <div *ngIf="atencionComponet">
+    <app-atencion-components></app-atencion-components>
+  </div>
+
+  <router-outlet></router-outlet>
 
 </div>
