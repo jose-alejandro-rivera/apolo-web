@@ -51,3 +51,4 @@ Thumbs.db
 
 api.apoloWeb/database.json
 api.apoloWeb/node_modules
+/dist

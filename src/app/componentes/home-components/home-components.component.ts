@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterStateSnapshot } from '@angular/router';
@@ -12,6 +12,7 @@ const URL = 'http://localhost:8080/api/';
   styleUrls: ['./home-components.component.css']
 })
 export class HomeComponent implements OnInit {
+  //@Output() idAtencion = new EventEmitter<number>();
   listCategoria: any[] = []; // variable para el cargue de categorias
   listFlujos: any; // variable para el cargue de todos los flujos
   flujo2: any; //
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
   submitted = false;
   arregloCat: any;
   usuario: any;
-  crearCategoria:any;
+  crearCategoria: any;
 
   constructor(
     private http: HttpClient,
@@ -91,17 +92,20 @@ export class HomeComponent implements OnInit {
       return;
     } else {
       this.crearCategoria = {
-        "CodLogin":1,
-        "CodFlujo":this.idFlujo.Id_Flujo
+        "CodLogin": 1,
+        "CodFlujo": this.idFlujo.Id_Flujo
       };
       this.homeComponent = false;
       let url = URL + 'atencion/create/';
       this.ejecucionAtencionService.postData(url, this.crearCategoria).subscribe(data => {
-
         localStorage.setItem('dataFlujoCat', JSON.stringify(this.idFlujo));
+        //Guarda Id de la atencion paso que acaba de crear
+        console.log("id de la atencion creada:" + data[0].Id_Atencion);
+        //this.idAtencion.emit(data[0].Id_Atencion);
+        this.ejecucionAtencionService.saveIdAtencion(data[0].Id_Atencion);
         this.router.navigate(['flujo/list']);
         return false;
-      })
+      });
     }
 
   }
