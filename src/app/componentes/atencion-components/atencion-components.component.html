@@ -65,46 +65,12 @@
                         </div>
 
 
-<<<<<<< HEAD
-                    <!--Registro informacion de flujo-->
-                    <button type="button" class="flujo-button-siguiente flujo-fuente"
-                    *ngIf="paso.Id_Paso != info.Flujo[0].CodPaso_Inicial"
-                    (click)="Atras(paso.Id_Paso)">Atras</button>
-                    <button type="button" class="flujo-button-siguiente flujo-fuente"
-                        (click)="RegistrarAtencionPaso(paso.Id_Paso)">Siguiente</button>
-                </div>
-            </div>
-
-            <!--
-            <div class="col-12">
-                <div>
-                    <div class="flujo-text-subtitle">
-                        <label>
-                            {{tipoPaso}}
-                        </label>
-                    </div>
-                    <label>
-                        {{definicionPaso}}
-                    </label>
-
-                    <div class="flujo-text-content flujo-text-contenido ">
-                        <div *ngFor="let cuestionario of subsPasos">
-                            <div *ngIf="cuestionario.tipoCampo=='input'">
-                                <div>
-                                    <label>
-                                        {{cuestionario.descripcionActividad}}
-                                    </label>
-                                </div>
-
-                                <input class="flujo-input" type="text" value="{{cuestionario.input}}">
-=======
                         <div *ngIf="paso.CodProceso!=null">
                             <!-- Proceso -->
                             <div class="col-12">
                                 <label class="" >
                                     {{procesoPaso.Id_Proceso}} - {{procesoPaso.Descripcion}}
                                 </label>
->>>>>>> cc0653be8f77ebc8070f93a476c73ba9a787fe75
                             </div>
                             <div class="col text-center" *ngIf="finflujo==false">
                                 <button type="button" class="flujo-button-procesar flujo-fuente align-items-center"
