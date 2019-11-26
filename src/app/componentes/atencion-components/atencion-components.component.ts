@@ -192,8 +192,7 @@ export class AtencionComponentsComponent implements OnInit {
     // Si el paso tiene cuestionario
     if (paso.CodCuestionario) {
       //recorre todos los campos del cuestionario asociado
-      //const listaPreguntas = this.info.paso_cuestionario.filter(x => x.paso_cuestionario.Id_Paso == Id_Paso);
-      //console.log(listaPreguntas);
+      const listaPreguntas = this.info.paso_cuestionario.filter(x => x.paso_cuestionario.Id_Paso == Id_Paso);
       atencionCampo = {
         CodAtencionPaso: "1",
         CodCuestionarioCampo: "1",
