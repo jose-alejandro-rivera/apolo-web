@@ -48,14 +48,14 @@
                                     <div class="col-4">
                                         <select name="select" (change)="resultadoCuestionario($event)"
                                             *ngIf="cuestionarioCampo.pasoCampo.NomCampo=='ListaSiNo'" required>
-                                            <option value="" selected aria-placeholder="--"></option>
+                                            <option value="" selected>Sin Selección</option>
                                             <option value="1">SI</option>
                                             <option value="0">NO</option>
                                         </select>
                                         <select name="select" (change)="resultadoCuestionario($event)"
                                             *ngIf="cuestionarioCampo.pasoCampo.NomCampo=='ListaTécnicaComercial'"
                                             required>
-                                            <option value="" selected aria-placeholder="--"></option>
+                                            <option value="" selected>Sin Selección</option>
                                             <option value="1">TÉCNICA</option>
                                             <option value="0">COMERCIAL</option>
                                         </select>
@@ -105,7 +105,6 @@
 
                         <button type="button" class="flujo-button-siguiente flujo-fuente" *ngIf="finflujo==false"
                             (click)="Siguiente(paso.Id_Paso)">Siguiente</button>
-
                     </div>
                 </div>
             </div>

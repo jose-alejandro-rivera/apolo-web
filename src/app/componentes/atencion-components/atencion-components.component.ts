@@ -177,7 +177,6 @@ export class AtencionComponentsComponent implements OnInit {
     let url = URL + 'proceso/fake/';
     this.atencionService.postData(url, this.consumirProceso).subscribe(data => {
       this.pruebaproceso=data;
-
       return this.pruebaproceso;
     })
 
@@ -239,8 +238,9 @@ export class AtencionComponentsComponent implements OnInit {
     if (paso.CodCuestionario) {
       //recorre todos los campos del cuestionario asociado
       const listaPreguntas = this.info.paso_cuestionario.filter(x => x.paso_cuestionario.Id_Paso == Id_Paso);
+      console.log(listaPreguntas);
+      console.log(this.atencionCuestionario);
       atencionCampo = {
-        CodAtencionPaso: "1",
         CodCuestionarioCampo: "1",
         ValorCampo: "1"
       };
