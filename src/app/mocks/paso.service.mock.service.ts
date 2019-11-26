@@ -265,6 +265,98 @@ export class PasoMockService {
         "Usuario": "dbo"
       }
     ],
+    "ProcesosSalida": [
+      {
+        "Id_ProcesoSalida": 1,
+        "NomProcesoSalida": "Llamada Realizada",
+        "Sigla": "Confirmada",
+        "CodProceso": 1,
+        "Criterio_Busqueda": ".Procesado",
+        "Fecha": "2019-11-18T12:12:00",
+        "Usuario": "dbo"
+      },
+      {
+        "Id_ProcesoSalida": 2,
+        "NomProcesoSalida": "Grabador de voz",
+        "Sigla": "GrabadorVoz",
+        "CodProceso": 2,
+        "Criterio_Busqueda": ".Procesado",
+        "Fecha": "2019-11-18T15:05:00",
+        "Usuario": "dbo"
+      },
+      {
+        "Id_ProcesoSalida": 3,
+        "NomProcesoSalida": "Integración con AirScout",
+        "Sigla": "Integración con AirScout",
+        "CodProceso": 3,
+        "Criterio_Busqueda": ".Procesado",
+        "Fecha": "2019-11-18T16:11:00",
+        "Usuario": "dbo"
+      },
+      {
+        "Id_ProcesoSalida": 4,
+        "NomProcesoSalida": "Integración con solución de chat",
+        "Sigla": "IntegracionSolucionChat",
+        "CodProceso": 5,
+        "Criterio_Busqueda": ".Procesado",
+        "Fecha": "2019-11-18T18:02:00",
+        "Usuario": "dbo"
+      },
+      {
+        "Id_ProcesoSalida": 5,
+        "NomProcesoSalida": "¿Alguna novedad para la instalacion?",
+        "Sigla": "NovedadInstalacion",
+        "CodProceso": 6,
+        "Criterio_Busqueda": ".Procesado",
+        "Fecha": "2019-11-18T18:13:00",
+        "Usuario": "dbo"
+      },
+      {
+        "Id_ProcesoSalida": 6,
+        "NomProcesoSalida": "Registro Fotográfico",
+        "Sigla": "RegistroFotografico",
+        "CodProceso": 7,
+        "Criterio_Busqueda": ".Procesado",
+        "Fecha": "2019-11-19T15:10:00",
+        "Usuario": "dbo"
+      },
+      {
+        "Id_ProcesoSalida": 7,
+        "NomProcesoSalida": "Integracíon con TOA",
+        "Sigla": "IntegracionTOA",
+        "CodProceso": 8,
+        "Criterio_Busqueda": ".Procesado",
+        "Fecha": "2019-11-20T14:58:00",
+        "Usuario": "dbo"
+      },
+      {
+        "Id_ProcesoSalida": 8,
+        "NomProcesoSalida": "Integración con solución certificación FO",
+        "Sigla": "IntegracionCerFO",
+        "CodProceso": 11,
+        "Criterio_Busqueda": ".Procesado",
+        "Fecha": "2019-11-20T14:59:00",
+        "Usuario": "dbo"
+      },
+      {
+        "Id_ProcesoSalida": 9,
+        "NomProcesoSalida": "Integración con AirScout",
+        "Sigla": "IntegracionAirScout",
+        "CodProceso": 12,
+        "Criterio_Busqueda": ".Procesado",
+        "Fecha": "2019-11-20T14:59:00",
+        "Usuario": "dbo"
+      },
+      {
+        "Id_ProcesoSalida": 10,
+        "NomProcesoSalida": "Integración con solución aceptación del servicio",
+        "Sigla": "IntegracionAceptacionServ",
+        "CodProceso": 13,
+        "Criterio_Busqueda": ".Procesado",
+        "Fecha": "2019-11-20T15:13:00",
+        "Usuario": "dbo"
+      }
+    ],
     "Cuestionarios": [
       {
         "Id_Cuestionario": 1,
@@ -773,6 +865,37 @@ export class PasoMockService {
       }
     ]
   }];
+
+  RegistrarAtencionPaso = [
+    {	
+      "atencionPaso":{
+        "CodAtencion" : "3",
+        "CodPaso" : "1",
+        "Secuencia" : "1",
+        "Soluciona" : "1"
+      },
+  
+      "atencionProceso":{
+        "CodAtencionPaso" : "1",
+        "CodProceso" : "1",
+        "TipoServicio" : "1",
+        "Servicio" : "1",
+        "Request" : "1",
+        "Response" : "1"			
+      },
+      "atencionProcesoSalida":{
+        "CodAtencionProceso" : "1",
+        "CodProcesoSalida" : "1",
+        "Valor" : "1"
+      },
+      "atencionCampo":{
+        "CodAtencionPaso" : "1",
+        "CodCuestionarioCampo" : "1",
+        "ValorCampo" : "1"
+      } 		
+      
+    }
+  ];
 
   pasosUrl = 'http://localhost:3000/api//flujo/list/';
   constructor(private http: HttpClient) { }
