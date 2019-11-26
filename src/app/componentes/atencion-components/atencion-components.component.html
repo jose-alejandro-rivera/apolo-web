@@ -3,7 +3,6 @@
     <div class="flujo-title-principales flujo-margen apolo-actividades-principales  rounded">
         Flujos
     </div>
-
     <div class="flujo-cuadriula flujo-margen apolo-actividades-principales  rounded">
         <div class="">
             <!--Informacion de Flujo-->
@@ -65,7 +64,7 @@
                     *ngIf="paso.Id_Paso != info.Flujo[0].CodPaso_Inicial"
                     (click)="Atras(paso.Id_Paso)">Atras</button>
                     <button type="button" class="flujo-button-siguiente flujo-fuente"
-                        (click)="Siguiente(paso.Id_Paso)">Siguiente</button>
+                        (click)="RegistrarAtencionPaso(paso.Id_Paso)">Siguiente</button>
                 </div>
             </div>
 
