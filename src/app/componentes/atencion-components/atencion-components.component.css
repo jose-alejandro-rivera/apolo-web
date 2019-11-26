@@ -45,6 +45,12 @@
     outline-offset: 80px;
     text-shadow: 1px 1px 6px #fff;
   }
+  .flujo .flujo-button-procesar:hover {
+    box-shadow: inset 0 0 20px rgba(49, 138, 172, 0.5), 0 0 20px rgba(49, 138, 172, 0.4);
+    outline-color: rgba(49, 138, 172, 0);
+    outline-offset: 80px;
+    text-shadow: 1px 1px 6px #fff;
+  }
   .flujo-fuente {
     font-family: "telefonicaReg", Arial, Helvetica, sans-serif;
     color: #FFF;
@@ -56,14 +62,23 @@
     background-color: #ffffff;
     text-align: left;
     font-family: "telefonica", Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 20px;
+    /* font-weight: bold; */
+    font-size: 16px;
     height: auto;
     border: 1px solid #0029A6;
     padding: 15px;
     margin-top: 37px;
     border-radius: 8px;
 } 
+.apolo-text-title-content {
+    font-weight: bold;
+    color: #003245;
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    height: auto;
+    width: 100%;
+    float: left;
+}
 @media only screen and (max-width: 768px) {    
     .flujo-label {
         display: none;
@@ -100,6 +115,13 @@
     .flujo-text {
         display: block;
         margin-top: 15px;
+        font-weight: bold;
+        color: #003245;
+        font-family: "telefonica", Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        height: auto;
+        width: 100%;
+        float: left;
         
     }
     .flujo-pasos{
@@ -164,6 +186,15 @@
     }
     .flujo-button-siguiente{
         float: right;
+        border-radius: 8px !important;
+        background-color: #00A9E0;
+        width: 120px;
+        height: 30px;
+        color: #ffffff;
+        font-size: 12px;
+    }
+    .flujo-button-procesar{
+        float: center;
         border-radius: 8px !important;
         background-color: #00A9E0;
         width: 120px;
