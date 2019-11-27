@@ -109,7 +109,6 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
   Siguiente(Id_Paso: number) {
-    console.log("PASO ENVIADO:" + Id_Paso);
     this.CuestionarioActual = false;
     this.ProcesoActual = false;
     this.cuestionarioPaso = [];
@@ -121,43 +120,35 @@ export class AtencionComponentsComponent implements OnInit {
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
     this.response = false;
 
-
     //caso de paso tipo decision
     if (actualPaso.Id_TipoPaso == 2) {
       const opcionesSiguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso); //lista de posibles pasos siguientes
-      let Cuestionario = this.info.Cuestionarios.filter(x => x.Id_Paso == Id_Paso);
-      console.log(Cuestionario);
-      this.decisionActual = Cuestionario;
       //evaluar expresion de ejecucion para saber que paso sigue 
       for (let op of opcionesSiguientePaso) {
-        let exp = '@' + Cuestionario.Id_Cuestionario + '.' + Cuestionario.Sigla + '==' + this.decisionSeleccionada;
+        let Cuestionario = this.info.Cuestionarios.filter(x => x.Id_Paso == op.CodPaso_Origen);
+        console.log(this.decisionSeleccionada);
+        let exp = '@' + Cuestionario[0].Id_Cuestionario + '.' + Cuestionario[0].Sigla + '==' + this.decisionSeleccionada;
+        console.log(exp);
+        console.log(op.ExpresionEjecucion);
         if (op.ExpresionEjecucion == exp) {
           this.pasoActual = op.CodPaso_Destino;
-          //se evalua la existencia de cuestionario o de un proceso en el paso
-          if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
-            this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
-            this.CuestionarioActual = true;
-          } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
-            this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
-            this.ProcesoActual = true;
-          }
-          this.finflujo = siguientePaso.Finaliza;
         }
       }
     } else {
       //paso tipo actividad
       this.pasoActual = siguientePaso.CodPaso_Destino;
-      //se evalua la existencia de cuestionario o de un proceso en el paso
-      if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
-        this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
-        this.CuestionarioActual = true;
-      } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
-        this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
-        this.ProcesoActual = true;
-      }
-      this.finflujo = siguientePaso.Finaliza;
     }
 
+    //se evalua la existencia de cuestionario o de un proceso en el paso
+    if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
+      this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
+      this.CuestionarioActual = true;
+    } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
+      this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
+      this.ProcesoActual = true;
+    }
+    this.finflujo = siguientePaso.finaliza;
+    this.decisionActual =  this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
 
   ejecutarProceso(event) {
