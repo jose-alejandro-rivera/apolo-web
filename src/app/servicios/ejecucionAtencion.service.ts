@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 /* Consume el servicios asociados al registro y  flujo de una atencion */
 export class EjecucionAtencionService {
   idAtencion: number;
+  info: any;
 
   constructor(private http: HttpClient) { }
 
@@ -21,6 +22,11 @@ export class EjecucionAtencionService {
 
   saveIdAtencion(id:number){
     this.idAtencion = id;
+  }
+
+  saveInfoFlujo(data){
+    this.info = data[0].Flujo[0];
+    console.log(this.info);
   }
 
 } 
