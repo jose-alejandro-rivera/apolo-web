@@ -89,7 +89,23 @@ export class AtencionComponentsComponent implements OnInit {
 
   }
 
-  resultadoCuestionario(valor, IdCuestionarioCampo: number) {
+  resultadoCuestionario(event, IdCuestionarioCampo: number) {
+
+    //resultado de la seleccion del cuestionario
+    const selectCuestionarioCampo = {
+      CodCuestionarioCampo: IdCuestionarioCampo,
+      ValorCampo: event.target.value
+    };
+    //validacion de la existencia del campoCuestionario guardado
+    if (this.atencionCuestionario.find(x=> x.CodCuestionarioCampo==IdCuestionarioCampo)){
+      for(let i=0;i<this.atencionCuestionario.length;i++){
+        if(this.atencionCuestionario.find(x=> x.CodCuestionarioCampo==IdCuestionarioCampo)){
+          this.atencionCuestionario[i]=selectCuestionarioCampo;
+        }
+      }
+    }else{
+      this.atencionCuestionario.push(selectCuestionarioCampo);
+    }
   }
 
   DecisionSeleccionada(value) {
