@@ -44,7 +44,7 @@ export class AtencionComponentsComponent implements OnInit {
   ListaPasos = [];
   CuestionarioActual: boolean;
   ProcesoActual: boolean;
-
+  actualPaso: any;
 
 
   constructor(private pasosFlujo: PasoService,
@@ -89,23 +89,20 @@ export class AtencionComponentsComponent implements OnInit {
 
   }
 
-  resultadoCuestionario(event, IdCuestionario: number) {
-    // this.decisionSeleccionada = value;
+  resultadoCuestionario(event, IdCuestionarioCampo: number) {
 
-    const seleccionComponente = this.cuestionarioPaso.find(x => x.pasoCuestionarioCampo.Id_CuestionarioCampo == IdCuestionario);
-    seleccionComponente.selectcionado = event.target.value;
-    this.atencionCuestionario.push(seleccionComponente);
+    //resultado de la seleccion del cuestionario
+    // const seleccionComponente = this.cuestionarioPaso.find(x => x.Id_CuestionarioCampo == IdCuestionarioCampo);
+    const selectCuestionarioCampo = {
+      CodCuestionarioCampo: IdCuestionarioCampo,
+      ValorCampo: event.target.value
+    };
+    //validacion de la existencia del campoCuestionario guardado
+    if (this.atencionCuestionario.find(x=> x.Id_CuestionarioCampo==IdCuestionarioCampo)){
 
 
-    for (let campoCuestionario of this.cuestionarioPaso) {
-      if (campoCuestionario.pasoCuestionarioCampo.Id_CuestionarioCampo == event.getItem) {
-        const pasoCuestionarioCampo = {
-          "CodAtencionCampo": campoCuestionario,
-          "CodCuestionarioCampo": campoCuestionario,
-          "ValoCampo": event.target.value,
-        };
-        this.atencionCuestionario.push(pasoCuestionarioCampo);
-      }
+    }else{
+      this.atencionCuestionario.push(selectCuestionarioCampo);
     }
   }
 
@@ -148,7 +145,7 @@ export class AtencionComponentsComponent implements OnInit {
       this.ProcesoActual = true;
     }
     this.finflujo = siguientePaso.finaliza;
-    this.decisionActual =  this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
+    this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
 
   Atras(Id_Paso: number) {
@@ -156,7 +153,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.response = false;
     const anteriorPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso);
     this.pasoActual = anteriorPaso.CodPaso_Origen;
-    const actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
+    this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
     //se evalua la existencia de cuestionario o de un proceso en el paso
     if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
       this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
@@ -165,12 +162,16 @@ export class AtencionComponentsComponent implements OnInit {
       this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
       this.ProcesoActual = true;
     }
-    this.finflujo = actualPaso.finaliza;
-    this.decisionActual =  this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
+    //se evalua si el anterior paso finaliza la atencion
+    if (this.actualPaso.finaliza == true) {
+      this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == this.pasoActual);
+    }
+    this.finflujo = this.actualPaso.finaliza;
+    this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
 
 
-  limpiarVariables(){
+  limpiarVariables() {
     this.CuestionarioActual = false;
     this.ProcesoActual = false;
     this.cuestionarioPaso = [];
@@ -231,14 +232,10 @@ export class AtencionComponentsComponent implements OnInit {
 
     // Si el paso tiene cuestionario
     if (paso.CodCuestionario) {
-      //recorre todos los campos del cuestionario asociado
-      const listaPreguntas = this.info.paso_cuestionario.filter(x => x.paso_cuestionario.Id_Paso == Id_Paso);
-      console.log(listaPreguntas);
-      console.log(this.atencionCuestionario);
-      atencionCampo = {
-        CodCuestionarioCampo: "1",
-        ValorCampo: "1"
-      };
+      
+      atencionCampo = [
+        this.atencionCuestionario
+      ];
 
     }
 
