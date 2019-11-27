@@ -89,8 +89,14 @@ export class AtencionComponentsComponent implements OnInit {
 
   }
 
-  resultadoCuestionario(event) {
+  resultadoCuestionario(event, IdCuestionario: number) {
     // this.decisionSeleccionada = value;
+
+    const seleccionComponente = this.cuestionarioPaso.find(x => x.pasoCuestionarioCampo.Id_CuestionarioCampo == IdCuestionario);
+    seleccionComponente.selectcionado = event.target.value;
+    this.atencionCuestionario.push(seleccionComponente);
+
+
     for (let campoCuestionario of this.cuestionarioPaso) {
       if (campoCuestionario.pasoCuestionarioCampo.Id_CuestionarioCampo == event.getItem) {
         const pasoCuestionarioCampo = {
