@@ -16,24 +16,22 @@
                     <label class="apolo-text-title-content">
                         Paso {{paso.Id_Paso}} : {{paso.NomPaso}}
                     </label>
-
                     <!--Paso tipo desicion-->
-                    <div *ngIf="paso.Id_TipoPaso==2">
+                    <div *ngIf="paso.Id_TipoPaso == 2">
                         <div class="col-12">
-                            Decision
-                            <!--<p>{{decisionActual.NomCuestionarioCampo}} </p>-->
+                            <p>{{decisionActual.NomCuestionarioCampo}} </p>
                         </div>
-                        <!--<div class="col-4">
+                        <div class="col-4">
                             <select name="select" (change)="DecisionSeleccionada($event.target.value)"
                                 *ngIf="decisionActual.NomCampo=='ListaSiNo'" required>
-                                <option value="" selected aria-placeholder="--"></option>
-                                <option value="1">Si</option>
+                                <option value="" selected aria-placeholder="--">Sin Selección</option>
+                                <option value="1">SI</option>
                                 <option value="0">NO</option>
                             </select>
-                        </div>-->
+                        </div>
                     </div>
                     <!--Paso tipo actividad-->
-                    <div *ngIf="paso.Id_TipoPaso==1">
+                    <div *ngIf="paso.Id_TipoPaso == 1">
                         <!--Carga cuestionario-->
                         <div *ngIf="CuestionarioActual">
                             <div *ngFor="let cuestionarioCampo of cuestionarioPaso">
@@ -67,7 +65,7 @@
                                     {{procesoPaso.Id_Proceso}} - {{procesoPaso.Descripcion}}
                                 </label>
                             </div>
-                            <div class="col text-center" *ngIf="finflujo==false">
+                            <div class="col text-center" *ngIf="!finflujo">
                                 <button type="button" class="flujo-button-procesar flujo-fuente"
                                     (click)="ejecutarProceso($event)">Procesar</button>
                             </div>
@@ -86,16 +84,18 @@
                         </div>
                     </div>
                     <!--Fin Paso tipo actividad-->
-
-                    <div>
-                        <button type="button" class="flujo-button-atras flujo-fuente"
-                            *ngIf="paso.Id_Paso != info.CodPaso_Inicial" (click)="Atras(paso.Id_Paso)">Atras</button>
-
-                        <button type="button" class="flujo-button-siguiente flujo-fuente"
-                            (click)="Siguiente(paso.Id_Paso)">Siguiente</button>
+                    <div class="col text-center" *ngIf="finflujo">
+                        <button type="button" class="flujo-button-procesar flujo-fuente align-items-center"
+                            (click)="finalizarAtencion($event)">Finalizar</button>
                     </div>
 
-
+                    <div>
+                            <button type="button" class="flujo-button-atras flujo-fuente"
+                                *ngIf="paso.Id_Paso != info.CodPaso_Inicial" (click)="Atras(paso.Id_Paso)">Atras</button>
+        
+                            <button type="button" class="flujo-button-siguiente flujo-fuente"
+                                (click)="Siguiente(paso.Id_Paso)">Siguiente</button>
+                        </div>
                 </div>
             </div>
 
