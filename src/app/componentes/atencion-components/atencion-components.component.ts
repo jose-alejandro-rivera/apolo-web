@@ -37,7 +37,7 @@ export class AtencionComponentsComponent implements OnInit {
   codComponentePasos: any;
   atencionCuestionario: any;
   response: any;
-  finflujo: Boolean;
+  finflujo: boolean;
   consumirProceso: any;
 
   pruebaproceso: any;
@@ -84,7 +84,7 @@ export class AtencionComponentsComponent implements OnInit {
         this.procesoPaso = data.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
         this.ProcesoActual = true;
       }
-      this.finflujo = this.flujoPaso.Finaliza;
+      this.finflujo = this.flujoPaso.finaliza;
     });
 
   }
