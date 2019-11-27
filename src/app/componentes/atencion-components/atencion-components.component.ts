@@ -127,6 +127,9 @@ export class AtencionComponentsComponent implements OnInit {
       for (let op of opcionesSiguientePaso) {
         let Cuestionario = this.info.Cuestionarios.filter(x => x.Id_Paso == op.CodPaso_Origen);
         let exp = '@' + Cuestionario[0].Id_Cuestionario + '.' + Cuestionario[0].Sigla + '==' + this.decisionSeleccionada;
+        console.log(Cuestionario);
+        console.log(exp);
+        console.log(op.ExpresionEjecucion);
         if (op.ExpresionEjecucion == exp) {
           this.pasoActual = op.CodPaso_Destino;
         }
