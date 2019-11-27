@@ -35,7 +35,7 @@ export class AtencionComponentsComponent implements OnInit {
   procesoPaso: any;
   flujoPaso: any;
   codComponentePasos: any;
-  atencionCuestionario: any;
+  atencionCuestionario: any[] = [];
   response: any;
   finflujo: Boolean;
   consumirProceso: any;
@@ -103,6 +103,8 @@ export class AtencionComponentsComponent implements OnInit {
       }
     }
   }
+
+
 
   DecisionSeleccionada(value) {
     this.decisionSeleccionada = value;
