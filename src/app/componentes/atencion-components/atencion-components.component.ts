@@ -1,8 +1,9 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, ɵConsole } from '@angular/core';
 import { PasoService } from '../../servicios/paso.service';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 import { PasoMockService } from '../../mocks/paso.service.mock.service';
+import { Subject, Subscription } from 'rxjs';
 
 const URL = 'http://localhost:8080/api/';
 
@@ -19,8 +20,8 @@ export class AtencionComponentsComponent implements OnInit {
   definicionPaso: any; // 
   cuestionarioPasos: any;
   pasoCargue: any;
-  atencionComponente: Boolean;
-  botonAtras: Boolean;
+  atencionComponente: boolean;
+  botonAtras: boolean;
   subsPasos: any[] = [];
   dataFlujoCat: any;
   idFlujo: any;
@@ -39,7 +40,12 @@ export class AtencionComponentsComponent implements OnInit {
   finflujo: Boolean;
   consumirProceso: any;
 
-  pruebaproceso:any;
+  pruebaproceso: any;
+  ListaPasos = [];
+  CuestionarioActual: boolean;
+  ProcesoActual: boolean;
+
+
 
   constructor(private pasosFlujo: PasoService,
     private atencionService: EjecucionAtencionService,
@@ -56,55 +62,33 @@ export class AtencionComponentsComponent implements OnInit {
     this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
-    //let url = URL + 'flujo/list/' + this.idFlujo;
+    let url = URL + 'flujo/list/' + this.idFlujo;
 
-    /*this.atencionService.getData(url).subscribe((data: any) => {
-        //validacion existencia de datos
-        if (data) {
-          this.listFlujoPaso = data;
-          for (let listPasos of this.listFlujoPaso[0]) {
-            for (let listaPaso of listPasos.pasos) {
-              if (listaPaso.pasosProceso.Id_Paso == this.seleccion) {
-                this.tipoPaso = listaPaso.pasosProceso.NomPaso;
-                this.definicionPaso = listaPaso.pasosProceso.Descripcion;
-                for (let cuestionarioPasos of listaPaso.cuestionario.CuestionarioCampo) {
-                  this.pasoCargue = {
-                    "descripcionActividad": cuestionarioPasos.campos.Descripcion,
-                    "tipoCampo": cuestionarioPasos.campos.tipo,
-                    "Longitud": cuestionarioPasos.campos.Longitud,
-                    "Obligatorio": cuestionarioPasos.CuestionarioCampo.Obligatorio
-                  };
-                  this.subsPasos.push(this.pasoCargue);
-                }
-              }
-            }
-          }
-          localStorage.setItem('dataFlujoCat', '');
-        } else {
-          console.log("proceso seleccionado sin pasos");
-        }
-      });*/
-    this.primerPaso();
+    return this.atencionService.getData(url).toPromise().then(data => {
+      let info: any = data;
+      info = info.rows[0];
+      info = info[0];
+      info = info[0];
+      return info;
+    }).then(data => {
+      this.info = data;
+      this.pasoActual = data.CodPaso_Inicial;
+      this.ListaPasos = data.Pasos;
+      //this.flujoPaso = data.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
+      //se evalua la existencia de cuestionario o proceso en el paso
+      this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
+      if (data.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
+        this.cuestionarioPaso = data.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
+        this.CuestionarioActual = true;
+      } else if (data.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
+        this.procesoPaso = data.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
+        this.ProcesoActual = true;
+      }
+      console.log(this.cuestionarioPaso);
+      //this.finflujo = this.flujoPaso.Finaliza;
+    });
+
   }
-
-  primerPaso() {
-    this.info = this.pasoMockService.FlujoData[0];
-    //inicializacion del paso actual o primer paso
-    this.pasoActual = this.info.Flujo[0].CodPaso_Inicial;
-    this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
-    //se evalua la existencia de cuestionario o proceso en el paso
-    this.codComponentePasos = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
-    //se verifica la relacion de los pasos 
-    if (this.codComponentePasos.CodCuestionario) {
-      this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codComponentePasos.CodCuestionario);
-    } else if (this.codComponentePasos.CodProceso) {
-      this.procesoPaso = this.info.Procesos.find(x => x.Id_Proceso == this.codComponentePasos.CodProceso);
-    }
-    this.finflujo = this.flujoPaso.Finaliza;
-    this.decisionActual = this.info.paso_cuestionario[2];
-  }
-
-
 
   resultadoCuestionario(event) {
     // this.decisionSeleccionada = value;
@@ -125,26 +109,37 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
   Siguiente(Id_Paso: number) {
+    console.log("PASO ENVIADO:" + Id_Paso);
+    this.CuestionarioActual = false;
+    this.ProcesoActual = false;
+    this.cuestionarioPaso = [];
+    this.procesoPaso = [];
+
     //buscar el siguiente paso
     const siguientePaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == Id_Paso);
     //buscar el siguiente paso
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
     this.response = false;
+
+
     //caso de paso tipo decision
-    if (this.info.Pasos.find(x => x.Id_Paso == Id_Paso).CodTipoPaso == 2) {
+    if (actualPaso.Id_TipoPaso == 2) {
       const opcionesSiguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso); //lista de posibles pasos siguientes
+      let Cuestionario = this.info.Cuestionarios.filter(x => x.Id_Paso == Id_Paso);
+      console.log(Cuestionario);
+      this.decisionActual = Cuestionario;
       //evaluar expresion de ejecucion para saber que paso sigue 
       for (let op of opcionesSiguientePaso) {
-        let exp = '@' + actualPaso.CodCuestionario + '.' + this.decisionActual.pasoCuestionarioCampo.Sigla + '==' + this.decisionSeleccionada;
+        let exp = '@' + Cuestionario.Id_Cuestionario + '.' + Cuestionario.Sigla + '==' + this.decisionSeleccionada;
         if (op.ExpresionEjecucion == exp) {
           this.pasoActual = op.CodPaso_Destino;
-
-          //se evalua la existencia de cuestionario en el paso
-          this.codComponentePasos = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
-          if (this.codComponentePasos.CodCuestionario) {
-            this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codComponentePasos.CodCuestionario);
-          } else if (this.codComponentePasos.CodProceso) {
-            this.procesoPaso = this.info.Procesos.find(x => x.Id_Proceso == this.codComponentePasos.CodProceso);
+          //se evalua la existencia de cuestionario o de un proceso en el paso
+          if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
+            this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
+            this.CuestionarioActual = true;
+          } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
+            this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
+            this.ProcesoActual = true;
           }
           this.finflujo = siguientePaso.Finaliza;
         }
@@ -152,16 +147,15 @@ export class AtencionComponentsComponent implements OnInit {
     } else {
       //paso tipo actividad
       this.pasoActual = siguientePaso.CodPaso_Destino;
-      //se evalua la existencia de cuestionario en el paso
-      this.codComponentePasos = this.info.Pasos.find(x => x.Id_Paso == this.pasoActual);
-      if (this.codComponentePasos.CodCuestionario) {
-        this.cuestionarioPaso = this.info.paso_cuestionario.filter(x => x.pasoCuestionario.Id_Cuestionario == this.codComponentePasos.CodCuestionario);
-      } else if (this.codComponentePasos.CodProceso) {
-        this.procesoPaso = this.info.Procesos.find(x => x.Id_Proceso == this.codComponentePasos.CodProceso);
+      //se evalua la existencia de cuestionario o de un proceso en el paso
+      if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
+        this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
+        this.CuestionarioActual = true;
+      } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
+        this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
+        this.ProcesoActual = true;
       }
       this.finflujo = siguientePaso.Finaliza;
-
-      this.decisionActual = this.info.paso_cuestionario[2];
     }
 
   }
@@ -169,14 +163,14 @@ export class AtencionComponentsComponent implements OnInit {
   ejecutarProceso(event) {
     // this.decisionSeleccionada = value;
     this.consumirProceso = {
-      "Id_Proceso":this.procesoPaso.Id_Proceso,
-      "TipoServicio":this.procesoPaso.Servicio,
+      "Id_Proceso": this.procesoPaso.Id_Proceso,
+      "TipoServicio": this.procesoPaso.Servicio,
       "Servicio": "http://localhost:3000/api/proceso/fake/ok"
-     };
+    };
     this.response = true;
     let url = URL + 'proceso/fake/';
     this.atencionService.postData(url, this.consumirProceso).subscribe(data => {
-      this.pruebaproceso=data;
+      this.pruebaproceso = data;
       return this.pruebaproceso;
     })
 
@@ -226,7 +220,7 @@ export class AtencionComponentsComponent implements OnInit {
         Request: "",
         Response: ""
       };
-      const procesoSalida  =  this.info.ProcesosSalida.find(x => x.CodProceso == paso.CodProceso);
+      const procesoSalida = this.info.ProcesosSalida.find(x => x.CodProceso == paso.CodProceso);
       atencionProcesoSalida = {
         CodProcesoSalida: procesoSalida.Id_ProcesoSalida,
         Valor: ""
@@ -267,7 +261,7 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
 
-  finalizarAtencion(event){
+  finalizarAtencion(event) {
 
     this.pasoActual = 0;
     this.decisionSeleccionada = 0;
