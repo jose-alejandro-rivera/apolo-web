@@ -7,20 +7,16 @@
         <div class="">
             <!--Informacion de Flujo-->
             <div class="col-12 flujo-text ">
-                <label> Flujo: </label>
-                <label> {{nombreFlujo}}</label>
+                <label> Flujo: {{nombreFlujo}}</label>
             </div>
 
             <div *ngFor="let paso of ListaPasos">
                 <div *ngIf="pasoActual==paso.Id_Paso">
                     <label class="apolo-text-title-content">
-                        Paso {{paso.Id_Paso}} : {{paso.NomPaso}}
+                       {{paso.NomPaso}}
                     </label>
                     <!--Paso tipo desicion-->
                     <div *ngIf="paso.Id_TipoPaso == 2">
-                        <div class="col-12">
-                            <p>{{decisionActual.NomCuestionarioCampo}} </p>
-                        </div>
                         <div class="col-4">
                             <select name="select" (change)="DecisionSeleccionada($event.target.value)"
                                 *ngIf="decisionActual.NomCampo=='ListaSiNo'" required>
@@ -37,8 +33,7 @@
                             <div *ngFor="let cuestionarioCampo of cuestionarioPaso">
                                 <div class="col-12">
                                     <label class="">
-                                        {{cuestionarioCampo.Id_CuestionarioCampo}} -
-                                        {{cuestionarioCampo.NomCuestionarioCampo}}
+                                        {{cuestionarioCampo.Id_CuestionarioCampo}}.{{cuestionarioCampo.NomCuestionarioCampo}}
                                     </label>
                                 </div>
                                 <div class="col-4">
@@ -62,12 +57,12 @@
                             <!-- Proceso -->
                             <div class="col-12">
                                 <label class="">
-                                    {{procesoPaso.Id_Proceso}} - {{procesoPaso.Descripcion}}
+                                   {{procesoPaso.Descripcion}}
                                 </label>
                             </div>
                             <div class="col text-center" *ngIf="!finflujo">
-                                <button type="button" class="flujo-button-procesar flujo-fuente"
-                                    (click)="ejecutarProceso($event)">Procesar</button>
+                                <button type="button" class="flujo-button-procesar flujo-fuente" style="visibility: hidden"
+                                    (click)="ejecutarProceso($event)">OK</button>
                             </div>
                             <div *ngIf="response" role="alert">
                                 <div class="flujo-text-content">
@@ -94,7 +89,7 @@
                                 *ngIf="paso.Id_Paso != info.CodPaso_Inicial" (click)="Atras(paso.Id_Paso)">Atras</button>
         
                             <button type="button" class="flujo-button-siguiente flujo-fuente"
-                                (click)="Siguiente(paso.Id_Paso)">Siguiente</button>
+                            *ngIf="!finflujo" (click)="Siguiente(paso.Id_Paso)">Siguiente</button>
                         </div>
                 </div>
             </div>
