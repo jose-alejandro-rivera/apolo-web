@@ -115,10 +115,9 @@ export class AtencionComponentsComponent implements OnInit {
   Siguiente(Id_Paso: number) {
     this.limpiarVariables();
     //buscar el siguiente paso
-    const siguientePaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == Id_Paso);
-    //buscar el siguiente paso
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
     this.response = false;
+    let siguientePaso;
 
     //caso de paso tipo decision
     if (actualPaso.Id_TipoPaso == 2) {
@@ -132,13 +131,19 @@ export class AtencionComponentsComponent implements OnInit {
         console.log(op.ExpresionEjecucion);
         if (op.ExpresionEjecucion == exp) {
           this.pasoActual = op.CodPaso_Destino;
+          //buscar el siguiente paso siguiente segun el cambio
+          siguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso && x.CodPaso_Destino == op.CodPaso_Destino);
+          this.finflujo = siguientePaso[0].finaliza;
         }
       }
     } else {
+      //buscar el siguiente paso
+      siguientePaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == Id_Paso);
       //paso tipo actividad
       this.pasoActual = siguientePaso.CodPaso_Destino;
+      this.finflujo = siguientePaso.finaliza;
     }
-
+    console.log(this.pasoActual);
     //se evalua la existencia de cuestionario o de un proceso en el paso
     if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
       this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
@@ -147,7 +152,7 @@ export class AtencionComponentsComponent implements OnInit {
       this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
       this.ProcesoActual = true;
     }
-    this.finflujo = siguientePaso.finaliza;
+    
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
 
@@ -169,6 +174,7 @@ export class AtencionComponentsComponent implements OnInit {
     if (this.actualPaso.finaliza == true) {
       this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == this.pasoActual);
     }
+    console.log(this.actualPaso.finaliza);
     this.finflujo = this.actualPaso.finaliza;
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
@@ -179,6 +185,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.ProcesoActual = false;
     this.cuestionarioPaso = [];
     this.procesoPaso = [];
+    this.finflujo = false;
   }
 
   ejecutarProceso(event) {
