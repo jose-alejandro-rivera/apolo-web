@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, ɵConsole } from '@angular/core';
 import { PasoService } from '../../servicios/paso.service';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+// import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
-import { PasoMockService } from '../../mocks/paso.service.mock.service';
+// import { PasoMockService } from '../../mocks/paso.service.mock.service';
 import { Subject, Subscription } from 'rxjs';
 
 const URL = 'http://localhost:8080/api/';
@@ -13,20 +13,11 @@ const URL = 'http://localhost:8080/api/';
   styleUrls: ['./atencion-components.component.css']
 })
 export class AtencionComponentsComponent implements OnInit {
-  flujo: any[] = []; // 
-  seleccion: number;
-  tipoPaso: any;
-  listFlujoPaso: any;
-  definicionPaso: any; // 
-  cuestionarioPasos: any;
-  pasoCargue: any;
+
   atencionComponente: boolean;
-  botonAtras: boolean;
-  subsPasos: any[] = [];
   dataFlujoCat: any;
   idFlujo: any;
   nombreFlujo: any;
-
   info: any;
   pasoActual: any;
   decisionActual: any;
@@ -40,7 +31,7 @@ export class AtencionComponentsComponent implements OnInit {
   finflujo: boolean;
   consumirProceso: any;
 
-  pruebaproceso: any;
+  pruebaproceso: any;//validar con el proceso de crear
   ListaPasos = [];
   CuestionarioActual: boolean;
   ProcesoActual: boolean;
@@ -49,16 +40,20 @@ export class AtencionComponentsComponent implements OnInit {
 
   constructor(private pasosFlujo: PasoService,
     private atencionService: EjecucionAtencionService,
-    private pasoMockService: PasoMockService,
-    private router: Router
+    // private pasoMockService: PasoMockService,
+    // private router: Router
 
   ) {
     this.atencionComponente = true;
-    this.botonAtras = false;
   }
-  //metodo que valida el listado de los campos 
+
+  /**
+  * Metodo que retorna el listado de 
+  *
+  * @Params dataFlujoCat: objeto de memoria donde se obtiene el id del formulario 
+  * @returns flujoPaso: listado de pasos relacionados con el flujo con sus respectivos procesos y cuestionarios
+  */
   ngOnInit() {
-    this.seleccion = 1;
     this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
@@ -89,46 +84,64 @@ export class AtencionComponentsComponent implements OnInit {
 
   }
 
+  /**
+   * Metodo que valida las opciones seleccionadas del cuestionario 
+   *
+   * @Param event: valor del campo seleccionado
+   * @param IdCuestionarioCampo: valor del id del cuestionarioCampo seleccionado 
+   * @returns atencionCuestionario: lista de los cuestionariosCampo seleccionados
+   */
   resultadoCuestionario(event, IdCuestionarioCampo: number) {
-
     //resultado de la seleccion del cuestionario
     const selectCuestionarioCampo = {
       CodCuestionarioCampo: IdCuestionarioCampo,
       ValorCampo: event.target.value
     };
     //validacion de la existencia del campoCuestionario guardado
-    if (this.atencionCuestionario.find(x=> x.CodCuestionarioCampo==IdCuestionarioCampo)){
-      for(let i=0;i<this.atencionCuestionario.length;i++){
-        if(this.atencionCuestionario.find(x=> x.CodCuestionarioCampo==IdCuestionarioCampo)){
-          this.atencionCuestionario[i]=selectCuestionarioCampo;
+    if (this.atencionCuestionario.find(x => x.CodCuestionarioCampo == IdCuestionarioCampo)) {
+      for (let i = 0; i < this.atencionCuestionario.length; i++) {
+        if (this.atencionCuestionario.find(x => x.CodCuestionarioCampo == IdCuestionarioCampo)) {
+          this.atencionCuestionario[i] = selectCuestionarioCampo;
         }
       }
-    }else{
+    } else {
       this.atencionCuestionario.push(selectCuestionarioCampo);
     }
   }
 
+  /**
+   * Metodo que valida la opcion seleccionada de la decision del cuestionario 
+   *
+   * @Param event: valor del campo seleccionado
+   * @returns decisionSeleccionada:valor de la decision seleccionada 
+   */
   DecisionSeleccionada(value) {
     this.decisionSeleccionada = value;
   }
 
+  /**
+   * Metodo que realiza la continuidad de los pasos expuestos por el flujo seleccionado 
+   *
+   * @Param Id_Paso: id del paso actual
+   * @returns pasoActual: id del paso siguiente que sera visualizado 
+   */
   async Siguiente(Id_Paso: number) {
     this.limpiarVariables();
-    //buscar el siguiente paso
+    //buscar el siguiente paso a visualizar
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
     this.response = false;
     let siguientePaso;
-
     //caso de paso tipo decision
     if (actualPaso.Id_TipoPaso == 2) {
-      const opcionesSiguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso); //lista de posibles pasos siguientes
+      //lista de los pasos siguientes
+      const opcionesSiguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso);
       //evaluar expresion de ejecucion para saber que paso sigue 
       for (let op of opcionesSiguientePaso) {
         let Cuestionario = this.info.Cuestionarios.filter(x => x.Id_Paso == op.CodPaso_Origen);
         let exp = '@' + Cuestionario[0].Id_Cuestionario + '.' + Cuestionario[0].Sigla + '==' + this.decisionSeleccionada;
         if (op.ExpresionEjecucion == exp) {
           this.pasoActual = op.CodPaso_Destino;
-          //buscar el siguiente paso siguiente segun el cambio
+          //buscar el siguiente paso 
           siguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso && x.CodPaso_Destino == op.CodPaso_Destino);
           this.finflujo = siguientePaso[0].finaliza;
         }
@@ -148,10 +161,15 @@ export class AtencionComponentsComponent implements OnInit {
       this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
       this.ProcesoActual = true;
     }
-    
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
 
+  /**
+   * Metodo que realiza la opcion atras del flujo presentando el paso anterior  
+   *
+   * @Param Id_Paso: id del paso actual
+   * @returns pasoActual: id del paso anterior que sera visualizado 
+   */
   Atras(Id_Paso: number) {
     this.limpiarVariables();
     this.response = false;
@@ -174,18 +192,29 @@ export class AtencionComponentsComponent implements OnInit {
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
 
-
+  
+  /**
+   * Metodo que realiza la limpieza de las variables para seguir con el proceso 
+   *
+   * @Param 
+   * @return variables limpias de objeros o parametros
+   */
   limpiarVariables() {
     this.CuestionarioActual = false;
     this.ProcesoActual = false;
     this.cuestionarioPaso = [];
     this.procesoPaso = [];
     this.finflujo = false;
-    this.atencionCuestionario =  [];
+    this.atencionCuestionario = [];
   }
 
+  /**
+   * Metodo que realiza la ejecucion del proceso
+   *
+   * @Param event: variable que identifica el id del proceso a ejecutar
+   * @return atencionService: respuesta del proceso ejecutado
+   */
   ejecutarProceso(event) {
-    // this.decisionSeleccionada = value;
     this.consumirProceso = {
       "Id_Proceso": this.procesoPaso.Id_Proceso,
       "TipoServicio": this.procesoPaso.Servicio,
@@ -197,11 +226,14 @@ export class AtencionComponentsComponent implements OnInit {
       this.pruebaproceso = data;
       return this.pruebaproceso;
     })
-
-
   }
 
-
+  /**
+   * Metodo que realiza el registro del seguimiento e los pasos ejecutados
+   *
+   * @Param Id_Paso: id del paso actual
+   * @return atencionService: respuesta del proceso ejecutado
+   */
   RegistrarAtencionPaso(Id_Paso: number) {
     console.log("registrar paso");
     console.log(this.atencionCuestionario);
