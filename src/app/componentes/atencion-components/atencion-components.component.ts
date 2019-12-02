@@ -112,7 +112,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.decisionSeleccionada = value;
   }
 
-  Siguiente(Id_Paso: number) {
+  async Siguiente(Id_Paso: number) {
     this.limpiarVariables();
     //buscar el siguiente paso
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
@@ -126,9 +126,6 @@ export class AtencionComponentsComponent implements OnInit {
       for (let op of opcionesSiguientePaso) {
         let Cuestionario = this.info.Cuestionarios.filter(x => x.Id_Paso == op.CodPaso_Origen);
         let exp = '@' + Cuestionario[0].Id_Cuestionario + '.' + Cuestionario[0].Sigla + '==' + this.decisionSeleccionada;
-        console.log(Cuestionario);
-        console.log(exp);
-        console.log(op.ExpresionEjecucion);
         if (op.ExpresionEjecucion == exp) {
           this.pasoActual = op.CodPaso_Destino;
           //buscar el siguiente paso siguiente segun el cambio
@@ -143,7 +140,6 @@ export class AtencionComponentsComponent implements OnInit {
       this.pasoActual = siguientePaso.CodPaso_Destino;
       this.finflujo = siguientePaso.finaliza;
     }
-    console.log(this.pasoActual);
     //se evalua la existencia de cuestionario o de un proceso en el paso
     if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
       this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
@@ -174,7 +170,6 @@ export class AtencionComponentsComponent implements OnInit {
     if (this.actualPaso.finaliza == true) {
       this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == this.pasoActual);
     }
-    console.log(this.actualPaso.finaliza);
     this.finflujo = this.actualPaso.finaliza;
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
@@ -186,6 +181,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.cuestionarioPaso = [];
     this.procesoPaso = [];
     this.finflujo = false;
+    this.atencionCuestionario =  [];
   }
 
   ejecutarProceso(event) {
@@ -207,6 +203,8 @@ export class AtencionComponentsComponent implements OnInit {
 
 
   RegistrarAtencionPaso(Id_Paso: number) {
+    console.log("registrar paso");
+    console.log(this.atencionCuestionario);
     //regitrar en bd y validar paso anterior
     let atencionProceso;
     let atencionProcesoSalida;
@@ -221,51 +219,53 @@ export class AtencionComponentsComponent implements OnInit {
     };
     // informacion para determinar que contiene el paso a registrar
     const paso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
+    const cuestionario = this.info.Cuestionarios.find(x => x.Id_Paso == Id_Paso);
+    const proceso = this.info.Procesos.find(x => x.Id_Paso == Id_Paso);
 
     // Si el paso tiene un proceso
-    if (paso.CodProceso) {
-      const proceso = this.info.Procesos.find(x => x.Id_Proceso == paso.CodProceso);
+    if (proceso) {
       atencionProceso = {
-        CodProceso: paso.CodProceso,
+        CodProceso: proceso.Id_Proceso,
         TipoServicio: proceso.TipoServicio,
         Servicio: proceso.Servicio,
         Request: "",
         Response: ""
       };
-      const procesoSalida = this.info.ProcesosSalida.find(x => x.CodProceso == paso.CodProceso);
+
       atencionProcesoSalida = {
-        CodProcesoSalida: procesoSalida.Id_ProcesoSalida,
+        CodProcesoSalida: proceso.Id_ProcesoSalida,
         Valor: ""
       };
 
+    } else{
+      atencionProceso = [];
+      atencionProcesoSalida = [];
     }
 
     // Si el paso tiene cuestionario
-    if (paso.CodCuestionario) {
-      
-      atencionCampo = [
-        this.atencionCuestionario
-      ];
-
+    if (cuestionario) {
+      atencionCampo =  [ this.atencionCuestionario];
+    } else{
+      atencionCampo = [];
     }
 
     // Arma Obj para registro del paso
     // Variable para envio del la informacion
     let data = [{
       atencionPaso: [atencionPaso],
-      atencionProceso: [atencionProceso],
-      atencionProcesoSalida: [atencionProcesoSalida],
-      atencionCampo: [atencionCampo]
+      atencionProceso: atencionProceso,
+      atencionProcesoSalida: atencionProcesoSalida,
+      atencionCampo: atencionCampo
     }];
+
     console.log(data);
-
-    // Limpiar variables 
-    //this.pasoActual = 0;
-    //this.decisionSeleccionada = 0;
-
-    //Registro de atencion paso y retorno del ID ATENCION PASO creado
-    //llamar al siguiente paso
-    this.Siguiente(Id_Paso);
+    let url = URL + 'atencion-paso-campo/create';
+    this.atencionService.postData(url, data).toPromise().then(res => {
+      //Registro de atencion paso y retorno del ID ATENCION PASO creado
+      //llamar al siguiente paso
+      this.Siguiente(Id_Paso);
+    });
+   
   }
 
 
