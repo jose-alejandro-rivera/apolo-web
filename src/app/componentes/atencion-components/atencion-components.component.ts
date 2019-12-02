@@ -1,8 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, ɵConsole } from '@angular/core';
 import { PasoService } from '../../servicios/paso.service';
-// import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
-// import { PasoMockService } from '../../mocks/paso.service.mock.service';
 import { Subject, Subscription } from 'rxjs';
 
 const URL = 'http://localhost:8080/api/';
@@ -30,25 +28,20 @@ export class AtencionComponentsComponent implements OnInit {
   response: any;
   finflujo: boolean;
   consumirProceso: any;
-
   pruebaproceso: any;//validar con el proceso de crear
   ListaPasos = [];
   CuestionarioActual: boolean;
   ProcesoActual: boolean;
   actualPaso: any;
 
-
   constructor(private pasosFlujo: PasoService,
     private atencionService: EjecucionAtencionService,
-    // private pasoMockService: PasoMockService,
-    // private router: Router
-
   ) {
     this.atencionComponente = true;
   }
 
   /**
-  * Metodo que retorna el listado de 
+  * Funcion que retorna el listado de 
   *
   * @Params dataFlujoCat: objeto de memoria donde se obtiene el id del formulario 
   * @returns flujoPaso: listado de pasos relacionados con el flujo con sus respectivos procesos y cuestionarios
@@ -58,7 +51,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
     let url = URL + 'flujo/list/' + this.idFlujo;
-
+    //se obtiene la atencion seleccionada con todos sus componentes
     return this.atencionService.getData(url).toPromise().then(data => {
       let info: any = data;
       info = info.rows[0];
@@ -81,11 +74,10 @@ export class AtencionComponentsComponent implements OnInit {
       }
       this.finflujo = this.flujoPaso.finaliza;
     });
-
   }
 
   /**
-   * Metodo que valida las opciones seleccionadas del cuestionario 
+   * Funcion que valida las opciones seleccionadas del cuestionario 
    *
    * @Param event: valor del campo seleccionado
    * @param IdCuestionarioCampo: valor del id del cuestionarioCampo seleccionado 
@@ -110,7 +102,7 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
   /**
-   * Metodo que valida la opcion seleccionada de la decision del cuestionario 
+   * Funcion que valida la opcion seleccionada de la decision del cuestionario 
    *
    * @Param event: valor del campo seleccionado
    * @returns decisionSeleccionada:valor de la decision seleccionada 
@@ -120,7 +112,7 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
   /**
-   * Metodo que realiza la continuidad de los pasos expuestos por el flujo seleccionado 
+   * Funcion que realiza la continuidad de los pasos expuestos por el flujo seleccionado 
    *
    * @Param Id_Paso: id del paso actual
    * @returns pasoActual: id del paso siguiente que sera visualizado 
@@ -165,7 +157,7 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
   /**
-   * Metodo que realiza la opcion atras del flujo presentando el paso anterior  
+   * Funcion que realiza la opcion atras del flujo presentando el paso anterior  
    *
    * @Param Id_Paso: id del paso actual
    * @returns pasoActual: id del paso anterior que sera visualizado 
@@ -194,7 +186,7 @@ export class AtencionComponentsComponent implements OnInit {
 
   
   /**
-   * Metodo que realiza la limpieza de las variables para seguir con el proceso 
+   * Funcion que realiza la limpieza de las variables para seguir con el proceso 
    *
    * @Param 
    * @return variables limpias de objeros o parametros
@@ -209,7 +201,7 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
   /**
-   * Metodo que realiza la ejecucion del proceso
+   * Funcion que realiza la ejecucion del proceso
    *
    * @Param event: variable que identifica el id del proceso a ejecutar
    * @return atencionService: respuesta del proceso ejecutado
@@ -229,19 +221,16 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
   /**
-   * Metodo que realiza el registro del seguimiento e los pasos ejecutados
+   * Funcion que realiza el registro del seguimiento e los pasos ejecutados
    *
    * @Param Id_Paso: id del paso actual
-   * @return atencionService: respuesta del proceso ejecutado
+   * @return data: respuesta de la ejecucion de registro del paso
    */
   RegistrarAtencionPaso(Id_Paso: number) {
-    console.log("registrar paso");
-    console.log(this.atencionCuestionario);
     //regitrar en bd y validar paso anterior
     let atencionProceso;
     let atencionProcesoSalida;
     let atencionCampo;
-
     // Armar JSON paso registro de Atencion Paso
     let atencionPaso = {
       CodAtencion: this.atencionService.idAtencion,
@@ -253,7 +242,6 @@ export class AtencionComponentsComponent implements OnInit {
     const paso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
     const cuestionario = this.info.Cuestionarios.find(x => x.Id_Paso == Id_Paso);
     const proceso = this.info.Procesos.find(x => x.Id_Paso == Id_Paso);
-
     // Si el paso tiene un proceso
     if (proceso) {
       atencionProceso = {
@@ -263,24 +251,20 @@ export class AtencionComponentsComponent implements OnInit {
         Request: "",
         Response: ""
       };
-
       atencionProcesoSalida = {
         CodProcesoSalida: proceso.Id_ProcesoSalida,
         Valor: ""
       };
-
     } else{
       atencionProceso = [];
       atencionProcesoSalida = [];
     }
-
     // Si el paso tiene cuestionario
     if (cuestionario) {
       atencionCampo =  [ this.atencionCuestionario];
     } else{
       atencionCampo = [];
     }
-
     // Arma Obj para registro del paso
     // Variable para envio del la informacion
     let data = [{
@@ -289,20 +273,15 @@ export class AtencionComponentsComponent implements OnInit {
       atencionProcesoSalida: atencionProcesoSalida,
       atencionCampo: atencionCampo
     }];
-
-    console.log(data);
     let url = URL + 'atencion-paso-campo/create';
+    //Registro de atencion paso y retorno del ID ATENCION PASO creado
     this.atencionService.postData(url, data).toPromise().then(res => {
-      //Registro de atencion paso y retorno del ID ATENCION PASO creado
       //llamar al siguiente paso
       this.Siguiente(Id_Paso);
     });
-   
   }
 
-
   finalizarAtencion(event) {
-
     this.pasoActual = 0;
     this.decisionSeleccionada = 0;
 
