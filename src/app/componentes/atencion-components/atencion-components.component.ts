@@ -225,7 +225,7 @@ export class AtencionComponentsComponent implements OnInit {
     // Si el paso tiene un proceso
     if (proceso) {
       atencionProceso = {
-        CodProceso: paso.CodProceso,
+        CodProceso: proceso.Id_Proceso,
         TipoServicio: proceso.TipoServicio,
         Servicio: proceso.Servicio,
         Request: "",
