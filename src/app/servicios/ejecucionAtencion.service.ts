@@ -17,6 +17,8 @@ export class EjecucionAtencionService {
   }
 
   postData(url, body){
+    const myObjStr = JSON.stringify(body);
+    console.log(myObjStr);
     return this.http.post(url,body);
   }
 

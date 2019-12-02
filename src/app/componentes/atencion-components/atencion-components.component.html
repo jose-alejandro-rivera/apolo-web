@@ -89,7 +89,7 @@
                                 *ngIf="paso.Id_Paso != info.CodPaso_Inicial" (click)="Atras(paso.Id_Paso)">Atras</button>
         
                             <button type="button" class="flujo-button-siguiente flujo-fuente"
-                            *ngIf="!finflujo" (click)="Siguiente(paso.Id_Paso)">Siguiente</button>
+                            *ngIf="!finflujo" (click)="RegistrarAtencionPaso(paso.Id_Paso)">Siguiente</button>
                         </div>
                 </div>
             </div>
