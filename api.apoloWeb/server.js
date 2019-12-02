@@ -49,6 +49,11 @@ app.post('/api/proceso/fake',  async (request, response) => {
   return response.send(data);
 });
 
+app.post('/api/atencion-paso-campo/create',  async (request, response) => {
+  console.log(request.body);
+  const data = await postAtencionPaso(request.body);
+  return response.send(data);
+});
 
 //funciones de solicitudes al back
 
@@ -94,6 +99,16 @@ async function postCrearAtencion(params) {
 async function postConsumirProceso(params) {
   try {
     var url="http://localhost:3000/api/proceso/fake";
+    res = await axios.post(url,params);
+    return res.data;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+async function postAtencionPaso(params) {
+  try {
+    var url="http://localhost:3000/api/atencion-paso-campo/create";
     res = await axios.post(url,params);
     return res.data;
   } catch (error) {

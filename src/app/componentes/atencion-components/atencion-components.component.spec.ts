@@ -1,14 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AtencionComponentsComponent } from './atencion-components.component';
-
 import { PasoService } from '../../servicios/paso.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClient } from '@angular/common/http';
-
 import { RouterTestingModule } from '@angular/router/testing';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
+
 
 describe('AtencionComponentsComponent', () => {
   let component: AtencionComponentsComponent;
@@ -31,8 +27,6 @@ describe('AtencionComponentsComponent', () => {
       const httpTestingController = TestBed.get(HttpTestingController);
       return { pasoService, httpTestingController };
     }
-
-
 
     // validar la obtencion de primer paso a visualizar
     it('validar la obtencion del paso 1', () => {

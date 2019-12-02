@@ -24,6 +24,12 @@
                                 <option value="1">SI</option>
                                 <option value="0">NO</option>
                             </select>
+                            <select name="select" (change)="DecisionSeleccionada($event.target.value)"
+                                *ngIf="decisionActual.NomCampo=='ListaTecnicaComercial'" required>
+                                <option value="" selected>Sin Selección</option>
+                                <option value="1">TÉCNICA</option>
+                                <option value="0">COMERCIAL</option>
+                            </select>
                         </div>
                     </div>
                     <!--Paso tipo actividad-->
@@ -43,12 +49,6 @@
                                         <option value="1">SI</option>
                                         <option value="0">NO</option>
                                     </select>
-                                    <select name="select" (change)="resultadoCuestionario($event,cuestionarioCampo.Id_CuestionarioCampo)"
-                                        *ngIf="cuestionarioCampo.NomCampo=='ListaTécnicaComercial'" required>
-                                        <option value="" selected>Sin Selección</option>
-                                        <option value="1">TÉCNICA</option>
-                                        <option value="0">COMERCIAL</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                         <div *ngIf="ProcesoActual">
                             <!-- Proceso -->
                             <div class="col-12">
-                                <label class="">
+                                <label style="visibility: hidden">
                                    {{procesoPaso.Descripcion}}
                                 </label>
                             </div>
@@ -89,7 +89,7 @@
                                 *ngIf="paso.Id_Paso != info.CodPaso_Inicial" (click)="Atras(paso.Id_Paso)">Atras</button>
         
                             <button type="button" class="flujo-button-siguiente flujo-fuente"
-                            *ngIf="!finflujo" (click)="Siguiente(paso.Id_Paso)">Siguiente</button>
+                            *ngIf="!finflujo" (click)="RegistrarAtencionPaso(paso.Id_Paso)">Siguiente</button>
                         </div>
                 </div>
             </div>
