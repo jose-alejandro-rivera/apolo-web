@@ -1,11 +1,10 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, ɵConsole } from '@angular/core';
-import { PasoService } from '../../servicios/paso.service';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 import { Subject, Subscription } from 'rxjs';
 import { IServiceResponse } from '../../interfaces/serviceResponse';
-
-
-
+/**
+ * constante que obtiene la url del api web
+ */
 const URL = 'http://localhost:8080/api/';
 /**
  * componente que comprende la estructura de una atencion 
@@ -83,9 +82,10 @@ export class AtencionComponentsComponent implements OnInit {
    * variable que almacena el proceso
    */
   consumirProceso: any;
-   /**
-   * variable que almacena la respuesta del proceso actual
+  /**
+   * validar con ejecucion del proceso
    */
+  pruebaproceso: any;//validar con el proceso de crear
   respuestaProcesoActual: IServiceResponse ={ data:{status : 200 , response : "proceso ejecutado exitosamente"} };
   /**
    * variable que obtiene el listado de pasos

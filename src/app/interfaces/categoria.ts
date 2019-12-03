@@ -1,3 +1,6 @@
+/**
+ * @ignore
+ */
 export interface ICategoria{
     Id_CategoriaFlujo: number,
     NomCategoriaFlujo: string,
