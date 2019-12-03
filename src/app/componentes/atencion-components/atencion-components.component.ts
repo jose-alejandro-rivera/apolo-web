@@ -2,39 +2,109 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, É
 import { PasoService } from '../../servicios/paso.service';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 import { Subject, Subscription } from 'rxjs';
-
+/**
+ * @ignore
+ */
 const URL = 'http://localhost:8080/api/';
-
+/**
+ * componente que comprende la estructura de una atencion 
+ */
 @Component({
   selector: 'app-atencion-components',
   templateUrl: './atencion-components.component.html',
   styleUrls: ['./atencion-components.component.css']
 })
+/**
+ * provee la injeccion de los componentes del flujo seleccionado
+ */
 export class AtencionComponentsComponent implements OnInit {
-
+  /**
+   * variable que permite visualizar el componente
+   */
   atencionComponente: boolean;
+  /**
+   * varible que contiene el local storach
+   */
   dataFlujoCat: any;
+  /**
+   * variable que contiene el valor del flujo a consultar
+   */
   idFlujo: any;
+  /**
+   * variable qu econtiene el nombre del flujo
+   */
   nombreFlujo: any;
+  /**
+   * variable que captura la estructura del flujo 
+   */
   info: any;
+  /**
+   * variable que identifica el paso actual
+   */
   pasoActual: any;
+  /**
+   * variable que identifica el tipo de decicion a tomar
+   */
   decisionActual: any;
+  /**
+   * variable que intencifica la decision seleccionada
+   */
   decisionSeleccionada: any;
+  /**
+   * variable que optiene el llistado de los campo que tiene el cuestionario
+   */
   cuestionarioPaso: any[] = [];
+  /**
+   * variable que optiene el proceso de paso a visualizar 
+   */
   procesoPaso: any;
+  /**
+   * variable que optien el flujo completo con sus componentes
+   */
   flujoPaso: any;
+  /**
+   * variable que contiene los componentes del paso
+   */
   codComponentePasos: any;
+  /**
+   * variable que obtiene los campos del cuestionario
+   */
   atencionCuestionario: any[] = [];
+  /**
+   * variable que valida la respuesta del servicio
+   */
   response: any;
+  /**
+   * variable que representa la finalizaciond el flujo
+   */
   finflujo: boolean;
+  /**
+   * variable que almacena el proceso
+   */
   consumirProceso: any;
   pruebaproceso: any;//validar con el proceso de crear
+  /**
+   * variable que obtiene el listado de pasos
+   */
   ListaPasos = [];
+  /**
+   * variable que calcula el cuestionario
+   */
   CuestionarioActual: boolean;
+  /**
+   * variable que calcula el proceso 
+   */
   ProcesoActual: boolean;
+  /**
+   * variable que obtiene el paso actual
+   */
   actualPaso: any;
 
-  constructor(private pasosFlujo: PasoService,
+  /**
+   * 
+   * @param atencionService 
+   */
+  constructor(
     private atencionService: EjecucionAtencionService,
   ) {
     this.atencionComponente = true;
@@ -281,6 +351,10 @@ export class AtencionComponentsComponent implements OnInit {
     });
   }
 
+  /**
+   * metodo que realiza la finalizaciond ell metodo
+   * @param event 
+   */
   finalizarAtencion(event) {
     this.pasoActual = 0;
     this.decisionSeleccionada = 0;
