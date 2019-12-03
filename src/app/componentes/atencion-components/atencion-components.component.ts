@@ -2,9 +2,10 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, É
 import { PasoService } from '../../servicios/paso.service';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 import { Subject, Subscription } from 'rxjs';
-/**
- * @ignore
- */
+import { IServiceResponse } from '../../interfaces/serviceResponse';
+
+
+
 const URL = 'http://localhost:8080/api/';
 /**
  * componente que comprende la estructura de una atencion 
@@ -82,7 +83,10 @@ export class AtencionComponentsComponent implements OnInit {
    * variable que almacena el proceso
    */
   consumirProceso: any;
-  pruebaproceso: any;//validar con el proceso de crear
+   /**
+   * variable que almacena la respuesta del proceso actual
+   */
+  respuestaProcesoActual: IServiceResponse ={ data:{status : 200 , response : "proceso ejecutado exitosamente"} };
   /**
    * variable que obtiene el listado de pasos
    */
@@ -254,7 +258,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
 
-  
+
   /**
    * Funcion que realiza la limpieza de las variables para seguir con el proceso 
    *
@@ -284,9 +288,9 @@ export class AtencionComponentsComponent implements OnInit {
     };
     this.response = true;
     let url = URL + 'proceso/fake/';
-    this.atencionService.postData(url, this.consumirProceso).subscribe(data => {
-      this.pruebaproceso = data;
-      return this.pruebaproceso;
+    this.atencionService.postData(url, this.consumirProceso).subscribe((data:IServiceResponse) => {
+      this.respuestaProcesoActual = data;
+      return this.respuestaProcesoActual;
     })
   }
 
@@ -306,48 +310,61 @@ export class AtencionComponentsComponent implements OnInit {
       CodAtencion: this.atencionService.idAtencion,
       CodPaso: Id_Paso,
       Secuencia: 1,
-      Soluciona: 0
+      Soluciona: "0"
     };
     // informacion para determinar que contiene el paso a registrar
-    const paso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
     const cuestionario = this.info.Cuestionarios.find(x => x.Id_Paso == Id_Paso);
     const proceso = this.info.Procesos.find(x => x.Id_Paso == Id_Paso);
     // Si el paso tiene un proceso
     if (proceso) {
+      const respuestaProceso = this.respuestaProcesoActual.data.response;
       atencionProceso = {
         CodProceso: proceso.Id_Proceso,
         TipoServicio: proceso.TipoServicio,
         Servicio: proceso.Servicio,
-        Request: "",
-        Response: ""
+        Request:  proceso.TipoServicio,
+        Response: respuestaProceso
       };
       atencionProcesoSalida = {
         CodProcesoSalida: proceso.Id_ProcesoSalida,
-        Valor: ""
+        Valor:  respuestaProceso
       };
-    } else{
-      atencionProceso = [];
-      atencionProcesoSalida = [];
+    } else {
+      atencionProceso = {
+        "CodAtencionPaso" : "",
+        "CodProceso" : "",
+        "TipoServicio" : "",
+        "Servicio" : "",
+        "Request" : "",
+        "Response" : ""	
+      };
+      atencionProcesoSalida = {
+        "CodProcesoSalida": "",
+        "Valor": ""
+      };
     }
     // Si el paso tiene cuestionario
     if (cuestionario) {
-      atencionCampo =  [ this.atencionCuestionario];
-    } else{
+      atencionCampo = this.atencionCuestionario;
+    } else {
       atencionCampo = [];
     }
     // Arma Obj para registro del paso
     // Variable para envio del la informacion
     let data = [{
-      atencionPaso: [atencionPaso],
+      atencionPaso: atencionPaso,
       atencionProceso: atencionProceso,
       atencionProcesoSalida: atencionProcesoSalida,
       atencionCampo: atencionCampo
     }];
     let url = URL + 'atencion-paso-campo/create';
     //Registro de atencion paso y retorno del ID ATENCION PASO creado
-    this.atencionService.postData(url, data).toPromise().then(res => {
-      //llamar al siguiente paso
-      this.Siguiente(Id_Paso);
+    this.atencionService.postData(url, data).toPromise().then((res: IServiceResponse) => {
+      console.log(res);
+      if (res.data.status == 200) {
+        //llamar al siguiente paso
+        this.Siguiente(Id_Paso);
+      }
     });
   }
 
@@ -362,3 +379,4 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
 }
+
