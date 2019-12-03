@@ -2,24 +2,62 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewIni
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
-
+/**
+ * constante que obtiene la url del api web
+ */
 const URL = 'http://localhost:8080/api/';
 
+/**
+ * componente que obtiene las categorias y los flujos asociados
+ */
 @Component({
   selector: 'app-home-components',
   templateUrl: './home-components.component.html',
   styleUrls: ['./home-components.component.css']
 })
+/**
+ * provee el almacenamiento de categorias y de flujos 
+ */
 export class HomeComponent implements OnInit {
+  /**
+   * variable que obtiene el listado de flujos
+   */
   flujoList: any;
+  /**
+   * variable que itera el id del flujo seleccionado
+   */
   idFlujo: any;
+  /**
+   * variable que obtiene el formulario del componente
+   */
   formCategorias: FormGroup;
+  /**
+   * variable que evalua la visualizacion del componente
+   */
   homeComponent: Boolean;
+  /**
+   * variable que evalia el envio de la informacion
+   */
   submitted = false;
+  /**
+   * variabe que conprende el listado de categorias
+   */
   arregloCat: any;
+  /**
+   * variable de usuario
+   */
   usuario: any;
+  /**
+   * variable que evalua la creacion e la atencion
+   */
   crearCategoria: any;
 
+  /**
+   * variables de secion
+   * @param ejecucionAtencionService 
+   * @param router 
+   * @param formBuilder 
+   */
   constructor(
     private ejecucionAtencionService: EjecucionAtencionService,
     private router: Router,
