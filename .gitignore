@@ -9,6 +9,7 @@
 
 # dependencies
 /node_modules
+/documentation
 
 /api.apoloWeb/node_modules
 
@@ -50,3 +51,7 @@ Thumbs.db
 .vscode/launch.json
 
 api.apoloWeb/database.json
+api.apoloWeb/node_modules
+/dist
+
+

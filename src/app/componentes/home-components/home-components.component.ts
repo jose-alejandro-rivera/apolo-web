@@ -1,36 +1,67 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { HttpClient } from '@angular/common/http';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
+/**
+ * constante que obtiene la url del api web
+ */
+const URL = 'http://localhost:8080/api/';
 
-const URL = 'http://localhost:3001/api/';
-
+/**
+ * componente que obtiene las categorias y los flujos asociados
+ */
 @Component({
   selector: 'app-home-components',
   templateUrl: './home-components.component.html',
   styleUrls: ['./home-components.component.css']
 })
+/**
+ * provee el almacenamiento de categorias y de flujos 
+ */
 export class HomeComponent implements OnInit {
-  listCategoria: any[] = []; // variable para el cargue de categorias
-  listFlujos: any; // variable para el cargue de todos los flujos
-  flujo2: any; //
-  categoria: any;
-  categorias: any;
+  /**
+   * variable que obtiene el listado de flujos
+   */
+  flujoList: any;
+  /**
+   * variable que itera el id del flujo seleccionado
+   */
   idFlujo: any;
+  /**
+   * variable que obtiene el formulario del componente
+   */
   formCategorias: FormGroup;
+  /**
+   * variable que evalua la visualizacion del componente
+   */
   homeComponent: Boolean;
+  /**
+   * variable que evalia el envio de la informacion
+   */
   submitted = false;
+  /**
+   * variabe que conprende el listado de categorias
+   */
   arregloCat: any;
+  /**
+   * variable de usuario
+   */
   usuario: any;
-  crearCategoria:any;
+  /**
+   * variable que evalua la creacion e la atencion
+   */
+  crearCategoria: any;
 
+  /**
+   * variables de secion
+   * @param ejecucionAtencionService 
+   * @param router 
+   * @param formBuilder 
+   */
   constructor(
-    private http: HttpClient,
     private ejecucionAtencionService: EjecucionAtencionService,
     private router: Router,
     private formBuilder: FormBuilder) {
-
     this.homeComponent = true;
     localStorage.setItem('dataFlujoCat', '');
     this.formCategorias = this.formBuilder.group({
@@ -39,8 +70,13 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  /**
+   * Funcion que permite la carga de las categorias activas
+   * 
+   * @param
+   * @returns arregloCat: lisatado de las categorias activas
+   */
   ngOnInit() {
-    /* Esta funcion permite cargar el servicio para alimentar el select de todas las categorias activas*/
     this.ejecucionAtencionService.getData(URL + 'flujo/categorias').subscribe((res: any) => {
       setTimeout(() => {
         this.arregloCat = res;
@@ -50,15 +86,25 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  /**
+   * Funcion que valida si el campo es requerido
+   * 
+   * @param formCategorias: parametros de entrada de form
+   */
   get f() {
     return this.formCategorias.controls;
   }
-  /* Esta funcion permite realizar el filtro de los flujos segun la categoria que se haya seleccionada*/
+
+  /**
+   * Funcion que permite realizar el cargue de los flujos asociados a la categoria seleccionada
+   * 
+   * @param event: id de la categoria seleccionada 
+   * @returns flujoList: listado de flujos asociados a la categoria
+   */
   cargueFlujo(event) {
     let idCatefgoria = event.target.value;
-
     if (idCatefgoria == null || idCatefgoria == '') {
-      this.flujo2 = [];
+      this.flujoList = [];
       return
     } else {
       for (let categoria of this.arregloCat) {
@@ -67,50 +113,44 @@ export class HomeComponent implements OnInit {
         }
       }
       let url = URL + 'flujos/por/categorias/' + idCatefgoria;
-      console.log(url);
       this.ejecucionAtencionService.getData(url).subscribe((data) => {
-        this.flujo2 = data;
+        this.flujoList = data;
       })
-
     }
-
   }
 
+  /**
+   * Funcion que realiza el guardado del id del flujo seleccionado
+   * @param event: evento donde se encuentra el id del flujo seleccionado 
+   */
   cargueIdFlujo(event) {
-
-    let jsonFlujo = this.flujo2.find((e) => {
+    let jsonFlujo = this.flujoList.find((e) => {
       return e.Id_Flujo == event.target.value
     })
     this.idFlujo = jsonFlujo;
-
   }
-  /* Valida el formulario de la pagina home-components.componentes.html */
-  crearAtencion(e) {
-    debugger;
+
+  /**
+   * Funcion que valida la el llenado del formularioo y crea la atencion redireccionando el componente a la atencion-Component
+   * @param event 
+   */
+  crearAtencion(event) {
     if (this.formCategorias.invalid) {
       this.submitted = true;
       return;
     } else {
       this.crearCategoria = {
-        "CodLogin":1,
-        "CodFlujo":this.idFlujo.Id_Flujo
+        "CodLogin": 1,
+        "CodFlujo": this.idFlujo.Id_Flujo
       };
       this.homeComponent = false;
       let url = URL + 'atencion/create/';
       this.ejecucionAtencionService.postData(url, this.crearCategoria).subscribe(data => {
-
         localStorage.setItem('dataFlujoCat', JSON.stringify(this.idFlujo));
+        this.ejecucionAtencionService.saveIdAtencion(data[0].Id_Atencion);
         this.router.navigate(['flujo/list']);
         return false;
-      })
+      });
     }
-
   }
-  /* Este metodo permite conectarse al servicio CategoriasService */
-  // public creaAtencion(e, state: RouterStateSnapshot) {
-  //   this.ejecucionAtencionService.postData(URL, this.crearCategoria).subscribe(data => {
-  //     this.router.navigate(['flujo/list'], { queryParams: { data: 'crearCategoria' } });
-  //     return false;
-  //   })
-  // }
 }
