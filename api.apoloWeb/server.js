@@ -1,9 +1,9 @@
 const express = require('express'),
   cors = require('cors'),
   bodyParser = require('body-parser');
-  http = require('http');
-  request = require("request");
-  axios = require("axios");
+  const http = require('http');
+  const request = require("request");
+  const axios = require("axios");
 
 // Express settings
 const app = express();
@@ -48,7 +48,7 @@ app.post('/api/atencion/create/',  async (request, response) => {
 
 async function getCategoriasFlujo() {
   try {
-    res = await axios.get('http://localhost:3000/api/flujo/categorias');
+    let res = await axios.get('http://localhost:3000/api/flujo/categorias');
     return res.data;
   } catch (error) {
     console.error(error)
@@ -58,7 +58,7 @@ async function getCategoriasFlujo() {
 async function getFlujoPorCategoria(id) {
   try {
     var url="http://localhost:3000/api/flujos/por/categorias/" + id;
-    res = await axios.get(url);
+    let res = await axios.get(url);
     return res.data;
   } catch (error) {
     console.error(error)
@@ -68,7 +68,7 @@ async function getFlujoPorCategoria(id) {
 async function getPasosCategoria(id) {
   try {
     var url="http://localhost:3000/api/flujo/list/" + id;
-    res = await axios.get(url);
+    let res = await axios.get(url);
     return res.data;
   } catch (error) {
     console.error(error)
@@ -78,7 +78,7 @@ async function getPasosCategoria(id) {
 async function postCrearAtencion(params) {
   try {
     var url="http://localhost:3000/api/atencion/create";
-    res = await axios.post(url,params);
+    let res = await axios.post(url,params);
     return res.data;
   } catch (error) {
     console.error(error)
