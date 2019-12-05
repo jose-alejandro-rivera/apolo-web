@@ -86,7 +86,7 @@ async function postCrearAtencion(params) {
 }
 
 // Create PORT
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3001;
 const server = app.listen(PORT, () => {
   console.log('Connected to port ' + PORT)
 })

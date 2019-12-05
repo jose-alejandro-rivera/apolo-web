@@ -3,7 +3,7 @@ import { PasoService } from '../../servicios/paso.service';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 
-const URL = 'http://localhost:8080/api/';
+const URL = 'http://localhost:3001/api/';
 
 @Component({
   selector: 'app-atencion-components',
