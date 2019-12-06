@@ -33,8 +33,6 @@ app.get('/api/flujo/list/:id',  async (request, response) => {
   return response.send(data);
 });
 
-
-
 //parametros de creacion 
 
 app.post('/api/atencion/create/',  async (request, response) => {
