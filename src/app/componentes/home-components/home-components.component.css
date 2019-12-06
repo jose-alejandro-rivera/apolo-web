@@ -2,7 +2,9 @@
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
 
-.apolo{}
+.apolo{
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+}
 
 .apolo .ag-theme-balham .ag-header {
     background-color: #00b6f0;
@@ -288,6 +290,13 @@ margin-bottom: 20px;
         height: 30px;
         color: #ffffff;
         font-size: 12px;
+    }
+    .apolo-button-crear {
+        border-radius: 8px !important;
+        background-color: #0082B3;
+        width: 200px;
+        height: 50px;
+        font-size: 20px;
     }
 
 }

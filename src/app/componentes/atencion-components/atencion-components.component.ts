@@ -251,7 +251,7 @@ export class AtencionComponentsComponent implements OnInit {
       this.ProcesoActual = true;
     }
     //se evalua si el anterior paso finaliza la atencion
-    if (this.actualPaso.finaliza == true) {
+    if (this.actualPaso.finaliza) {
       this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == this.pasoActual);
     }
     this.finflujo = this.actualPaso.finaliza;

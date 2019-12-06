@@ -2,7 +2,9 @@
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
 
-.flujo{}
+.flujo{
+    font-family: "telefonicaReg", Arial, Helvetica, sans-serif;
+}
 
 .flujo .input, select, optgroup, textarea {
     border-radius: 6px;
