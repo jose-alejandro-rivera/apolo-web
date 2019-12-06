@@ -79,8 +79,7 @@
 .apolo-formulario {
 width: 100%;
 float: left;
-/* margin-top: 20px; */
-scroll-margin-bottom: 20px;
+margin-bottom: 20px;
 }
 .apolo-button {
     margin-top: 20px;
@@ -279,7 +278,6 @@ scroll-margin-bottom: 20px;
     .apolo-formulario {
         width: 100%;
         float: left;
-        scroll-margin-bottom: 20px;
         margin-bottom: 50px;
         }
 

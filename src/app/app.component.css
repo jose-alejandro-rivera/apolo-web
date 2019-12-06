@@ -2,7 +2,9 @@
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
 
-.apolo{}
+.apolo{
+    word-spacing:0.1px;
+}
 
 .apolo-text {
     display: none;
