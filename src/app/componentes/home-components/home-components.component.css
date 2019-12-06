@@ -2,7 +2,9 @@
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
 
-.apolo{}
+.apolo{
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+}
 
 .apolo .ag-theme-balham .ag-header {
     background-color: #00b6f0;
@@ -291,18 +293,3 @@ margin-bottom: 20px;
     }
 
 }
-@media only screen and (max-width: 980px) and (min-width: 821px) {
-
-
-}
-@media only screen and (max-width: 1280px) {
-
-
-}
-/* Horizontal */
-/* @media only screen (max-width: 500px) and (orientation: landscape) {
-
-}
-@media only screen (max-width: 680px) and (orientation: landscape) {
-
-}*/
