@@ -23,11 +23,11 @@ export class AppComponent {
   /**
    * variable que itera el componente atencion
    */
-  componentFlujo:Boolean; 
+  componentFlujo:boolean; 
   /**
    * variable que itera el componente de categorias
    */
-  componentCategoria: Boolean;
+  componentCategoria: boolean;
   /**
    * titulo de la aplicacion
    */

@@ -42,7 +42,7 @@ describe('HomeComponentsComponent', () => {
     //validacion de respuesta del servicio 
     it(' validacion de categoria should create', () => {
       /* Esta funcion permite cargar el servicio para alimentar el select de todas las categorias activas*/
-      const { ejecucionAtencion, httpTestingController } = setup();
+      const { ejecucionAtencion } = setup();
       ejecucionAtencion.getData(URL + 'flujo/categorias')
         .subscribe((res: any) => {
           if (res) {

@@ -251,7 +251,7 @@ export class AtencionComponentsComponent implements OnInit {
       this.ProcesoActual = true;
     }
     //se evalua si el anterior paso finaliza la atencion
-    if (this.actualPaso.finaliza == true) {
+    if (this.actualPaso.finaliza) {
       this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == this.pasoActual);
     }
     this.finflujo = this.actualPaso.finaliza;
@@ -360,7 +360,6 @@ export class AtencionComponentsComponent implements OnInit {
     let url = URL + 'atencion-paso-campo/create';
     //Registro de atencion paso y retorno del ID ATENCION PASO creado
     this.atencionService.postData(url, data).toPromise().then((res: IServiceResponse) => {
-      console.log(res);
       if (res.data.status == 200) {
         //llamar al siguiente paso
         this.Siguiente(Id_Paso);

@@ -12,6 +12,8 @@
 /documentation
 
 /api.apoloWeb/node_modules
+/api.apoloWeb/documentation
+/api.apoloWeb/coverage
 
 # profiling files
 chrome-profiler-events*.json
@@ -55,3 +57,5 @@ api.apoloWeb/node_modules
 /dist
 
 
+
+api.apoloWeb/jest.config.js
