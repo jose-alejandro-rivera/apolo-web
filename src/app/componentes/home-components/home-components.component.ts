@@ -22,35 +22,35 @@ export class HomeComponent implements OnInit {
   /**
    * variable que obtiene el listado de flujos
    */
-  flujoList: any;
+  private flujoList: any;
   /**
    * variable que itera el id del flujo seleccionado
    */
-  idFlujo: any;
+  private idFlujo: any;
   /**
    * variable que obtiene el formulario del componente
    */
-  formCategorias: FormGroup;
+  private formCategorias: FormGroup;
   /**
    * variable que evalua la visualizacion del componente
    */
-  homeComponent: Boolean;
+  private homeComponent: Boolean;
   /**
    * variable que evalia el envio de la informacion
    */
-  submitted = false;
+  private submitted = false;
   /**
    * variabe que conprende el listado de categorias
    */
-  arregloCat: any;
+  private arregloCat: any;
   /**
    * variable de usuario
    */
-  usuario: any;
+  private usuario: any;
   /**
    * variable que evalua la creacion e la atencion
    */
-  crearCategoria: any;
+  private crearCategoria: any;
 
   /**
    * variables de secion
