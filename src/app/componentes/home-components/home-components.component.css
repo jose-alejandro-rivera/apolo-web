@@ -270,7 +270,6 @@ scroll-margin-bottom: 20px;
         }
 
     .apolo-button-crear {
-        border-radius: 8px !important;
         background-color: #00A9E0;
         width: 50%;
         height: 30px;
@@ -279,18 +278,3 @@ scroll-margin-bottom: 20px;
     }
 
 }
-@media only screen and (max-width: 980px) and (min-width: 821px) {
-
-
-}
-@media only screen and (max-width: 1280px) {
-
-
-}
-/* Horizontal */
-/* @media only screen (max-width: 500px) and (orientation: landscape) {
-
-}
-@media only screen (max-width: 680px) and (orientation: landscape) {
-
-}*/
