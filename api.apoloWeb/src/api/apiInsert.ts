@@ -45,10 +45,10 @@ export class ApiInsert {
   /**
    * funcion de prueba
    */
-  async postConsumirProceso(params) {
+  async postConsumirProceso(body) {
     try {
       var url = "http://localhost:3000/api/proceso/fake";
-      let res = await axios.post(url, params);
+      let res = await axios.post(url, body);
       return res.data;
     } catch (error) {
       console.error(error)
@@ -57,10 +57,10 @@ export class ApiInsert {
   /**
    * funcion que crea la funcion
    */
-  async postAtencionPaso(params) {
+  async postAtencionPaso(data) {
     try {
       var url = "http://localhost:3000/api/atencion-paso-campo/create";
-      let res = await axios.post(url, params);
+      let res = await axios.post(url, data);
       return res.data;
     } catch (error) {
       console.error(error)
