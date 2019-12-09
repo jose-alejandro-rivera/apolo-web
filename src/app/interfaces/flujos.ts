@@ -1,3 +1,6 @@
+/**
+ * @ignore
+ */
 export interface IFlujos{
     Id_Flujo: number,
     NomFlujo: string,
