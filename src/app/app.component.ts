@@ -63,3 +63,5 @@ ngOnInit() {
   console.log(this.homeAtencion, this.atencionComponet);
 }
 }
+
+
