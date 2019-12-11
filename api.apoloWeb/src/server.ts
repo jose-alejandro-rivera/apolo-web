@@ -96,7 +96,6 @@ export class Server {
      * funcion que realiza la cracion de la atencion
      */
     app.post('/api/atencion/create/', async (request, response) => {
-      console.log(request.body);
       const data = await this.apiInsert.postCrearAtencion(request.body);
       return response.send(data);
     });
@@ -104,7 +103,6 @@ export class Server {
      * funcion rueba
      */
     app.post('/api/proceso/fake', async (request, response) => {
-      console.log(request.body);
       const data = await this.apiInsert.postConsumirProceso(request.body);
       return response.send(data);
     });
@@ -113,7 +111,6 @@ export class Server {
      * funcion que registra el paso a paso ejecutado por el usuario
      */
     app.post('/api/atencion-paso-campo/create', async (request, response) => {
-      console.log(request.body);
       const data = await this.apiInsert.postAtencionPaso(request.body);
       return response.send(data);
     });
