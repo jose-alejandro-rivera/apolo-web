@@ -57,7 +57,4 @@ api.apoloWeb/node_modules
 /dist
 
 
-
-api.apoloWeb/jest.config.js
-
 package-lock.json
