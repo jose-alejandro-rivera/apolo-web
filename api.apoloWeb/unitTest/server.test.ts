@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import { ApiConsult } from '../src/api/apiConsult';
-import { ApiInsert } from '../src/api/apiInsert';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Inject, Container, Scope } from "typescript-ioc";
-=======
->>>>>>> de892c2e8c65dd85f39769fffcc10553a97a538b
 
 /**
  * @ignore
@@ -14,11 +7,7 @@ const
     cors = require('cors'),
     bodyParser = require('body-parser'),
     Http = require('http'),
-<<<<<<< HEAD
-    //   request = require("request"),
-=======
     request = require("request"),
->>>>>>> de892c2e8c65dd85f39769fffcc10553a97a538b
     axios = require("axios");
 /**
  * constantes de coneccion
@@ -30,10 +19,6 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-<<<<<<< HEAD
-var request = require("request");
-=======
->>>>>>> de892c2e8c65dd85f39769fffcc10553a97a538b
 var base_url = "http://localhost:8080/api/";
 
 
@@ -47,22 +32,7 @@ describe('pruebas de enrrutamiento api.apoloWeb', () => {
 
     describe("GET /", function () {
 
-        it('prueba alistamiento de categorias coneccion al back', function (done) {
-            const url = base_url + "flujo/categorias";
-            request.get(url, function (error, response, body) {
-                expect(response.statusCode).toBe(200);
-                done();
-            });
-        });
-
-        it('prueba validacion de enteros', function (done) {
-            const url = base_url + "flujo/categorias";
-            request.get(url, function (error, response, body) {
-                const categorias: any[] = body;
-                expect(response.statusCode).toBe(200);
-                done();
-            });
-        });
+     
 
         it('prueba de alistamiento de categorias', function (done) {
             const url = base_url + "testCategoria";

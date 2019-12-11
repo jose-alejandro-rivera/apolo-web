@@ -13,7 +13,7 @@
             <div *ngFor="let paso of ListaPasos">
                 <div *ngIf="pasoActual==paso.Id_Paso">
                     <label class="apolo-text-title-content">
-                       {{paso.NomPaso}}
+                        {{paso.NomPaso}}
                     </label>
                     <p>{{paso.Descripcion}}</p>
                     <!--Paso tipo desicion-->
@@ -44,7 +44,8 @@
                                     </label>
                                 </div>
                                 <div class="col-4">
-                                    <select name="select" (change)="resultadoCuestionario($event,cuestionarioCampo.Id_CuestionarioCampo)"
+                                    <select name="select"
+                                        (change)="resultadoCuestionario($event,cuestionarioCampo.Id_CuestionarioCampo)"
                                         *ngIf="cuestionarioCampo.NomCampo=='ListaSiNo'" required>
                                         <option value="" selected>Sin Selección</option>
                                         <option value="1">SI</option>
@@ -58,12 +59,12 @@
                             <!-- Proceso -->
                             <div class="col-12">
                                 <label style="visibility: hidden">
-                                   {{procesoPaso.Descripcion}}
+                                    {{procesoPaso.Descripcion}}
                                 </label>
                             </div>
                             <div class="col text-center" *ngIf="!finflujo">
-                                <button type="button" class="flujo-button-procesar flujo-fuente" style="visibility: hidden"
-                                    (click)="ejecutarProceso($event)">OK</button>
+                                <button type="button" class="flujo-button-procesar flujo-fuente"
+                                    style="visibility: hidden" (click)="ejecutarProceso($event)">OK</button>
                             </div>
                             <div *ngIf="response" role="alert">
                                 <div class="flujo-text-content">
@@ -81,17 +82,37 @@
                     </div>
                     <!--Fin Paso tipo actividad-->
                     <div class="col text-center" *ngIf="finflujo">
+
+                        <div *ngIf="finflujo">
+                            <div>
+                                <div class="col-12">
+                                    <label class="">
+                                        ¿La atención fue solucionada de manera exitosa?
+                                    </label>
+                                </div>
+                                <div class="col-4">
+                                    <select name="select"
+                                        (change)="resultadoCuestionario($event,0)"
+                                        required>
+                                        <option value="" selected>Sin Selección</option>
+                                        <option value="1">SI</option>
+                                        <option value="0">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <button type="button" class="flujo-button-procesar flujo-fuente align-items-center"
                             (click)="finalizarAtencion(paso.Id_Paso)">Finalizar</button>
                     </div>
 
                     <div>
-                            <button type="button" class="flujo-button-atras flujo-fuente"
-                                *ngIf="paso.Id_Paso != info.CodPaso_Inicial" (click)="Atras(paso.Id_Paso)">Atras</button>
-        
-                            <button type="button" class="flujo-button-siguiente flujo-fuente"
-                            *ngIf="!finflujo" (click)="RegistrarAtencionPaso(paso.Id_Paso)">Siguiente</button>
-                        </div>
+                        <button type="button" class="flujo-button-atras flujo-fuente"
+                            *ngIf="paso.Id_Paso != info.CodPaso_Inicial" (click)="Atras(paso.Id_Paso)">Atras</button>
+
+                        <button type="button" class="flujo-button-siguiente flujo-fuente" *ngIf="!finflujo"
+                            (click)="RegistrarAtencionPaso(paso.Id_Paso)">Siguiente</button>
+                    </div>
                 </div>
             </div>
 
