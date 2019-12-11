@@ -14,10 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.11",
-<<<<<<< HEAD
     "@types/node": "^12.12.17",
-=======
->>>>>>> de892c2e8c65dd85f39769fffcc10553a97a538b
     "babel-jest": "^24.9.0",
     "concurrently": "^2.2.0",
     "cross-env": "^6.0.3",
@@ -25,12 +22,8 @@
     "nodemon": "^1.19.4",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.5.4",
-<<<<<<< HEAD
-    "typescript": "^3.7.2"
-=======
     "typescript": "^3.7.2",
     "webpack": "^2.1.0-beta.22"
->>>>>>> de892c2e8c65dd85f39769fffcc10553a97a538b
   },
   "dependencies": {
     "@angular/core": "^8.2.14",
