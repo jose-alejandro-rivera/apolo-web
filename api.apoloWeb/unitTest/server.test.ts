@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 import { ApiConsult } from '../src/api/apiConsult';
 import { ApiInsert } from '../src/api/apiInsert';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Inject, Container, Scope } from "typescript-ioc";
+=======
+>>>>>>> de892c2e8c65dd85f39769fffcc10553a97a538b
 
 /**
  * @ignore
@@ -11,7 +14,11 @@ const
     cors = require('cors'),
     bodyParser = require('body-parser'),
     Http = require('http'),
+<<<<<<< HEAD
     //   request = require("request"),
+=======
+    request = require("request"),
+>>>>>>> de892c2e8c65dd85f39769fffcc10553a97a538b
     axios = require("axios");
 /**
  * constantes de coneccion
@@ -23,7 +30,10 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+<<<<<<< HEAD
 var request = require("request");
+=======
+>>>>>>> de892c2e8c65dd85f39769fffcc10553a97a538b
 var base_url = "http://localhost:8080/api/";
 
 
