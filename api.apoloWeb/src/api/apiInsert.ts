@@ -1,5 +1,3 @@
-
-import { Inject, Container } from "typescript-ioc";
 import { Router } from 'express';
 /**
  * constantes de coneccion 

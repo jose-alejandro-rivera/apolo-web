@@ -375,13 +375,15 @@ export class AtencionComponentsComponent implements OnInit {
     });
   }
 
-  /**
+ /**
    * metodo que realiza la finalizaciond ell metodo
+   * la 
    * @param Id_Paso 
    */
   finalizarAtencion(Id_Paso: number) {
     this.pasoActual = 0;
     this.decisionSeleccionada = 0;
+    if (this.finflujo){
     this.atencionSoluciona="1";
     // Se realiza el registro del paso final
     this.RegistrarAtencionPaso(Id_Paso);
@@ -389,6 +391,7 @@ export class AtencionComponentsComponent implements OnInit {
       localStorage.setItem('dataFlujoCat','');
       //Se redirije a la pagina de inicio 
       this.router.navigate(['home/componet']);
+    }
   }
 
 }

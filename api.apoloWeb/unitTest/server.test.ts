@@ -1,7 +1,3 @@
-import { ApiConsult } from '../src/api/apiConsult';
-import { ApiInsert } from '../src/api/apiInsert';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Inject, Container, Scope } from "typescript-ioc";
 
 /**
  * @ignore
@@ -36,22 +32,7 @@ describe('pruebas de enrrutamiento api.apoloWeb', () => {
 
     describe("GET /", function () {
 
-        it('prueba alistamiento de categorias coneccion al back', function (done) {
-            const url = base_url + "flujo/categorias";
-            request.get(url, function (error, response, body) {
-                expect(response.statusCode).toBe(200);
-                done();
-            });
-        });
-
-        it('prueba validacion de enteros', function (done) {
-            const url = base_url + "flujo/categorias";
-            request.get(url, function (error, response, body) {
-                const categorias: any[] = body;
-                expect(response.statusCode).toBe(200);
-                done();
-            });
-        });
+     
 
         it('prueba de alistamiento de categorias', function (done) {
             const url = base_url + "testCategoria";
