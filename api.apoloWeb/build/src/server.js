@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const apiConsult_1 = require("./api/apiConsult");
 const apiInsert_1 = require("./api/apiInsert");
+const service_pasoMocks_1 = require("./mocks/service.pasoMocks");
 const typescript_ioc_1 = require("typescript-ioc");
 /**
  * constantes de coneccion
@@ -45,9 +46,13 @@ class Server {
          */
         this.apiConsult = typescript_ioc_1.Container.get(apiConsult_1.ApiConsult);
         /**
-         * variqble que contiene las fnciones de insercion
+         * variable que contiene las funciones de insercion
          */
         this.apiInsert = typescript_ioc_1.Container.get(apiInsert_1.ApiInsert);
+        /**
+         * variable que contine los mocks para pruebas unitarias
+         */
+        this.serviceMocks = typescript_ioc_1.Container.get(service_pasoMocks_1.ServicePasoMock);
         this.router();
     }
     /**
@@ -88,7 +93,6 @@ class Server {
          * funcion que realiza la cracion de la atencion
          */
         app.post('/api/atencion/create/', (request, response) => __awaiter(this, void 0, void 0, function* () {
-            console.log(request.body);
             const data = yield this.apiInsert.postCrearAtencion(request.body);
             return response.send(data);
         }));
@@ -96,7 +100,6 @@ class Server {
          * funcion rueba
          */
         app.post('/api/proceso/fake', (request, response) => __awaiter(this, void 0, void 0, function* () {
-            console.log(request.body);
             const data = yield this.apiInsert.postConsumirProceso(request.body);
             return response.send(data);
         }));
@@ -104,8 +107,23 @@ class Server {
          * funcion que registra el paso a paso ejecutado por el usuario
          */
         app.post('/api/atencion-paso-campo/create', (request, response) => __awaiter(this, void 0, void 0, function* () {
-            console.log(request.body);
             const data = yield this.apiInsert.postAtencionPaso(request.body);
+            return response.send(data);
+        }));
+        //---------------------tests-------------------
+        app.get('/api/testCategoria', (request, response) => __awaiter(this, void 0, void 0, function* () {
+            console.log('usted esta aqui');
+            const data = yield this.serviceMocks.categoriasData;
+            return response.send(data);
+        }));
+        app.get('/api/testListFlujos', (request, response) => __awaiter(this, void 0, void 0, function* () {
+            console.log('usted esta aqui');
+            const data = yield this.serviceMocks.FlujosCategoriaData;
+            return response.send(data);
+        }));
+        app.get('/api/testPasosFlujo', (request, response) => __awaiter(this, void 0, void 0, function* () {
+            console.log('usted esta aqui');
+            const data = yield this.serviceMocks.FlujoData;
             return response.send(data);
         }));
     }

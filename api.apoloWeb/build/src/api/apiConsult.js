@@ -31,6 +31,8 @@ app.use(bodyParser.urlencoded({
  */
 class ApiConsult {
     constructor(router) {
+        this.res = null;
+        this.url = null;
     }
     /**
      * funcion que consulta las categorias
@@ -38,8 +40,8 @@ class ApiConsult {
     getCategoriasFlujo() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let res = yield axios.get('http://localhost:3000/api/flujo/categorias');
-                return res.data;
+                this.res = yield axios.get('http://localhost:3000/api/flujo/categorias');
+                return this.res.data;
             }
             catch (error) {
                 console.error(error);
@@ -53,9 +55,9 @@ class ApiConsult {
     getFlujoPorCategoria(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                var url = "http://localhost:3000/api/flujos/por/categorias/" + id;
-                let res = yield axios.get(url);
-                return res.data;
+                this.url = "http://localhost:3000/api/flujos/por/categorias/" + id;
+                this.res = yield axios.get(this.url);
+                return this.res.data;
             }
             catch (error) {
                 console.error(error);
@@ -69,9 +71,9 @@ class ApiConsult {
     getPasosCategoria(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                var url = "http://localhost:3000/api/flujo/list/" + id;
-                let res = yield axios.get(url);
-                return res.data;
+                this.url = "http://localhost:3000/api/flujo/list/" + id;
+                this.res = yield axios.get(this.url);
+                return this.res.data;
             }
             catch (error) {
                 console.error(error);

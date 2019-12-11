@@ -31,6 +31,8 @@ app.use(bodyParser.urlencoded({
  */
 class ApiInsert {
     constructor(router) {
+        this.res = null;
+        this.url = null;
     }
     /**
      * funcion que crea la atencion
@@ -39,9 +41,9 @@ class ApiInsert {
     postCrearAtencion(params) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                var url = "http://localhost:3000/api/atencion/create";
-                let res = yield axios.post(url, params);
-                return res.data;
+                this.url = "http://localhost:3000/api/atencion/create";
+                this.res = yield axios.post(this.url, params);
+                return this.res.data;
             }
             catch (error) {
                 console.error(error);
@@ -51,12 +53,12 @@ class ApiInsert {
     /**
      * funcion de prueba
      */
-    postConsumirProceso(params) {
+    postConsumirProceso(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                var url = "http://localhost:3000/api/proceso/fake";
-                let res = yield axios.post(url, params);
-                return res.data;
+                this.url = "http://localhost:3000/api/proceso/fake";
+                this.res = yield axios.post(this.url, body);
+                return this.res.data;
             }
             catch (error) {
                 console.error(error);
@@ -66,12 +68,12 @@ class ApiInsert {
     /**
      * funcion que crea la funcion
      */
-    postAtencionPaso(params) {
+    postAtencionPaso(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                var url = "http://localhost:3000/api/atencion-paso-campo/create";
-                let res = yield axios.post(url, params);
-                return res.data;
+                this.url = "http://localhost:3000/api/atencion-paso-campo/create";
+                this.res = yield axios.post(this.url, data);
+                return this.res.data;
             }
             catch (error) {
                 console.error(error);
