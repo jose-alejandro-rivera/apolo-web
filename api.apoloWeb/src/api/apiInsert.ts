@@ -25,19 +25,24 @@ app.use(bodyParser.urlencoded({
  * clase de insercion en la base de datos
  */
 export class ApiInsert {
-
-  constructor(
+  private res : any;
+  private url: any;
+    constructor(
     router: Router) {
+      this.res = null;
+      this.url = null;
   }
+
+ 
   /**
    * funcion que crea la atencion
    * @param params 
    */
   async  postCrearAtencion(params: any) {
     try {
-      var url = "http://localhost:3000/api/atencion/create";
-      let res = await axios.post(url, params);
-      return res.data;
+      this.url = "http://localhost:3000/api/atencion/create";
+      this.res = await axios.post(this.url, params);
+      return this.res.data;
     } catch (error) {
       console.error(error)
     }
@@ -45,11 +50,11 @@ export class ApiInsert {
   /**
    * funcion de prueba
    */
-  async postConsumirProceso(params) {
+  async postConsumirProceso(body) {
     try {
-      var url = "http://localhost:3000/api/proceso/fake";
-      let res = await axios.post(url, params);
-      return res.data;
+      this.url = "http://localhost:3000/api/proceso/fake";
+      this.res = await axios.post(this.url, body);
+      return this.res.data;
     } catch (error) {
       console.error(error)
     }
@@ -57,11 +62,11 @@ export class ApiInsert {
   /**
    * funcion que crea la funcion
    */
-  async postAtencionPaso(params) {
+  async postAtencionPaso(data) {
     try {
-      var url = "http://localhost:3000/api/atencion-paso-campo/create";
-      let res = await axios.post(url, params);
-      return res.data;
+      this.url = "http://localhost:3000/api/atencion-paso-campo/create";
+      this.res = await axios.post(this.url, data);
+      return this.res.data;
     } catch (error) {
       console.error(error)
     }

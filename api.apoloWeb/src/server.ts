@@ -1,7 +1,9 @@
-import { ApiConsult } from './api/apiConsult'
-import { ApiInsert } from './api/apiInsert'
+import { ApiConsult } from './api/apiConsult';
+import { ApiInsert } from './api/apiInsert';
+import { ServicePasoMock } from './mocks/service.pasoMocks';
 import { Inject, Container } from "typescript-ioc";
 import { Express } from 'express';
+import { async } from '@angular/core/testing';
 
 /**
  * constantes de coneccion 
@@ -41,9 +43,14 @@ export class Server {
    */
   apiConsult: ApiConsult = Container.get(ApiConsult);
   /**
-   * variqble que contiene las fnciones de insercion
+   * variable que contiene las funciones de insercion
    */
   apiInsert: ApiInsert = Container.get(ApiInsert);
+  /**
+   * variable que contine los mocks para pruebas unitarias
+   */
+  serviceMocks: ServicePasoMock = Container.get(ServicePasoMock);
+
   constructor() {
     this.router();
   }
@@ -89,7 +96,6 @@ export class Server {
      * funcion que realiza la cracion de la atencion
      */
     app.post('/api/atencion/create/', async (request, response) => {
-      console.log(request.body);
       const data = await this.apiInsert.postCrearAtencion(request.body);
       return response.send(data);
     });
@@ -97,7 +103,6 @@ export class Server {
      * funcion rueba
      */
     app.post('/api/proceso/fake', async (request, response) => {
-      console.log(request.body);
       const data = await this.apiInsert.postConsumirProceso(request.body);
       return response.send(data);
     });
@@ -106,14 +111,40 @@ export class Server {
      * funcion que registra el paso a paso ejecutado por el usuario
      */
     app.post('/api/atencion-paso-campo/create', async (request, response) => {
-      console.log(request.body);
       const data = await this.apiInsert.postAtencionPaso(request.body);
       return response.send(data);
     });
+
+
+    //---------------------tests-------------------
+
+    app.get('/api/testCategoria', async (request, response) => {
+      console.log('usted esta aqui')
+      const data = await this.serviceMocks.categoriasData;
+      return  response.send(data);
+    });
+
+    app.get('/api/testListFlujos', async (request, response) => {
+      console.log('usted esta aqui')
+      const data = await this.serviceMocks.FlujosCategoriaData;
+      return  response.send(data);
+    });
+
+    app.get('/api/testPasosFlujo', async (request, response) => {
+      console.log('usted esta aqui')
+      const data = await this.serviceMocks.FlujoData;
+      return  response.send(data);
+    });
+
+
+
   }
+
+
 }
 /**
  * variable que inicialilza el server
  */
 let serverApi = new Server();
+
 

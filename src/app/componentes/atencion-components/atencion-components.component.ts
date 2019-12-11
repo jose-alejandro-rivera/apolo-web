@@ -2,6 +2,8 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, É
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 import { Subject, Subscription } from 'rxjs';
 import { IServiceResponse } from '../../interfaces/serviceResponse';
+import { Router, RouterStateSnapshot } from '@angular/router';
+
 /**
  * constante que obtiene la url del api web
  */
@@ -86,7 +88,7 @@ export class AtencionComponentsComponent implements OnInit {
    * validar con ejecucion del proceso
    */
   pruebaproceso: any;//validar con el proceso de crear
-  respuestaProcesoActual: IServiceResponse ={ data:{status : 200 , response : "proceso ejecutado exitosamente"} };
+  respuestaProcesoActual: IServiceResponse = { data: { status: 200, response: "proceso ejecutado exitosamente" } };
   /**
    * variable que obtiene el listado de pasos
    */
@@ -103,6 +105,10 @@ export class AtencionComponentsComponent implements OnInit {
    * variable que obtiene el paso actual
    */
   actualPaso: any;
+  /**
+   * variable que valida la solucion del paso 
+   */
+  atencionSoluciona:any;
 
   /**
    * 
@@ -110,8 +116,10 @@ export class AtencionComponentsComponent implements OnInit {
    */
   constructor(
     private atencionService: EjecucionAtencionService,
+    private router: Router,
   ) {
     this.atencionComponente = true;
+    this.atencionSoluciona="0";
   }
 
   /**
@@ -288,7 +296,7 @@ export class AtencionComponentsComponent implements OnInit {
     };
     this.response = true;
     let url = URL + 'proceso/fake/';
-    this.atencionService.postData(url, this.consumirProceso).subscribe((data:IServiceResponse) => {
+    this.atencionService.postData(url, this.consumirProceso).subscribe((data: IServiceResponse) => {
       this.respuestaProcesoActual = data;
       return this.respuestaProcesoActual;
     })
@@ -310,7 +318,7 @@ export class AtencionComponentsComponent implements OnInit {
       CodAtencion: this.atencionService.idAtencion,
       CodPaso: Id_Paso,
       Secuencia: 1,
-      Soluciona: "0"
+      Soluciona: this.atencionSoluciona
     };
     // informacion para determinar que contiene el paso a registrar
     const cuestionario = this.info.Cuestionarios.find(x => x.Id_Paso == Id_Paso);
@@ -322,21 +330,21 @@ export class AtencionComponentsComponent implements OnInit {
         CodProceso: proceso.Id_Proceso,
         TipoServicio: proceso.TipoServicio,
         Servicio: proceso.Servicio,
-        Request:  proceso.TipoServicio,
+        Request: proceso.TipoServicio,
         Response: respuestaProceso
       };
       atencionProcesoSalida = {
         CodProcesoSalida: proceso.Id_ProcesoSalida,
-        Valor:  respuestaProceso
+        Valor: respuestaProceso
       };
     } else {
       atencionProceso = {
-        "CodAtencionPaso" : "",
-        "CodProceso" : "",
-        "TipoServicio" : "",
-        "Servicio" : "",
-        "Request" : "",
-        "Response" : ""	
+        "CodAtencionPaso": "",
+        "CodProceso": "",
+        "TipoServicio": "",
+        "Servicio": "",
+        "Request": "",
+        "Response": ""
       };
       atencionProcesoSalida = {
         "CodProcesoSalida": "",
@@ -360,7 +368,7 @@ export class AtencionComponentsComponent implements OnInit {
     let url = URL + 'atencion-paso-campo/create';
     //Registro de atencion paso y retorno del ID ATENCION PASO creado
     this.atencionService.postData(url, data).toPromise().then((res: IServiceResponse) => {
-      if (res.data.status == 200) {
+      if (res.data.status == 200 && this.atencionSoluciona== "0") {
         //llamar al siguiente paso
         this.Siguiente(Id_Paso);
       }
@@ -369,12 +377,18 @@ export class AtencionComponentsComponent implements OnInit {
 
   /**
    * metodo que realiza la finalizaciond ell metodo
-   * @param event 
+   * @param Id_Paso 
    */
-  finalizarAtencion(event) {
+  finalizarAtencion(Id_Paso: number) {
     this.pasoActual = 0;
     this.decisionSeleccionada = 0;
-
+    this.atencionSoluciona="1";
+    // Se realiza el registro del paso final
+    this.RegistrarAtencionPaso(Id_Paso);
+      this.atencionComponente = false;
+      localStorage.setItem('dataFlujoCat','');
+      //Se redirije a la pagina de inicio 
+      this.router.navigate(['home/componet']);
   }
 
 }
