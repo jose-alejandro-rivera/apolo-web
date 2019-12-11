@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   /**
    * variable que evalua la visualizacion del componente
    */
-  private homeComponent: Boolean;
+  private homeComponent: boolean;
   /**
    * variable que evalia el envio de la informacion
    */
