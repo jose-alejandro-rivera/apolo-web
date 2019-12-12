@@ -5,7 +5,7 @@ import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.serv
 /**
  * constante que obtiene la url del api web
  */
-const URL = 'http://localhost:8080/api/';
+const URL = 'http://10.203.221.51:8080/api/';
 
 /**
  * componente que obtiene las categorias y los flujos asociados
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   /**
    * variable que obtiene el listado de flujos
    */
-  private flujoList: any;
+  public flujoList: any;
   /**
    * variable que itera el id del flujo seleccionado
    */
@@ -30,19 +30,19 @@ export class HomeComponent implements OnInit {
   /**
    * variable que obtiene el formulario del componente
    */
-  private formCategorias: FormGroup;
+  public formCategorias: FormGroup;
   /**
    * variable que evalua la visualizacion del componente
    */
-  private homeComponent: boolean;
+  public homeComponent: boolean;
   /**
    * variable que evalia el envio de la informacion
    */
-  private submitted = false;
+  public submitted = false;
   /**
    * variabe que conprende el listado de categorias
    */
-  private arregloCat: any;
+  public arregloCat: any;
   /**
    * variable de usuario
    */
