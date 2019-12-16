@@ -40,8 +40,6 @@ export class EjecucionAtencionService {
    * @param body informacion a enviar al api
    */
   postData(url, body){
-    const myObjStr = JSON.stringify(body);
-    console.log(myObjStr);
     return this.http.post(url,body);
   }
 
@@ -59,7 +57,6 @@ export class EjecucionAtencionService {
    */
   saveInfoFlujo(data){
     this.info = data[0].Flujo[0];
-    console.log(this.info);
   }
 
 } 
