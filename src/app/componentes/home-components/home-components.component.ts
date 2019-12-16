@@ -2,10 +2,12 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewIni
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
+import { IRecordResponse } from '../../interfaces/recordResponse';
+
 /**
  * constante que obtiene la url del api web
  */
-const URL = 'http://10.203.221.51:8080/api/';
+const URL = 'http://localhost:8080/api/';
 
 /**
  * componente que obtiene las categorias y los flujos asociados
@@ -145,9 +147,10 @@ export class HomeComponent implements OnInit {
       };
       this.homeComponent = false;
       let url = URL + 'atencion/create/';
-      this.ejecucionAtencionService.postData(url, this.crearCategoria).subscribe(data => {
+      this.ejecucionAtencionService.postData(url, this.crearCategoria).subscribe((data:IRecordResponse) => {
+        console.log(data);
         localStorage.setItem('dataFlujoCat', JSON.stringify(this.idFlujo));
-        this.ejecucionAtencionService.saveIdAtencion(data[0].Id_Atencion);
+        this.ejecucionAtencionService.saveIdAtencion(data.recordsets[0].Id_Atencion);
         this.router.navigate(['flujo/list']);
         return false;
       });
