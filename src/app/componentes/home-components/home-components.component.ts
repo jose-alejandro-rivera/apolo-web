@@ -3,11 +3,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 import { IRecordResponse } from '../../interfaces/recordResponse';
+import { AppGlobals } from 'src/app/app.global';
 
-/**
- * constante que obtiene la url del api web
- */
-const URL = 'http://10.203.221.51:8080/api/';
 
 /**
  * componente que obtiene las categorias y los flujos asociados
@@ -15,7 +12,8 @@ const URL = 'http://10.203.221.51:8080/api/';
 @Component({
   selector: 'app-home-components',
   templateUrl: './home-components.component.html',
-  styleUrls: ['./home-components.component.css']
+  styleUrls: ['./home-components.component.css'],
+  providers: [AppGlobals]
 })
 /**
  * provee el almacenamiento de categorias y de flujos 
@@ -54,6 +52,8 @@ export class HomeComponent implements OnInit {
    */
   private crearCategoria: any;
 
+  public URL: any;
+
   /**
    * variables de secion
    * @param ejecucionAtencionService 
@@ -63,12 +63,14 @@ export class HomeComponent implements OnInit {
   constructor(
     private ejecucionAtencionService: EjecucionAtencionService,
     private router: Router,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private global: AppGlobals) {
     this.homeComponent = true;
+    this.URL=this.global.url;
     localStorage.setItem('dataFlujoCat', '');
     this.formCategorias = this.formBuilder.group({
       idCategoria: ['', Validators.required],
-      idflujo: ['', Validators.required]
+      idflujo: ['', Validators.required]      
     });
   }
 
@@ -79,7 +81,7 @@ export class HomeComponent implements OnInit {
    * @returns arregloCat: lisatado de las categorias activas
    */
   ngOnInit() {
-    this.ejecucionAtencionService.getData(URL + 'flujo/categorias').subscribe((res: any) => {
+    this.ejecucionAtencionService.getData(this.URL + 'flujo/categorias').subscribe((res: any) => {
       setTimeout(() => {
         this.arregloCat = res;
       }, 100)
@@ -114,7 +116,7 @@ export class HomeComponent implements OnInit {
           this.usuario = categoria.Usuario
         }
       }
-      let url = URL + 'flujos/por/categorias/' + idCatefgoria;
+      let url = this.URL + 'flujos/por/categorias/' + idCatefgoria;
       this.ejecucionAtencionService.getData(url).subscribe((data) => {
         this.flujoList = data;
       })
@@ -146,11 +148,11 @@ export class HomeComponent implements OnInit {
         "CodFlujo": this.idFlujo.Id_Flujo
       };
       this.homeComponent = false;
-      let url = URL + 'atencion/create/';
+      let url = this.URL + 'atencion/create/';
       this.ejecucionAtencionService.postData(url, this.crearCategoria).subscribe((data:IRecordResponse) => {
         console.log(data);
         localStorage.setItem('dataFlujoCat', JSON.stringify(this.idFlujo));
-        this.ejecucionAtencionService.saveIdAtencion(data.recordsets[0].Id_Atencion);
+        this.ejecucionAtencionService.saveIdAtencion(data.recordset[0].Id_Atencion);
         this.router.navigate(['flujo/list']);
         return false;
       });
