@@ -18,19 +18,16 @@
                     <p>{{paso.Descripcion}}</p>
                     <!--Paso tipo desicion-->
                     <div *ngIf="paso.Id_TipoPaso == 2">
-                        <div class="col-4">
-                            <select name="select" (change)="DecisionSeleccionada($event.target.value)"
-                                *ngIf="decisionActual.NomCampo=='ListaSiNo'" required>
-                                <option value="" selected aria-placeholder="--">Sin Selección</option>
-                                <option value="1">SI</option>
-                                <option value="0">NO</option>
-                            </select>
-                            <select name="select" (change)="DecisionSeleccionada($event.target.value)"
-                                *ngIf="decisionActual.NomCampo=='ListaTecnicaComercial'" required>
-                                <option value="" selected>Sin Selección</option>
-                                <option value="1">TÉCNICA</option>
-                                <option value="0">COMERCIAL</option>
-                            </select>
+                        <div *ngFor="let cuestionarioCampo of cuestionarioPaso">
+                            <div class="col-4">
+                                <!-- select dinamico por el campoLista -->
+                                <select name="select" (change)="DecisionSeleccionada($event.target.value)" required>
+                                    <option value="" selected aria-placeholder="--">Sin Selección</option>
+                                    <option value="{{campolist.Llave}}"
+                                        *ngFor="let campolist of cuestionarioCampo.CampoLista">
+                                        {{campolist.Descripcion}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <!--Paso tipo actividad-->
@@ -44,12 +41,14 @@
                                     </label>
                                 </div>
                                 <div class="col-4">
+                                    <!-- select dinamico por el campoLista -->
                                     <select name="select"
                                         (change)="resultadoCuestionario($event,cuestionarioCampo.Id_CuestionarioCampo)"
-                                        *ngIf="cuestionarioCampo.NomCampo=='ListaSiNo'" required>
+                                        required>
                                         <option value="" selected>Sin Selección</option>
-                                        <option value="1">SI</option>
-                                        <option value="0">NO</option>
+                                        <option value="{{campolist.Llave}}"
+                                            *ngFor="let campolist of cuestionarioCampo.CampoLista">
+                                            {{campolist.Descripcion}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -91,9 +90,7 @@
                                     </label>
                                 </div>
                                 <div class="col-4">
-                                    <select name="select"
-                                        (change)="resultadoCuestionario($event,0)"
-                                        required>
+                                    <select name="select" (change)="DecisionSeleccionada($event.target.value)" required>
                                         <option value="" selected>Sin Selección</option>
                                         <option value="1">SI</option>
                                         <option value="0">NO</option>

@@ -96,6 +96,7 @@ export class Server {
      * funcion que realiza la cracion de la atencion
      */
     app.post('/api/atencion/create/', async (request, response) => {
+      console.log('crear atencion')
       const data = await this.apiInsert.postCrearAtencion(request.body);
       return response.send(data);
     });

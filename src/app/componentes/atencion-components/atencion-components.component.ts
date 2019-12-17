@@ -1,13 +1,12 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, ɵConsole } from '@angular/core';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
-import { Subject, Subscription } from 'rxjs';
 import { IServiceResponse } from '../../interfaces/serviceResponse';
 import { Router, RouterStateSnapshot } from '@angular/router';
 
 /**
  * constante que obtiene la url del api web
  */
-const URL = 'http://localhost:8080/api/';
+const URL = 'http://10.203.221.51:8080/api/';
 /**
  * componente que comprende la estructura de una atencion 
  */
@@ -113,6 +112,7 @@ export class AtencionComponentsComponent implements OnInit {
   /**
    * 
    * @param atencionService 
+   * @param router 
    */
   constructor(
     private atencionService: EjecucionAtencionService,
@@ -382,15 +382,16 @@ export class AtencionComponentsComponent implements OnInit {
    */
   finalizarAtencion(Id_Paso: number) {
     this.pasoActual = 0;
-    this.decisionSeleccionada = 0;
-    if (this.finflujo){
-    this.atencionSoluciona="1";
+    if (this.decisionSeleccionada != ''){
+    this.atencionSoluciona=this.decisionSeleccionada;
     // Se realiza el registro del paso final
     this.RegistrarAtencionPaso(Id_Paso);
       this.atencionComponente = false;
       localStorage.setItem('dataFlujoCat','');
       //Se redirije a la pagina de inicio 
       this.router.navigate(['home/componet']);
+    }else{
+      console.log('seleccione una opcion');
     }
   }
 

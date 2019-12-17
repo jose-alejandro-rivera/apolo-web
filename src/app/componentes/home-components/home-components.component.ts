@@ -2,10 +2,12 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewIni
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
+import { IRecordResponse } from '../../interfaces/recordResponse';
+
 /**
  * constante que obtiene la url del api web
  */
-const URL = 'http://localhost:8080/api/';
+const URL = 'http://10.203.221.51:8080/api/';
 
 /**
  * componente que obtiene las categorias y los flujos asociados
@@ -22,7 +24,7 @@ export class HomeComponent implements OnInit {
   /**
    * variable que obtiene el listado de flujos
    */
-  private flujoList: any;
+  public flujoList: any;
   /**
    * variable que itera el id del flujo seleccionado
    */
@@ -30,19 +32,19 @@ export class HomeComponent implements OnInit {
   /**
    * variable que obtiene el formulario del componente
    */
-  private formCategorias: FormGroup;
+  public formCategorias: FormGroup;
   /**
    * variable que evalua la visualizacion del componente
    */
-  private homeComponent: boolean;
+  public homeComponent: boolean;
   /**
    * variable que evalia el envio de la informacion
    */
-  private submitted = false;
+  public submitted = false;
   /**
    * variabe que conprende el listado de categorias
    */
-  private arregloCat: any;
+  public arregloCat: any;
   /**
    * variable de usuario
    */
@@ -145,9 +147,10 @@ export class HomeComponent implements OnInit {
       };
       this.homeComponent = false;
       let url = URL + 'atencion/create/';
-      this.ejecucionAtencionService.postData(url, this.crearCategoria).subscribe(data => {
+      this.ejecucionAtencionService.postData(url, this.crearCategoria).subscribe((data:IRecordResponse) => {
+        console.log(data);
         localStorage.setItem('dataFlujoCat', JSON.stringify(this.idFlujo));
-        this.ejecucionAtencionService.saveIdAtencion(data[0].Id_Atencion);
+        this.ejecucionAtencionService.saveIdAtencion(data.recordsets[0].Id_Atencion);
         this.router.navigate(['flujo/list']);
         return false;
       });
