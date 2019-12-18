@@ -1,6 +1,6 @@
 import { ApiConsult } from './api/apiConsult';
 import { ApiInsert } from './api/apiInsert';
-import { ServicePasoMock } from './mocks/service.pasoMocks';
+import { ServicePasoMock } from '../unitTest/mocks/service.pasoMocks';
 import { Inject, Container } from "typescript-ioc";
 import { Express } from 'express';
 import { async } from '@angular/core/testing';

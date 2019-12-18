@@ -21,12 +21,6 @@ app.use(bodyParser.urlencoded({
 
 var base_url = "http://localhost:8080/api/";
 
-
-const PORT = process.env.PORT || 8081;
-const server = app.listen(PORT, () => {
-});
-
-
 describe('pruebas de enrrutamiento api.apoloWeb', () => {
 
     describe("GET /", function () {
