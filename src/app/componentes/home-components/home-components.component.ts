@@ -2,9 +2,17 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewIni
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
+<<<<<<< HEAD
+/**
+ * constante que obtiene la url del api web
+ */
+//const URL = 'http://10.203.221.51:8080/api/';
+const URL = 'http://localhost:8080/api/';
+=======
 import { IRecordResponse } from '../../interfaces/recordResponse';
 import { AppGlobals } from 'src/app/app.global';
 
+>>>>>>> master
 
 /**
  * componente que obtiene las categorias y los flujos asociados
