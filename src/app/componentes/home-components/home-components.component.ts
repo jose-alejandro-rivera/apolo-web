@@ -5,7 +5,8 @@ import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.serv
 /**
  * constante que obtiene la url del api web
  */
-const URL = 'http://10.203.221.51:8080/api/';
+//const URL = 'http://10.203.221.51:8080/api/';
+const URL = 'http://localhost:8080/api/';
 
 /**
  * componente que obtiene las categorias y los flujos asociados
