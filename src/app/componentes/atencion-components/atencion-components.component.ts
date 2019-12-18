@@ -1,21 +1,25 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, ɵConsole } from '@angular/core';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
-import { Subject, Subscription } from 'rxjs';
 import { IServiceResponse } from '../../interfaces/serviceResponse';
 import { Router, RouterStateSnapshot } from '@angular/router';
+import { AppGlobals } from 'src/app/app.global';
 
 /**
+<<<<<<< HEAD
  * constante que obtiene la url del api web
  */
 //const URL = 'http://10.203.221.51:8080/api/';
 const URL = 'http://localhost:8080/api/';
 /**
+=======
+>>>>>>> master
  * componente que comprende la estructura de una atencion 
  */
 @Component({
   selector: 'app-atencion-components',
   templateUrl: './atencion-components.component.html',
-  styleUrls: ['./atencion-components.component.css']
+  styleUrls: ['./atencion-components.component.css'],
+  providers: [AppGlobals]
 })
 /**
  * provee la injeccion de los componentes del flujo seleccionado
@@ -111,16 +115,21 @@ export class AtencionComponentsComponent implements OnInit {
    */
   atencionSoluciona:any;
 
+  URL: any;
+
   /**
    * 
    * @param atencionService 
+   * @param router 
    */
   constructor(
     private atencionService: EjecucionAtencionService,
     private router: Router,
+    private global: AppGlobals
   ) {
     this.atencionComponente = true;
     this.atencionSoluciona="0";
+    this.URL=this.global.url;
   }
 
   /**
@@ -133,7 +142,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
-    let url = URL + 'flujo/list/' + this.idFlujo;
+    let url = this.URL + 'flujo/list/' + this.idFlujo;
     //se obtiene la atencion seleccionada con todos sus componentes
     return this.atencionService.getData(url).toPromise().then(data => {
       let info: any = data;
@@ -296,7 +305,7 @@ export class AtencionComponentsComponent implements OnInit {
       "Servicio": "http://localhost:3000/api/proceso/fake/ok"
     };
     this.response = true;
-    let url = URL + 'proceso/fake/';
+    let url = this.URL + 'proceso/fake/';
     this.atencionService.postData(url, this.consumirProceso).subscribe((data: IServiceResponse) => {
       this.respuestaProcesoActual = data;
       return this.respuestaProcesoActual;
@@ -383,15 +392,16 @@ export class AtencionComponentsComponent implements OnInit {
    */
   finalizarAtencion(Id_Paso: number) {
     this.pasoActual = 0;
-    this.decisionSeleccionada = 0;
-    if (this.finflujo){
-    this.atencionSoluciona="1";
+    if (this.decisionSeleccionada != ''){
+    this.atencionSoluciona=this.decisionSeleccionada;
     // Se realiza el registro del paso final
     this.RegistrarAtencionPaso(Id_Paso);
       this.atencionComponente = false;
       localStorage.setItem('dataFlujoCat','');
       //Se redirije a la pagina de inicio 
       this.router.navigate(['home/componet']);
+    }else{
+      console.log('seleccione una opcion');
     }
   }
 

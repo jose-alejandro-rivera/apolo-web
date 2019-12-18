@@ -1,33 +1,13 @@
 
 import { Router } from 'express';
-/**
- * constantes de coneccion 
- */
-const express = require('express'),
-  cors = require('cors'),//**** */
-  bodyParser = require('body-parser'),//**** */
-  http = require('http'),//
-  request = require("request"),
-  axios = require("axios");//
-
-// Express settings
-/**
- * constantes de coneccion
- */
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+import axios from "axios";
 /**
  * clase de consulta en la base de datos
  */
 export class ApiConsult {
   private res : any;
   private url: any;
-  constructor(
-    router: Router) {
+  constructor() {
       this.res = null;
       this.url = null;
   }
@@ -68,14 +48,6 @@ export class ApiConsult {
     } catch (error) {
       console.error(error)
     }
-    /**
-     * 
-     */
-    app.use(function (err, req, res, next) {
-      console.error(err.message);
-      if (!err.statusCode) err.statusCode = 500;
-      res.status(err.statusCode).send(err.message);
-    });
 
   }
 }
