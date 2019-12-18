@@ -5,7 +5,6 @@ import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.serv
 import { IRecordResponse } from '../../interfaces/recordResponse';
 import { AppGlobals } from 'src/app/app.global';
 
-
 /**
  * componente que obtiene las categorias y los flujos asociados
  */
