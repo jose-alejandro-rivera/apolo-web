@@ -113,9 +113,15 @@ export class AtencionComponentsComponent implements OnInit {
   /**
    * variable que valida la solucion del paso 
    */
-  atencionSoluciona:any;
-
+  atencionSoluciona: any;
+  /**
+   * variable que trae la url de conexion
+   */
   URL: any;
+  /**
+   * variable que calcula el proceso 
+   */
+  seleccionObligatoria: boolean;
 
   /**
    * 
@@ -128,8 +134,9 @@ export class AtencionComponentsComponent implements OnInit {
     private global: AppGlobals
   ) {
     this.atencionComponente = true;
-    this.atencionSoluciona="0";
-    this.URL=this.global.url;
+    this.atencionSoluciona = "0";
+    this.URL = this.global.url;
+    this.seleccionObligatoria=false;
   }
 
   /**
@@ -177,19 +184,24 @@ export class AtencionComponentsComponent implements OnInit {
    */
   resultadoCuestionario(event, IdCuestionarioCampo: number) {
     //resultado de la seleccion del cuestionario
-    const selectCuestionarioCampo = {
-      CodCuestionarioCampo: IdCuestionarioCampo,
-      ValorCampo: event.target.value
-    };
-    //validacion de la existencia del campoCuestionario guardado
-    if (this.atencionCuestionario.find(x => x.CodCuestionarioCampo == IdCuestionarioCampo)) {
-      for (let i = 0; i < this.atencionCuestionario.length; i++) {
-        if (this.atencionCuestionario.find(x => x.CodCuestionarioCampo == IdCuestionarioCampo)) {
-          this.atencionCuestionario[i] = selectCuestionarioCampo;
+    if (event.target.value==="") {
+      console.log("seleccione una opcion")
+
+    }else{
+      const selectCuestionarioCampo = {
+        CodCuestionarioCampo: IdCuestionarioCampo,
+        ValorCampo: event.target.value
+      };
+      //validacion de la existencia del campoCuestionario guardado
+      if (this.atencionCuestionario.find(x => x.CodCuestionarioCampo == IdCuestionarioCampo)) {
+        for (let i = 0; i < this.atencionCuestionario.length; i++) {
+          if (this.atencionCuestionario.find(x => x.CodCuestionarioCampo == IdCuestionarioCampo)) {
+            this.atencionCuestionario[i] = selectCuestionarioCampo;
+          }
         }
+      } else {
+        this.atencionCuestionario.push(selectCuestionarioCampo);
       }
-    } else {
-      this.atencionCuestionario.push(selectCuestionarioCampo);
     }
   }
 
@@ -378,29 +390,29 @@ export class AtencionComponentsComponent implements OnInit {
     let url = URL + 'atencion-paso-campo/create';
     //Registro de atencion paso y retorno del ID ATENCION PASO creado
     this.atencionService.postData(url, data).toPromise().then((res: IServiceResponse) => {
-      if (res.data.status == 200 && this.atencionSoluciona== "0") {
+      if (res.data.status == 200 && this.atencionSoluciona == "0") {
         //llamar al siguiente paso
         this.Siguiente(Id_Paso);
       }
     });
   }
 
- /**
-   * metodo que realiza la finalizaciond ell metodo
-   * la 
-   * @param Id_Paso 
-   */
+  /**
+    * metodo que realiza la finalizaciond ell metodo
+    * la 
+    * @param Id_Paso 
+    */
   finalizarAtencion(Id_Paso: number) {
     this.pasoActual = 0;
-    if (this.decisionSeleccionada != ''){
-    this.atencionSoluciona=this.decisionSeleccionada;
-    // Se realiza el registro del paso final
-    this.RegistrarAtencionPaso(Id_Paso);
+    if (this.decisionSeleccionada != '') {
+      this.atencionSoluciona = this.decisionSeleccionada;
+      // Se realiza el registro del paso final
+      this.RegistrarAtencionPaso(Id_Paso);
       this.atencionComponente = false;
-      localStorage.setItem('dataFlujoCat','');
+      localStorage.setItem('dataFlujoCat', '');
       //Se redirije a la pagina de inicio 
       this.router.navigate(['home/componet']);
-    }else{
+    } else {
       console.log('seleccione una opcion');
     }
   }
