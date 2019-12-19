@@ -16,12 +16,6 @@
                         {{paso.NomPaso}}
                     </label>
                     <p>{{paso.Descripcion}}</p>
-                    <!--Paso tipo desicion-->
-                    <!-- <div *ngIf="paso.Id_TipoPaso == 2" class="alert alert-danger alert-dismissible fade show">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <strong>Success!</strong> Indicates a successful or positive action.
-                    </div> -->
-
                     <div *ngIf="paso.Id_TipoPaso == 2">
                         <div *ngFor="let cuestionarioCampo of cuestionarioPaso">
                             <div class="col-4">
