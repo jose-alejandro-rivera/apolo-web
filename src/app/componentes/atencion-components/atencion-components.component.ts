@@ -4,17 +4,6 @@ import { IServiceResponse } from '../../interfaces/serviceResponse';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { AppGlobals } from 'src/app/app.global';
 
-/**
-<<<<<<< HEAD
- * constante que obtiene la url del api web
- */
-//const URL = 'http://10.203.221.51:8080/api/';
-const URL = 'http://localhost:8080/api/';
-/**
-=======
->>>>>>> master
- * componente que comprende la estructura de una atencion 
- */
 @Component({
   selector: 'app-atencion-components',
   templateUrl: './atencion-components.component.html',
