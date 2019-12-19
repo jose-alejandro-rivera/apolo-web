@@ -116,7 +116,7 @@ export class HomeComponent implements OnInit {
         }
       }
       let url = this.URL + 'flujos/por/categorias/' + idCatefgoria;
-      this.ejecucionAtencionService.getData(url).subscribe((data) => {
+      this.ejecucionAtencionService.getData(url).subscribe((data: IRecordResponse) => {
         this.flujoList = data;
       })
     }
@@ -149,7 +149,6 @@ export class HomeComponent implements OnInit {
       this.homeComponent = false;
       let url = this.URL + 'atencion/create/';
       this.ejecucionAtencionService.postData(url, this.crearCategoria).subscribe((data:IRecordResponse) => {
-        console.log(data);
         localStorage.setItem('dataFlujoCat', JSON.stringify(this.idFlujo));
         this.ejecucionAtencionService.saveIdAtencion(data.recordset[0].Id_Atencion);
         this.router.navigate(['flujo/list']);
