@@ -364,7 +364,7 @@ export class AtencionComponentsComponent implements OnInit {
     }
     // Si el paso tiene cuestionario
     if (cuestionario) {
-      atencionCampo = this.atencionCuestionario;
+      atencionCampo =  this.atencionCuestionario;
     } else {
       atencionCampo = [];
     }
@@ -376,6 +376,7 @@ export class AtencionComponentsComponent implements OnInit {
       atencionProcesoSalida: atencionProcesoSalida,
       atencionCampo: atencionCampo
     }];
+    console.log(data);
     let url = URL + 'atencion-paso-campo/create';
     //Registro de atencion paso y retorno del ID ATENCION PASO creado
     this.atencionService.postData(url, data).toPromise().then((res: IServiceResponse) => {
