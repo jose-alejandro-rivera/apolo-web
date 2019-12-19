@@ -111,6 +111,12 @@ export class AtencionComponentsComponent implements OnInit {
    * variable que calcula el proceso 
    */
   seleccionObligatoria: boolean;
+  /**
+   * variable que contiene el mensaje del campo obligatorio
+   */
+  mensajeCampoObligatorio:any;
+
+  seleccionPositiva:boolean;
 
   /**
    * 
@@ -126,6 +132,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.atencionSoluciona = "0";
     this.URL = this.global.url;
     this.seleccionObligatoria=false;
+    // this.seleccionPositiva=true;
   }
 
   /**
@@ -173,14 +180,20 @@ export class AtencionComponentsComponent implements OnInit {
    */
   resultadoCuestionario(event, IdCuestionarioCampo: number) {
     //resultado de la seleccion del cuestionario
-    if (event.target.value==="") {
-      console.log("seleccione una opcion")
-
+    if (event.target.value===""|| event.target.value==0) {
+      let seleccionCampo= this.cuestionarioPaso.find(x=> x.Id_CuestionarioCampo == IdCuestionarioCampo);
+      if(seleccionCampo.Obligatorio){
+        this.mensajeCampoObligatorio=this.global.mensajeCampoObligatorio;
+        this.seleccionObligatoria=true;
+        this.seleccionPositiva=true;
+      }
     }else{
       const selectCuestionarioCampo = {
         CodCuestionarioCampo: IdCuestionarioCampo,
         ValorCampo: event.target.value
       };
+      this.seleccionObligatoria=false;
+      // this.seleccionPositiva=false;
       //validacion de la existencia del campoCuestionario guardado
       if (this.atencionCuestionario.find(x => x.CodCuestionarioCampo == IdCuestionarioCampo)) {
         for (let i = 0; i < this.atencionCuestionario.length; i++) {
@@ -190,7 +203,10 @@ export class AtencionComponentsComponent implements OnInit {
         }
       } else {
         this.atencionCuestionario.push(selectCuestionarioCampo);
-      }
+      }  
+      // if (this.cuestionarioPaso.length==this.atencionCuestionario.length){
+      //   this.seleccionPositiva=false;
+      // }
     }
   }
 
@@ -376,8 +392,7 @@ export class AtencionComponentsComponent implements OnInit {
       atencionProcesoSalida: atencionProcesoSalida,
       atencionCampo: atencionCampo
     }];
-    console.log(data);
-    let url = URL + 'atencion-paso-campo/create';
+    let url = this.URL + 'atencion-paso-campo/create';
     //Registro de atencion paso y retorno del ID ATENCION PASO creado
     this.atencionService.postData(url, data).toPromise().then((res: IServiceResponse) => {
       if (res.data.status == 200 && this.atencionSoluciona == "0") {
