@@ -21,13 +21,6 @@ app.use(bodyParser.urlencoded({
 
 var base_url = "http://localhost:8080/api/";
 
-
-const PORT = process.env.PORT || 8081;
-const server = app.listen(PORT, () => {
-    console.log('Connected to port ' + PORT)
-});
-
-
 describe('pruebas de enrrutamiento api.apoloWeb', () => {
 
     describe("GET /", function () {
@@ -46,7 +39,6 @@ describe('pruebas de enrrutamiento api.apoloWeb', () => {
         it('prueba de alistamiento de flujos', function (done) {
             const url = base_url + "testListFlujos";
             request.get(url, function (error, response, body) {
-                console.log(body)
                 expect(response).not.toBe(null);
                 done();
             });
@@ -55,7 +47,6 @@ describe('pruebas de enrrutamiento api.apoloWeb', () => {
         it('prueba de alistamiento de los pasos del flujo', function (done) {
             const url = base_url + "testPasosFlujo";
             request.get(url, function (error, response, body) {
-                console.log(body)
                 expect(response).not.toBe(null);
                 done();
             });
