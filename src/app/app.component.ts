@@ -54,6 +54,7 @@ export class AppComponent {
  * funcion que itera los componentes
  */
 ngOnInit() {
+  debugger
   localStorage.setItem('home_component','');
   localStorage.setItem('atencion_component','');
  
@@ -61,6 +62,14 @@ ngOnInit() {
   this.atencionComponet = localStorage.getItem('atencion_component');
 
   console.log(this.homeAtencion, this.atencionComponet);
+  
+  this.enrutamiento();
+}
+
+enrutamiento() {
+  this.router.navigate(['home/componet']);
+  return false;
+
 }
 }
 

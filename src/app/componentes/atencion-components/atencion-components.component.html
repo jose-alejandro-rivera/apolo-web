@@ -9,19 +9,14 @@
             <div class="col-12 flujo-text ">
                 <label> Flujo: {{nombreFlujo}}</label>
             </div>
-
             <div *ngFor="let paso of ListaPasos">
                 <div *ngIf="pasoActual==paso.Id_Paso">
-                    <label class="apolo-text-title-content">
-                        {{paso.NomPaso}}
-                    </label>
-                    <p>{{paso.Descripcion}}</p>
-
-                    <!-- <div *ngIf="seleccionObligatoria" class="alert alert-danger alert-dismissible fade show">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <strong>Atencion!</strong>{{mensajeCampoObligatorio}}
-                    </div> -->
-                    
+                    <div class="col-12">
+                        <label class="apolo-text-title-content">
+                            {{paso.NomPaso}}
+                        </label>
+                        <p>{{paso.Descripcion}}</p>
+                    </div>
                     <!--Paso tipo desicion-->
                     <div *ngIf="paso.Id_TipoPaso == 2">
                         <div *ngFor="let cuestionarioCampo of cuestionarioPaso">
@@ -104,9 +99,11 @@
                                 </div>
                             </div>
                         </div>
-
                         <button type="button" class="flujo-button-procesar flujo-fuente align-items-center"
-                            (click)="finalizarAtencion(paso.Id_Paso)">Finalizar</button>
+                            [disabled]="seleccionPositiva" (click)="finalizarAtencion(paso.Id_Paso)">Finalizar</button>
+                    </div>
+                    <div *ngIf="seleccionObligatoria" class="col-12 apolo-alert-danger   ">
+                        <strong>Atencion!</strong>{{mensajeCampoCuestionario}}
                     </div>
 
                     <div>
@@ -115,8 +112,7 @@
 
                         <button type="button" class="flujo-button-siguiente flujo-fuente" *ngIf="!finflujo"
                             (click)="RegistrarAtencionPaso(paso.Id_Paso)"
-                            [disabled]="seleccionPositiva"
-                            >Siguiente</button>
+                            [disabled]="seleccionPositiva">Siguiente</button>
                     </div>
                 </div>
             </div>

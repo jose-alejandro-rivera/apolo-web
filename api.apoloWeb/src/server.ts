@@ -50,6 +50,7 @@ export class Server {
    * variable que contine los mocks para pruebas unitarias
    */
   serviceMocks: ServicePasoMock = Container.get(ServicePasoMock);
+  public data: any;
 
   constructor() {
     this.router();
@@ -72,8 +73,12 @@ export class Server {
      * funcion que obtiene el listado de las categorias
      */
     app.get('/api/flujo/categorias', async (request, response) => {
-      const data = await this.apiConsult.getCategoriasFlujo();
-      return response.send(data);
+      this.data = await this.apiConsult.getCategoriasFlujo();
+      if (!this.data){
+        console.log('usted esta aqui')
+        this.data = await this.serviceMocks.categoriasData;
+      }
+      return response.send(this.data);
     });
 
     /**

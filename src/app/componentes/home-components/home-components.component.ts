@@ -65,11 +65,11 @@ export class HomeComponent implements OnInit {
     private formBuilder: FormBuilder,
     private global: AppGlobals) {
     this.homeComponent = true;
-    this.URL=this.global.url;
+    this.URL = this.global.url;
     localStorage.setItem('dataFlujoCat', '');
     this.formCategorias = this.formBuilder.group({
       idCategoria: ['', Validators.required],
-      idflujo: ['', Validators.required]      
+      idflujo: ['', Validators.required]
     });
   }
 
@@ -80,6 +80,7 @@ export class HomeComponent implements OnInit {
    * @returns arregloCat: lisatado de las categorias activas
    */
   ngOnInit() {
+
     this.ejecucionAtencionService.getData(this.URL + 'flujo/categorias').subscribe((res: any) => {
       setTimeout(() => {
         this.arregloCat = res;
@@ -117,7 +118,7 @@ export class HomeComponent implements OnInit {
       }
       let url = this.URL + 'flujos/por/categorias/' + idCatefgoria;
       this.ejecucionAtencionService.getData(url).subscribe((data: IRecordResponse) => {
-        this.flujoList = data;
+        this.flujoList = data.recordsets[0];
       })
     }
   }
@@ -148,7 +149,7 @@ export class HomeComponent implements OnInit {
       };
       this.homeComponent = false;
       let url = this.URL + 'atencion/create/';
-      this.ejecucionAtencionService.postData(url, this.crearCategoria).subscribe((data:IRecordResponse) => {
+      this.ejecucionAtencionService.postData(url, this.crearCategoria).subscribe((data: IRecordResponse) => {
         localStorage.setItem('dataFlujoCat', JSON.stringify(this.idFlujo));
         this.ejecucionAtencionService.saveIdAtencion(data.recordset[0].Id_Atencion);
         this.router.navigate(['flujo/list']);
@@ -156,4 +157,5 @@ export class HomeComponent implements OnInit {
       });
     }
   }
+
 }
