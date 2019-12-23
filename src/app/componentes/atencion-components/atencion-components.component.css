@@ -81,6 +81,40 @@
     width: 100%;
     float: left;
 }
+.apolo-alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1.25rem;
+}
+
+.flujo-button-atras{
+    border-radius: 8px !important;
+    background-color: #00A9E0;
+    width: 120px;
+    height: 30px;
+    color: #ffffff;
+    font-size: 12px;
+}
+.flujo-button-siguiente{
+    float: right;
+    border-radius: 8px !important;
+    background-color: #00A9E0;
+    width: 120px;
+    height: 30px;
+    color: #ffffff;
+    font-size: 12px;
+}
+.flujo-button-procesar{
+    float: center;
+    border-radius: 8px !important;
+    background-color: #00A9E0;
+    width: 120px;
+    height: 30px;
+    color: #ffffff;
+    font-size: 12px;
+}
 @media only screen and (max-width: 768px) {    
     .flujo-label {
         display: none;
