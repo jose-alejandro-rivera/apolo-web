@@ -124,12 +124,6 @@ export class Server {
 
     //---------------------tests-------------------
 
-    app.get('/api/testCategoria', async (request, response) => {
-      console.log('usted esta aqui')
-      const data = await this.serviceMocks.categoriasData;
-      return  response.send(data);
-    });
-
     app.get('/api/testListFlujos', async (request, response) => {
       console.log('usted esta aqui')
       const data = await this.serviceMocks.FlujosCategoriaData;
