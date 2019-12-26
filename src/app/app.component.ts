@@ -54,7 +54,6 @@ export class AppComponent {
  * funcion que itera los componentes
  */
 ngOnInit() {
-  debugger
   localStorage.setItem('home_component','');
   localStorage.setItem('atencion_component','');
  

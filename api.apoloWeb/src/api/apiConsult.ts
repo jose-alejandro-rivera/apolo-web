@@ -50,4 +50,19 @@ export class ApiConsult {
     }
 
   }
+
+
+  /**
+   * funcion que consulta el ultimo paso registrado para el boton atras
+   * @param id: id de la atencion
+   */
+  async  getUltimoAtencionPaso(id) {
+    try {
+      this.url = 'http://localhost:3000/api/atencion/lastStep/' + id;
+      this.res = await axios.get(this.url);
+      return this.res.data;
+    } catch (error) {
+      console.error(error)
+    }
+  }
 }
