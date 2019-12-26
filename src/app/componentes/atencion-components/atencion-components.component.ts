@@ -114,9 +114,9 @@ export class AtencionComponentsComponent implements OnInit {
   /**
    * variable que contiene el mensaje del campo obligatorio
    */
-  mensajeCampoObligatorio:any;
+  mensajeCampoCuestionario: any;
 
-  seleccionPositiva:boolean;
+  seleccionPositiva: boolean;
 
    /**
    * variable que guarda la ruta que va seleccionado en un flujo cuando el paso tiene multiples opciones
@@ -136,8 +136,8 @@ export class AtencionComponentsComponent implements OnInit {
     this.atencionComponente = true;
     this.atencionSoluciona = "0";
     this.URL = this.global.url;
-    this.seleccionObligatoria=false;
-    // this.seleccionPositiva=true;
+    this.seleccionObligatoria = false;
+    this.seleccionPositiva = true;
   }
 
   /**
@@ -185,19 +185,19 @@ export class AtencionComponentsComponent implements OnInit {
    */
   resultadoCuestionario(event, IdCuestionarioCampo: number) {
     //resultado de la seleccion del cuestionario
-    if (event.target.value===""|| event.target.value==0) {
-      let seleccionCampo= this.cuestionarioPaso.find(x=> x.Id_CuestionarioCampo == IdCuestionarioCampo);
-      if(seleccionCampo.Obligatorio){
-        this.mensajeCampoObligatorio=this.global.mensajeCampoObligatorio;
-        this.seleccionObligatoria=true;
-        this.seleccionPositiva=true;
+    if (event.target.value === "" || event.target.value == 0) {
+      let seleccionCampo = this.cuestionarioPaso.find(x => x.Id_CuestionarioCampo == IdCuestionarioCampo);
+      if (seleccionCampo.Obligatorio) {
+        this.mensajeCampoCuestionario = this.global.mensajeCampoObligatorio;
+        this.seleccionObligatoria = true;
+        this.seleccionPositiva = true;
       }
-    }else{
+    } else {
       const selectCuestionarioCampo = {
         CodCuestionarioCampo: IdCuestionarioCampo,
         ValorCampo: event.target.value
       };
-      this.seleccionObligatoria=false;
+      this.seleccionObligatoria = false;
       // this.seleccionPositiva=false;
       //validacion de la existencia del campoCuestionario guardado
       if (this.atencionCuestionario.find(x => x.CodCuestionarioCampo == IdCuestionarioCampo)) {
@@ -208,10 +208,10 @@ export class AtencionComponentsComponent implements OnInit {
         }
       } else {
         this.atencionCuestionario.push(selectCuestionarioCampo);
-      }  
-      // if (this.cuestionarioPaso.length==this.atencionCuestionario.length){
-      //   this.seleccionPositiva=false;
-      // }
+      } 
+      if (this.cuestionarioPaso.length == this.atencionCuestionario.length) {
+        this.seleccionPositiva = false;
+      }
     }
   }
 
@@ -223,6 +223,8 @@ export class AtencionComponentsComponent implements OnInit {
    */
   DecisionSeleccionada(value) {
     this.decisionSeleccionada = value;
+    this.seleccionObligatoria = false;
+    this.seleccionPositiva = false;
   }
 
   /**
@@ -251,6 +253,10 @@ export class AtencionComponentsComponent implements OnInit {
           siguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso && x.CodPaso_Destino == op.CodPaso_Destino);
           this.finflujo = siguientePaso[0].finaliza;
           this.guardaTrazabilidad(Id_Paso,op.CodPaso_Destino);
+        } else if (this.decisionSeleccionada === '') {
+          this.mensajeCampoCuestionario = this.global.mensajeCampoDecision;
+          this.seleccionObligatoria = true;
+          this.seleccionPositiva = true;
         }
       }
     } else {
@@ -264,10 +270,16 @@ export class AtencionComponentsComponent implements OnInit {
     if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
       this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
       this.CuestionarioActual = true;
+      this.seleccionPositiva = true;
     } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
       this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
       this.ProcesoActual = true;
     }
+    if(this.finflujo){
+      this.seleccionPositiva = true;
+    }
+    this.decisionSeleccionada='';
+
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
 
@@ -319,6 +331,8 @@ export class AtencionComponentsComponent implements OnInit {
     if (this.actualPaso.finaliza) {
       this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == this.pasoActual);
     }
+    this.seleccionObligatoria = false;
+    this.seleccionPositiva = false;
     this.finflujo = this.actualPaso.finaliza;
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
@@ -459,6 +473,7 @@ export class AtencionComponentsComponent implements OnInit {
       atencionProcesoSalida: atencionProcesoSalida,
       atencionCampo: atencionCampo
     }];
+    console.log(JSON.stringify(data));
     let url = this.URL + 'atencion-paso-campo/create';
     //Registro de atencion paso y retorno del ID ATENCION PASO creado
     this.atencionService.postData(url, data).toPromise().then((res: IServiceResponse) => {

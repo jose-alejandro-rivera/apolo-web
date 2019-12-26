@@ -1,3 +1,4 @@
+
 /**
  * @ignore
  */
@@ -6,6 +7,7 @@ const
     cors = require('cors'),
     bodyParser = require('body-parser'),
     Http = require('http'),
+    request = require("request"),
     axios = require("axios");
 /**
  * constantes de coneccion
@@ -18,15 +20,39 @@ app.use(bodyParser.urlencoded({
 }));
 
 var base_url = "http://localhost:8080/api/";
-const request = require('supertest')
 
 describe('pruebas de enrrutamiento api.apoloWeb', () => {
 
     describe("GET /", function () {
-        
-        it('prueba listado de categorias', async () => {
-            const res = await request(app).get('http://localhost:3000/api/flujo/categorias')
-            expect(res.statusCode).toEqual(200);
-          })
+
+     
+
+        it('prueba de alistamiento de categorias', function (done) {
+            const url = base_url + "/api/flujo/categorias";
+            request.get(url, function (error, response, body) {
+                expect(response).not.toBe(null);
+                done();
+            });
+        });
+
+
+        it('prueba de alistamiento de flujos', function (done) {
+            const url = base_url + "testListFlujos";
+            request.get(url, function (error, response, body) {
+                expect(response).not.toBe(null);
+                done();
+            });
+        });
+
+        it('prueba de alistamiento de los pasos del flujo', function (done) {
+            const url = base_url + "testPasosFlujo";
+            request.get(url, function (error, response, body) {
+                expect(response).not.toBe(null);
+                done();
+            });
+        });
+
     });
+
+
 });
