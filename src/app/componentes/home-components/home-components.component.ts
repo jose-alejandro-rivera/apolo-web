@@ -117,7 +117,7 @@ export class HomeComponent implements OnInit {
       }
       let url = this.URL + 'flujos/por/categorias/' + idCatefgoria;
       this.ejecucionAtencionService.getData(url).subscribe((data: IRecordResponse) => {
-        this.flujoList = data;
+        this.flujoList = data.recordsets[0];
       })
     }
   }
