@@ -70,6 +70,14 @@ export class Server {
     });
 
     /**
+     * funcion que obtiene ultimo paso de una atencion
+     */
+    app.get('/api/atencion/lastStep/:id', async (request, response) => {
+      const data = await this.apiConsult.getUltimoAtencionPaso(request.params.id);
+      return response.send(data);
+    });
+
+    /**
      * funcion que obtiene el listado de las categorias
      */
     app.get('/api/flujo/categorias', async (request, response) => {
