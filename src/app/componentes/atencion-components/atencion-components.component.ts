@@ -118,6 +118,11 @@ export class AtencionComponentsComponent implements OnInit {
 
   seleccionPositiva: boolean;
 
+   /**
+   * variable que guarda la ruta que va seleccionado en un flujo cuando el paso tiene multiples opciones
+   */
+  mapaTrazabilidad: any[] = [];
+
   /**
    * 
    * @param atencionService 
@@ -203,7 +208,8 @@ export class AtencionComponentsComponent implements OnInit {
         }
       } else {
         this.atencionCuestionario.push(selectCuestionarioCampo);
-      } if (this.cuestionarioPaso.length == this.atencionCuestionario.length) {
+      } 
+      if (this.cuestionarioPaso.length == this.atencionCuestionario.length) {
         this.seleccionPositiva = false;
       }
     }
@@ -246,6 +252,7 @@ export class AtencionComponentsComponent implements OnInit {
           //buscar el siguiente paso 
           siguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso && x.CodPaso_Destino == op.CodPaso_Destino);
           this.finflujo = siguientePaso[0].finaliza;
+          this.guardaTrazabilidad(Id_Paso,op.CodPaso_Destino);
         } else if (this.decisionSeleccionada === '') {
           this.mensajeCampoCuestionario = this.global.mensajeCampoDecision;
           this.seleccionObligatoria = true;
@@ -285,8 +292,32 @@ export class AtencionComponentsComponent implements OnInit {
   Atras(Id_Paso: number) {
     this.limpiarVariables();
     this.response = false;
+    //inicio logica de paso anterior : encuentra paso 
     const anteriorPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso);
-    this.pasoActual = anteriorPaso.CodPaso_Origen;
+    //evalua opciones del paso
+    const opPasoAnterior =  this.info.FlujoPasos.filter(x => x.CodPaso_Origen ==  anteriorPaso.CodPaso_Origen);
+    //si tiene mas de una ipocion consulta el mapa
+    if(opPasoAnterior.length > 1){
+      //cuando el paso anterior es la desicion
+      if(this.mapaTrazabilidad.find(x => x.IdPasoOrigen == anteriorPaso.CodPaso_Origen && x.IdPasoDestino == Id_Paso)){
+        this.pasoActual = anteriorPaso.CodPaso_Origen;
+        const index = this.mapaTrazabilidad.findIndex(x => x.IdPasoOrigen == anteriorPaso.CodPaso_Origen);
+        this.mapaTrazabilidad.splice(index, 1);
+      } else if //cuando hay opcion intermedia antes de llegar a la desicion
+      (this.mapaTrazabilidad.find(x => x.IdPasoOrigen == anteriorPaso.CodPaso_Origen)){
+        this.pasoActual = this.mapaTrazabilidad.find(x => x.IdPasoOrigen == anteriorPaso.CodPaso_Origen).IdPasoDestino;
+        const index = this.mapaTrazabilidad.findIndex(x => x.IdPasoOrigen == anteriorPaso.CodPaso_Origen);
+        this.mapaTrazabilidad.splice(index, 1);
+      }
+      else {
+        this.pasoActual = anteriorPaso.CodPaso_Origen;
+      }
+    } else // cuando solo tiene una unica opcion de paso origen
+    {
+      this.pasoActual = anteriorPaso.CodPaso_Origen;
+    }
+    //fin de logica de paso anterior
+
     this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
     //se evalua la existencia de cuestionario o de un proceso en el paso
     if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
@@ -320,6 +351,34 @@ export class AtencionComponentsComponent implements OnInit {
     this.procesoPaso = [];
     this.finflujo = false;
     this.atencionCuestionario = [];
+  }
+
+  /**
+   * Funcion que demarca la trazabilidad o ruta 
+   *
+   * @Param 
+   * @return variable del ultimo paso
+   */
+  guardaTrazabilidad(Id_Paso,Paso_Elegido) {
+    //mapaTrazabilidad
+    var siguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso);
+    var anteriorPaso = this.info.FlujoPasos.filter(x => x.CodPaso_Destino == Id_Paso);
+    //evalua solo pasos con multiples opciones en destino u origen
+    if(siguientePaso.length > 1 || anteriorPaso.length > 1){
+      //inicia mapa con el primer caso
+      if(this.mapaTrazabilidad.length==0){
+        this.mapaTrazabilidad.push({IdPasoOrigen:Id_Paso,IdPasoDestino:Paso_Elegido});
+      }
+      for (let i = 0; i < this.mapaTrazabilidad.length; i++) {
+        //actualiza el mapa con la nueva ruta o paso seleccinado
+        if (this.mapaTrazabilidad.find(x => x.IdPasoOrigen == Id_Paso)) {
+          this.mapaTrazabilidad[i] = {IdPasoOrigen:Id_Paso,IdPasoDestino:Paso_Elegido};
+        } else //guarda paso seleccionado
+        {
+          this.mapaTrazabilidad.push({IdPasoOrigen:Id_Paso,IdPasoDestino:Paso_Elegido});
+        }
+      }
+     }
   }
 
   /**
@@ -393,9 +452,18 @@ export class AtencionComponentsComponent implements OnInit {
     }
     // Si el paso tiene cuestionario
     if (cuestionario) {
-      atencionCampo = this.atencionCuestionario;
+      atencionCampo =  this.atencionCuestionario;
+      if(!this.atencionCuestionario){
+        atencionCampo = [{
+          "CodCuestionarioCampo" : "",
+          "ValorCampo" : ""
+         }];
+      }
     } else {
-      atencionCampo = [];
+      atencionCampo = [{
+        "CodCuestionarioCampo" : "",
+        "ValorCampo" : ""
+       }];
     }
     // Arma Obj para registro del paso
     // Variable para envio del la informacion
