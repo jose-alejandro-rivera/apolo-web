@@ -5,6 +5,7 @@ import { Router, RouterStateSnapshot } from '@angular/router';
 import { AppGlobals } from 'src/app/app.global';
 import { IRecordResponse } from '../../interfaces/recordResponse';
 import { async } from '@angular/core/testing';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-atencion-components',
@@ -254,7 +255,7 @@ export class AtencionComponentsComponent implements OnInit {
           //buscar el siguiente paso 
           siguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso && x.CodPaso_Destino == op.CodPaso_Destino);
           this.finflujo = siguientePaso[0].finaliza;
-          this.guardaTrazabilidad(Id_Paso, op.CodPaso_Destino);
+          //this.guardaTrazabilidad(Id_Paso, op.CodPaso_Destino);
         } else if (this.decisionSeleccionada === '') {
           this.mensajeCampoCuestionario = this.global.mensajeCampoDecision;
           this.seleccionObligatoria = true;
@@ -307,8 +308,15 @@ export class AtencionComponentsComponent implements OnInit {
         newArray.push(lookupObject[i]);
       }
       //variable de historico sin duplicados
-      this.mapaTrazabilidad = newArray.filter(x => x.CodPaso < Id_Paso);
+      console.log(newArray.length);
+      //let ultimoAtencionPaso =  newArray[newArray.length-1];
+      //newArray.splice(newArray.findIndex(x => x.CodPaso == Id_Paso), 1);
+      this.mapaTrazabilidad = newArray;
       var regPasoAnterior = this.mapaTrazabilidad[this.mapaTrazabilidad.length-1];
+      if(regPasoAnterior.CodPaso==Id_Paso){
+        this.mapaTrazabilidad.splice(this.mapaTrazabilidad.findIndex(x => x.CodPaso == Id_Paso), 1);
+        regPasoAnterior = this.mapaTrazabilidad[this.mapaTrazabilidad.length-1];
+      }
       //pasos a acambiar 
       const anteriorPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso && x.CodPaso_Origen == regPasoAnterior.CodPaso);
       this.pasoActual = anteriorPaso.CodPaso_Origen;
@@ -352,37 +360,6 @@ export class AtencionComponentsComponent implements OnInit {
     this.procesoPaso = [];
     this.finflujo = false;
     this.atencionCuestionario = [];
-  }
-
-  /**
-   * Funcion que demarca la trazabilidad o ruta 
-   *
-   * @Param 
-   * @return variable del ultimo paso
-   */
-  guardaTrazabilidad(Id_Paso, Paso_Elegido) {
-    //mapaTrazabilidad
-    var siguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso);
-    var anteriorPaso = this.info.FlujoPasos.filter(x => x.CodPaso_Destino == Id_Paso);
-    //evalua solo pasos con multiples opciones en destino u origen
-    if (siguientePaso.length > 1 || anteriorPaso.length > 1) {
-      //inicia mapa con el primer caso
-      if (this.mapaTrazabilidad.length == 0) {
-        this.mapaTrazabilidad.push({ IdPasoOrigen: Id_Paso, IdPasoDestino: Paso_Elegido });
-      }
-      for (let i = 0; i < this.mapaTrazabilidad.length; i++) {
-        //actualiza el mapa con la nueva ruta o paso seleccinado
-        if (this.mapaTrazabilidad.find(x => x.IdPasoOrigen == Id_Paso)) {
-          this.mapaTrazabilidad[i] = { IdPasoOrigen: Id_Paso, IdPasoDestino: Paso_Elegido };
-        } else //guarda paso seleccionado
-        {
-          this.mapaTrazabilidad.push({ IdPasoOrigen: Id_Paso, IdPasoDestino: Paso_Elegido });
-        }
-      }
-    }
-
-    console.log("trazabilidad de siguiente guarda paso");
-    console.log(this.mapaTrazabilidad);
   }
 
   /**
