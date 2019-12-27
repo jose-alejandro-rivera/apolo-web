@@ -38,7 +38,7 @@ export class ApiInsert {
    */
   async  postCrearAtencion(params: any) {
     try {
-      this.url = "http://localhost:3000/api/atencion/create";
+      this.url = "http://10.203.221.51:3000/api/atencion/create";
       this.res = await axios.post(this.url, params);
       return this.res.data;
     } catch (error) {
@@ -50,7 +50,7 @@ export class ApiInsert {
    */
   async postConsumirProceso(body) {
     try {
-      this.url = "http://localhost:3000/api/proceso/fake";
+      this.url = "http://10.203.221.51:3000/api/proceso/fake";
       this.res = await axios.post(this.url, body);
       return this.res.data;
     } catch (error) {
@@ -62,7 +62,7 @@ export class ApiInsert {
    */
   async postAtencionPaso(data) {
     try {
-      this.url = "http://localhost:3000/api/atencion-paso-campo/create";
+      this.url = "http://10.203.221.51:3000/api/atencion-paso-campo/create";
       this.res = await axios.post(this.url, data);
       return this.res.data;
     } catch (error) {
