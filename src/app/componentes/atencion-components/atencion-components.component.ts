@@ -126,6 +126,10 @@ export class AtencionComponentsComponent implements OnInit {
   */
   mapaTrazabilidad: any[] = [];
 
+  seleccionCampo:any;
+  url:any;
+
+
   /**
    * 
    * @param atencionService 
@@ -153,9 +157,9 @@ export class AtencionComponentsComponent implements OnInit {
     this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
-    let url = this.URL + 'flujo/list/' + this.idFlujo;
+    this.url = this.URL + 'flujo/list/' + this.idFlujo;
     //se obtiene la atencion seleccionada con todos sus componentes
-    return this.atencionService.getData(url).toPromise().then(data => {
+    return this.atencionService.getData(this.url).toPromise().then(data => {
       let info: any = data;
       info = info.rows[0];
       info = info[0];
@@ -189,8 +193,8 @@ export class AtencionComponentsComponent implements OnInit {
   resultadoCuestionario(event, IdCuestionarioCampo: number) {
     //resultado de la seleccion del cuestionario
     if (event.target.value === "" || event.target.value == 0) {
-      let seleccionCampo = this.cuestionarioPaso.find(x => x.Id_CuestionarioCampo == IdCuestionarioCampo);
-      if (seleccionCampo.Obligatorio) {
+       this.seleccionCampo = this.cuestionarioPaso.find(x => x.Id_CuestionarioCampo == IdCuestionarioCampo);
+      if (this.seleccionCampo.Obligatorio) {
         this.mensajeCampoCuestionario = this.global.mensajeCampoObligatorio;
         this.seleccionObligatoria = true;
         this.seleccionPositiva = true;
@@ -257,6 +261,7 @@ export class AtencionComponentsComponent implements OnInit {
           this.finflujo = siguientePaso[0].finaliza;
           //this.guardaTrazabilidad(Id_Paso, op.CodPaso_Destino);
         } else if (this.decisionSeleccionada === '') {
+
           this.mensajeCampoCuestionario = this.global.mensajeCampoDecision;
           this.seleccionObligatoria = true;
           this.seleccionPositiva = true;
@@ -375,8 +380,8 @@ export class AtencionComponentsComponent implements OnInit {
       "Servicio": "http://localhost:3000/api/proceso/fake/ok"
     };
     this.response = true;
-    let url = this.URL + 'proceso/fake/';
-    this.atencionService.postData(url, this.consumirProceso).subscribe((data: IServiceResponse) => {
+    this.url = this.URL + 'proceso/fake/';
+    this.atencionService.postData(this.url, this.consumirProceso).subscribe((data: IServiceResponse) => {
       this.respuestaProcesoActual = data;
       return this.respuestaProcesoActual;
     })
@@ -454,9 +459,9 @@ export class AtencionComponentsComponent implements OnInit {
       atencionProcesoSalida: atencionProcesoSalida,
       atencionCampo: atencionCampo
     }];
-    let url = this.URL + 'atencion-paso-campo/create';
+    this.url = this.URL + 'atencion-paso-campo/create';
     //Registro de atencion paso y retorno del ID ATENCION PASO creado
-    this.atencionService.postData(url, data).toPromise().then((res: IServiceResponse) => {
+    this.atencionService.postData(this.url, data).toPromise().then((res: IServiceResponse) => {
       if (res.data.status == 200 && this.atencionSoluciona == "0") {
         //llamar al siguiente paso
         this.Siguiente(Id_Paso);
