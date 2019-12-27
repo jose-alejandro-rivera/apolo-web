@@ -15,7 +15,9 @@
                         <label class="apolo-text-title-content">
                             {{paso.NomPaso}}
                         </label>
-                        <p>{{paso.Descripcion}}</p>
+                        <div *ngIf="paso.Id_TipoPaso == 1">
+                            <p>{{paso.Descripcion}}</p>
+                        </div>
                     </div>
                     <!--Paso tipo desicion-->
                     <div *ngIf="paso.Id_TipoPaso == 2">
