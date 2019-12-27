@@ -3,6 +3,9 @@ import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.serv
 import { IServiceResponse } from '../../interfaces/serviceResponse';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { AppGlobals } from 'src/app/app.global';
+import { IRecordResponse } from '../../interfaces/recordResponse';
+import { async } from '@angular/core/testing';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-atencion-components',
@@ -118,10 +121,14 @@ export class AtencionComponentsComponent implements OnInit {
 
   seleccionPositiva: boolean;
 
-   /**
-   * variable que guarda la ruta que va seleccionado en un flujo cuando el paso tiene multiples opciones
-   */
+  /**
+  * variable que guarda la ruta que va seleccionado en un flujo cuando el paso tiene multiples opciones
+  */
   mapaTrazabilidad: any[] = [];
+
+  seleccionCampo:any;
+  url:any;
+
 
   /**
    * 
@@ -150,9 +157,9 @@ export class AtencionComponentsComponent implements OnInit {
     this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
-    let url = this.URL + 'flujo/list/' + this.idFlujo;
+    this.url = this.URL + 'flujo/list/' + this.idFlujo;
     //se obtiene la atencion seleccionada con todos sus componentes
-    return this.atencionService.getData(url).toPromise().then(data => {
+    return this.atencionService.getData(this.url).toPromise().then(data => {
       let info: any = data;
       info = info.rows[0];
       info = info[0];
@@ -186,8 +193,8 @@ export class AtencionComponentsComponent implements OnInit {
   resultadoCuestionario(event, IdCuestionarioCampo: number) {
     //resultado de la seleccion del cuestionario
     if (event.target.value === "" || event.target.value == 0) {
-      let seleccionCampo = this.cuestionarioPaso.find(x => x.Id_CuestionarioCampo == IdCuestionarioCampo);
-      if (seleccionCampo.Obligatorio) {
+       this.seleccionCampo = this.cuestionarioPaso.find(x => x.Id_CuestionarioCampo == IdCuestionarioCampo);
+      if (this.seleccionCampo.Obligatorio) {
         this.mensajeCampoCuestionario = this.global.mensajeCampoObligatorio;
         this.seleccionObligatoria = true;
         this.seleccionPositiva = true;
@@ -208,7 +215,7 @@ export class AtencionComponentsComponent implements OnInit {
         }
       } else {
         this.atencionCuestionario.push(selectCuestionarioCampo);
-      } 
+      }
       if (this.cuestionarioPaso.length == this.atencionCuestionario.length) {
         this.seleccionPositiva = false;
       }
@@ -252,8 +259,9 @@ export class AtencionComponentsComponent implements OnInit {
           //buscar el siguiente paso 
           siguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso && x.CodPaso_Destino == op.CodPaso_Destino);
           this.finflujo = siguientePaso[0].finaliza;
-          this.guardaTrazabilidad(Id_Paso,op.CodPaso_Destino);
+          //this.guardaTrazabilidad(Id_Paso, op.CodPaso_Destino);
         } else if (this.decisionSeleccionada === '') {
+
           this.mensajeCampoCuestionario = this.global.mensajeCampoDecision;
           this.seleccionObligatoria = true;
           this.seleccionPositiva = true;
@@ -275,14 +283,13 @@ export class AtencionComponentsComponent implements OnInit {
       this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
       this.ProcesoActual = true;
     }
-    if(this.finflujo){
+    if (this.finflujo) {
       this.seleccionPositiva = true;
     }
-    this.decisionSeleccionada='';
+    this.decisionSeleccionada = '';
 
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
-
   /**
    * Funcion que realiza la opcion atras del flujo presentando el paso anterior  
    *
@@ -292,49 +299,56 @@ export class AtencionComponentsComponent implements OnInit {
   Atras(Id_Paso: number) {
     this.limpiarVariables();
     this.response = false;
-    //inicio logica de paso anterior : encuentra paso 
-    const anteriorPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso);
-    //evalua opciones del paso
-    const opPasoAnterior =  this.info.FlujoPasos.filter(x => x.CodPaso_Origen ==  anteriorPaso.CodPaso_Origen);
-    //si tiene mas de una ipocion consulta el mapa
-    if(opPasoAnterior.length > 1){
-      //cuando el paso anterior es la desicion
-      if(this.mapaTrazabilidad.find(x => x.IdPasoOrigen == anteriorPaso.CodPaso_Origen && x.IdPasoDestino == Id_Paso)){
-        this.pasoActual = anteriorPaso.CodPaso_Origen;
-        const index = this.mapaTrazabilidad.findIndex(x => x.IdPasoOrigen == anteriorPaso.CodPaso_Origen);
-        this.mapaTrazabilidad.splice(index, 1);
-      } else if //cuando hay opcion intermedia antes de llegar a la desicion
-      (this.mapaTrazabilidad.find(x => x.IdPasoOrigen == anteriorPaso.CodPaso_Origen)){
-        this.pasoActual = this.mapaTrazabilidad.find(x => x.IdPasoOrigen == anteriorPaso.CodPaso_Origen).IdPasoDestino;
-        const index = this.mapaTrazabilidad.findIndex(x => x.IdPasoOrigen == anteriorPaso.CodPaso_Origen);
-        this.mapaTrazabilidad.splice(index, 1);
+    // servicio para validar historial
+    let url = this.URL + 'atencion/lastStep/' + this.atencionService.idAtencion;
+    this.atencionService.getData(url).toPromise().then((data: IRecordResponse) => {
+      var originalArray = data.recordset;
+      var prop = "CodPaso";
+      var newArray = [];
+      var lookupObject = {};
+      for (var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
       }
-      else {
-        this.pasoActual = anteriorPaso.CodPaso_Origen;
+      for (i in lookupObject) {
+        newArray.push(lookupObject[i]);
       }
-    } else // cuando solo tiene una unica opcion de paso origen
-    {
+      //variable de historico sin duplicados
+      console.log(newArray.length);
+      //let ultimoAtencionPaso =  newArray[newArray.length-1];
+      //newArray.splice(newArray.findIndex(x => x.CodPaso == Id_Paso), 1);
+      this.mapaTrazabilidad = newArray;
+      var regPasoAnterior = this.mapaTrazabilidad[this.mapaTrazabilidad.length-1];
+      if(regPasoAnterior.CodPaso==Id_Paso){
+        this.mapaTrazabilidad.splice(this.mapaTrazabilidad.findIndex(x => x.CodPaso == Id_Paso), 1);
+        regPasoAnterior = this.mapaTrazabilidad[this.mapaTrazabilidad.length-1];
+      }
+      //pasos a acambiar 
+      const anteriorPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso && x.CodPaso_Origen == regPasoAnterior.CodPaso);
       this.pasoActual = anteriorPaso.CodPaso_Origen;
-    }
-    //fin de logica de paso anterior
+      this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == regPasoAnterior.CodPaso);
+      ////////////////////////////////////////////////////////
+      //se evalua la existencia de cuestionario o de un proceso en el paso
+      if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
+        this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
+        this.CuestionarioActual = true;
+      } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
+        this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
+        this.ProcesoActual = true;
+      }
+      //se evalua si el anterior paso finaliza la atencion
+      if (this.actualPaso.finaliza) {
+        this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == this.pasoActual);
+      }
+      this.seleccionObligatoria = false;
+      this.seleccionPositiva = false;
+      this.finflujo = this.actualPaso.finaliza;
+      this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
+      ///////////////////////////////////////////////////////
 
-    this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
-    //se evalua la existencia de cuestionario o de un proceso en el paso
-    if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
-      this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
-      this.CuestionarioActual = true;
-    } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
-      this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
-      this.ProcesoActual = true;
-    }
-    //se evalua si el anterior paso finaliza la atencion
-    if (this.actualPaso.finaliza) {
-      this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == this.pasoActual);
-    }
-    this.seleccionObligatoria = false;
-    this.seleccionPositiva = false;
-    this.finflujo = this.actualPaso.finaliza;
-    this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
+    })
+
+
+
   }
 
 
@@ -354,34 +368,6 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
   /**
-   * Funcion que demarca la trazabilidad o ruta 
-   *
-   * @Param 
-   * @return variable del ultimo paso
-   */
-  guardaTrazabilidad(Id_Paso,Paso_Elegido) {
-    //mapaTrazabilidad
-    var siguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso);
-    var anteriorPaso = this.info.FlujoPasos.filter(x => x.CodPaso_Destino == Id_Paso);
-    //evalua solo pasos con multiples opciones en destino u origen
-    if(siguientePaso.length > 1 || anteriorPaso.length > 1){
-      //inicia mapa con el primer caso
-      if(this.mapaTrazabilidad.length==0){
-        this.mapaTrazabilidad.push({IdPasoOrigen:Id_Paso,IdPasoDestino:Paso_Elegido});
-      }
-      for (let i = 0; i < this.mapaTrazabilidad.length; i++) {
-        //actualiza el mapa con la nueva ruta o paso seleccinado
-        if (this.mapaTrazabilidad.find(x => x.IdPasoOrigen == Id_Paso)) {
-          this.mapaTrazabilidad[i] = {IdPasoOrigen:Id_Paso,IdPasoDestino:Paso_Elegido};
-        } else //guarda paso seleccionado
-        {
-          this.mapaTrazabilidad.push({IdPasoOrigen:Id_Paso,IdPasoDestino:Paso_Elegido});
-        }
-      }
-     }
-  }
-
-  /**
    * Funcion que realiza la ejecucion del proceso
    *
    * @Param event: variable que identifica el id del proceso a ejecutar
@@ -394,8 +380,8 @@ export class AtencionComponentsComponent implements OnInit {
       "Servicio": "http://localhost:3000/api/proceso/fake/ok"
     };
     this.response = true;
-    let url = this.URL + 'proceso/fake/';
-    this.atencionService.postData(url, this.consumirProceso).subscribe((data: IServiceResponse) => {
+    this.url = this.URL + 'proceso/fake/';
+    this.atencionService.postData(this.url, this.consumirProceso).subscribe((data: IServiceResponse) => {
       this.respuestaProcesoActual = data;
       return this.respuestaProcesoActual;
     })
@@ -452,18 +438,18 @@ export class AtencionComponentsComponent implements OnInit {
     }
     // Si el paso tiene cuestionario
     if (cuestionario) {
-      atencionCampo =  this.atencionCuestionario;
-      if(!this.atencionCuestionario){
+      atencionCampo = this.atencionCuestionario;
+      if (!this.atencionCuestionario) {
         atencionCampo = [{
-          "CodCuestionarioCampo" : "",
-          "ValorCampo" : ""
-         }];
+          "CodCuestionarioCampo": "",
+          "ValorCampo": ""
+        }];
       }
     } else {
       atencionCampo = [{
-        "CodCuestionarioCampo" : "",
-        "ValorCampo" : ""
-       }];
+        "CodCuestionarioCampo": "",
+        "ValorCampo": ""
+      }];
     }
     // Arma Obj para registro del paso
     // Variable para envio del la informacion
@@ -473,10 +459,9 @@ export class AtencionComponentsComponent implements OnInit {
       atencionProcesoSalida: atencionProcesoSalida,
       atencionCampo: atencionCampo
     }];
-    console.log(JSON.stringify(data));
-    let url = this.URL + 'atencion-paso-campo/create';
+    this.url = this.URL + 'atencion-paso-campo/create';
     //Registro de atencion paso y retorno del ID ATENCION PASO creado
-    this.atencionService.postData(url, data).toPromise().then((res: IServiceResponse) => {
+    this.atencionService.postData(this.url, data).toPromise().then((res: IServiceResponse) => {
       if (res.data.status == 200 && this.atencionSoluciona == "0") {
         //llamar al siguiente paso
         this.Siguiente(Id_Paso);
