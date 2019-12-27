@@ -126,8 +126,8 @@ export class AtencionComponentsComponent implements OnInit {
   */
   mapaTrazabilidad: any[] = [];
 
-  seleccionCampo:any;
-  url:any;
+  seleccionCampo: any;
+  url: any;
 
 
   /**
@@ -193,7 +193,7 @@ export class AtencionComponentsComponent implements OnInit {
   resultadoCuestionario(event, IdCuestionarioCampo: number) {
     //resultado de la seleccion del cuestionario
     if (event.target.value === "" || event.target.value == 0) {
-       this.seleccionCampo = this.cuestionarioPaso.find(x => x.Id_CuestionarioCampo == IdCuestionarioCampo);
+      this.seleccionCampo = this.cuestionarioPaso.find(x => x.Id_CuestionarioCampo == IdCuestionarioCampo);
       if (this.seleccionCampo.Obligatorio) {
         this.mensajeCampoCuestionario = this.global.mensajeCampoObligatorio;
         this.seleccionObligatoria = true;
@@ -302,27 +302,29 @@ export class AtencionComponentsComponent implements OnInit {
     // servicio para validar historial
     let url = this.URL + 'atencion/lastStep/' + this.atencionService.idAtencion;
     this.atencionService.getData(url).toPromise().then((data: IRecordResponse) => {
-      var originalArray = data.recordset;
-      var prop = "CodPaso";
       var newArray = [];
-      var lookupObject = {};
-      for (var i in originalArray) {
-        lookupObject[originalArray[i][prop]] = originalArray[i];
+      for (var i in data.recordset) {
+        newArray.push(data.recordset[i]);
       }
-      for (i in lookupObject) {
-        newArray.push(lookupObject[i]);
+      
+      for (let i in newArray) {
+        if (newArray[i].CodPaso > Id_Paso || newArray[i].CodPaso == Id_Paso) {
+          newArray.splice(newArray.findIndex(x => x.CodPaso == newArray[i].CodPaso), 1);
+        }
       }
-      //variable de historico sin duplicados
-      console.log(newArray.length);
-      //let ultimoAtencionPaso =  newArray[newArray.length-1];
-      //newArray.splice(newArray.findIndex(x => x.CodPaso == Id_Paso), 1);
-      this.mapaTrazabilidad = newArray;
-      var regPasoAnterior = this.mapaTrazabilidad[this.mapaTrazabilidad.length-1];
-      if(regPasoAnterior.CodPaso==Id_Paso){
+     
+      let max = 0;
+      for (let i in newArray) {
+        var y = + newArray[i].Id_AtencionPaso;
+        if (y > max) {
+          max = y; 
+        }
+      }
+      var regPasoAnterior = newArray.find(x => x.Id_AtencionPaso == max);
+      if (regPasoAnterior.CodPaso == Id_Paso) {
         this.mapaTrazabilidad.splice(this.mapaTrazabilidad.findIndex(x => x.CodPaso == Id_Paso), 1);
-        regPasoAnterior = this.mapaTrazabilidad[this.mapaTrazabilidad.length-1];
       }
-      //pasos a acambiar 
+
       const anteriorPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso && x.CodPaso_Origen == regPasoAnterior.CodPaso);
       this.pasoActual = anteriorPaso.CodPaso_Origen;
       this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == regPasoAnterior.CodPaso);
