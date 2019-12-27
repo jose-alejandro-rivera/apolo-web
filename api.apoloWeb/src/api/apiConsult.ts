@@ -17,7 +17,7 @@ export class ApiConsult {
    */
   async  getCategoriasFlujo() {
     try {
-      this.res = await axios.get('http://localhost:3000/api/flujo/categorias');
+      this.res = await axios.get('http://10.203.221.51:3000/api/flujo/categorias');
       return this.res.data;
     } catch (error) {
       console.error(error)
@@ -29,7 +29,7 @@ export class ApiConsult {
    */
   async  getFlujoPorCategoria(id) {
     try {
-      this.url = "http://localhost:3000/api/flujos/por/categorias/" + id;
+      this.url = "http://10.203.221.51:3000/api/flujos/por/categorias/" + id;
       this.res = await axios.get(this.url);
       return this.res.data;
     } catch (error) {
@@ -42,7 +42,7 @@ export class ApiConsult {
    */
   async  getPasosCategoria(id) {
     try {
-      this.url = "http://localhost:3000/api/flujo/list/" + id;
+      this.url = "http://10.203.221.51:3000/api/flujo/list/" + id;
       this.res = await axios.get(this.url);
       return this.res.data;
     } catch (error) {
@@ -58,7 +58,7 @@ export class ApiConsult {
    */
   async  getUltimoAtencionPaso(id) {
     try {
-      this.url = 'http://localhost:3000/api/atencion/lastStep/' + id;
+      this.url = 'http://10.203.221.51:3000/api/atencion/lastStep/' + id;
       this.res = await axios.get(this.url);
       return this.res.data;
     } catch (error) {
