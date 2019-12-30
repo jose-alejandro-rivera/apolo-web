@@ -307,19 +307,13 @@ export class AtencionComponentsComponent implements OnInit {
       for (var i in data.recordset) {
         newArray.push(data.recordset[i]);
       }
+      this.mapaTrazabilidad = [];
       // validacion donde elimina pasos superiores o iguales al actual del historial
-      for (let i in newArray) {
-        console.log(newArray[i].CodPaso);
-        if (newArray[i].CodPaso === Id_Paso) {
-          newArray.splice(newArray.findIndex(x => x.CodPaso == newArray[i].CodPaso), 1);
-        }
-
-        if (newArray[i].CodPaso > Id_Paso) {
-          newArray.splice(newArray.findIndex(x => x.CodPaso == newArray[i].CodPaso), 1);
+      for (let i = 0; i < newArray.length; i++) {
+        if (!((newArray[i].CodPaso > Id_Paso) || (newArray[i].CodPaso == Id_Paso))) {
+          this.mapaTrazabilidad.push(newArray[i]);
         }
       }
-      this.mapaTrazabilidad = newArray;
-      console.log(this.mapaTrazabilidad);
       // eleccion del maximo Id_AtencionPaso
       let max = 0;
       for (let i in this.mapaTrazabilidad) {
@@ -329,14 +323,7 @@ export class AtencionComponentsComponent implements OnInit {
         }
       }
       var regPasoAnterior = this.mapaTrazabilidad.find(x => x.Id_AtencionPaso == max);
-      /*if (regPasoAnterior.CodPaso == Id_Paso) {
-        newArray.splice(newArray.findIndex(x => x.CodPaso == Id_Paso), 1);
-      }*/
-      console.log("buscar en flujopaso:");
-      console.log(regPasoAnterior.CodPaso);
-      console.log(Id_Paso);
       const anteriorPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso && x.CodPaso_Origen == regPasoAnterior.CodPaso);
-      console.log(anteriorPaso);
       this.pasoActual = anteriorPaso.CodPaso_Origen;
       this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == regPasoAnterior.CodPaso);
       ////////////////////////////////////////////////////////
@@ -359,9 +346,6 @@ export class AtencionComponentsComponent implements OnInit {
       ///////////////////////////////////////////////////////
 
     })
-
-
-
   }
 
 
