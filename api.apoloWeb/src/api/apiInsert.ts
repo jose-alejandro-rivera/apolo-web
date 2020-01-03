@@ -1,19 +1,15 @@
 import { Router } from 'express';
-/**
+import { cors } from 'cors';
+/*
  * constantes de coneccion 
  */
-const express = require('express'),
-  cors = require('cors'),//**** */
-  bodyParser = require('body-parser'),//**** */
-  http = require('http'),//
-  request = require("request"),
-  axios = require("axios");//
+const bodyParser = require('body-parser'),axios = require("axios");
 
 // Express settings
 /**
  * constantes de coneccion 
  */
-const app = express();
+const app = require('express')
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
