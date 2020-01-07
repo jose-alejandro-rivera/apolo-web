@@ -59,9 +59,6 @@ ngOnInit() {
  
   this.homeAtencion =  localStorage.getItem('home_component');
   this.atencionComponet = localStorage.getItem('atencion_component');
-
-  console.log(this.homeAtencion, this.atencionComponet);
-  
   this.enrutamiento();
 }
 
