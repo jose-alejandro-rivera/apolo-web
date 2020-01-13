@@ -5,16 +5,6 @@ import { cors } from 'cors';
  */
 const bodyParser = require('body-parser'),axios = require("axios");
 
-// Express settings
-/**
- * constantes de coneccion 
- */
-const app = require('express')
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
 /**
  * clase de insercion en la base de datos
  */
