@@ -81,6 +81,14 @@
     width: 100%;
     float: left;
 }
+.apolo-text-title-orden {
+    font-weight: bold;
+    color: #003245;
+    font-family: "telefonica", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    height: auto;
+    float: left;
+}
 .apolo-alert-danger {
     color: #721c24;
     background-color: #f8d7da;

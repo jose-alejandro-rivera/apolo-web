@@ -125,6 +125,10 @@ export class AtencionComponentsComponent implements OnInit {
   * variable que guarda la ruta que va seleccionado en un flujo cuando el paso tiene multiples opciones
   */
   mapaTrazabilidad: any[] = [];
+   /**
+   * 
+   */
+  dataFlujoOrden: any;
 
   seleccionCampo: any;
   url: any;
@@ -154,6 +158,7 @@ export class AtencionComponentsComponent implements OnInit {
   * @returns flujoPaso: listado de pasos relacionados con el flujo con sus respectivos procesos y cuestionarios
   */
   ngOnInit() {
+    this.dataFlujoOrden = JSON.parse(localStorage.getItem('dataFlujoOrden'));
     this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
