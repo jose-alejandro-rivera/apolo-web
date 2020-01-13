@@ -8,13 +8,15 @@ import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './componentes/home-components/home-components.component';
 import { AtencionComponentsComponent } from './componentes/atencion-components/atencion-components.component';
+import { OrdenComponentsComponent } from './componentes/orden-components/orden-components.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AppComponent,
     HomeComponent,
-    AtencionComponentsComponent
+    AtencionComponentsComponent,
+    OrdenComponentsComponent
   ],
   imports: [
     BrowserModule,
