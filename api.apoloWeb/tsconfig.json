@@ -9,7 +9,8 @@
         "baseUrl": "./",
         "experimentalDecorators": true, 
         "emitDecoratorMetadata": true,
-        "typeRoots": ["./node_modules/@types"]
+        "types": ["reflect-metadata", "jest"],
+        "typeRoots": ["./types", "./node_modules/@types"]
     },
     "include": [
         "./src/**/*", "jest.config.js", "unitTest/mocks"
