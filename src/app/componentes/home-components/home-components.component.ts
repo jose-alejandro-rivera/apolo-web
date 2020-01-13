@@ -50,8 +50,14 @@ export class HomeComponent implements OnInit {
    * variable que evalua la creacion e la atencion
    */
   private crearCategoria: any;
-
+  /**
+   * 
+   */
   public URL: any;
+  /**
+   * 
+   */
+  dataFlujoOrden: any;
 
   /**
    * variables de secion
@@ -80,7 +86,7 @@ export class HomeComponent implements OnInit {
    * @returns arregloCat: lisatado de las categorias activas
    */
   ngOnInit() {
-
+    this.dataFlujoOrden = JSON.parse(localStorage.getItem('dataFlujoOrden'));
     this.ejecucionAtencionService.getData(this.URL + 'flujo/categorias').subscribe((res: any) => {
       setTimeout(() => {
         this.arregloCat = res;
@@ -145,7 +151,8 @@ export class HomeComponent implements OnInit {
     } else {
       this.crearCategoria = {
         "CodLogin": 1,
-        "CodFlujo": this.idFlujo.Id_Flujo
+        "CodFlujo": this.idFlujo.Id_Flujo,
+        "NumOrden": this.dataFlujoOrden
       };
       this.homeComponent = false;
       let url = this.URL + 'atencion/create/';

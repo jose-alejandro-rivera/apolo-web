@@ -125,6 +125,10 @@ export class AtencionComponentsComponent implements OnInit {
   * variable que guarda la ruta que va seleccionado en un flujo cuando el paso tiene multiples opciones
   */
   mapaTrazabilidad: any[] = [];
+   /**
+   * 
+   */
+  dataFlujoOrden: any;
 
   seleccionCampo: any;
   url: any;
@@ -154,6 +158,7 @@ export class AtencionComponentsComponent implements OnInit {
   * @returns flujoPaso: listado de pasos relacionados con el flujo con sus respectivos procesos y cuestionarios
   */
   ngOnInit() {
+    this.dataFlujoOrden = JSON.parse(localStorage.getItem('dataFlujoOrden'));
     this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
@@ -302,29 +307,27 @@ export class AtencionComponentsComponent implements OnInit {
     // servicio para validar historial
     let url = this.URL + 'atencion/lastStep/' + this.atencionService.idAtencion;
     this.atencionService.getData(url).toPromise().then((data: IRecordResponse) => {
+      //Asignacion de la data en un arreglo
       var newArray = [];
       for (var i in data.recordset) {
         newArray.push(data.recordset[i]);
       }
-      
-      for (let i in newArray) {
-        if (newArray[i].CodPaso > Id_Paso || newArray[i].CodPaso == Id_Paso) {
-          newArray.splice(newArray.findIndex(x => x.CodPaso == newArray[i].CodPaso), 1);
+      this.mapaTrazabilidad = [];
+      // validacion donde elimina pasos superiores o iguales al actual del historial
+      for (let i = 0; i < newArray.length; i++) {
+        if (!((newArray[i].CodPaso > Id_Paso) || (newArray[i].CodPaso == Id_Paso))) {
+          this.mapaTrazabilidad.push(newArray[i]);
         }
       }
-     
+      // eleccion del maximo Id_AtencionPaso
       let max = 0;
-      for (let i in newArray) {
-        var y = + newArray[i].Id_AtencionPaso;
+      for (let i in this.mapaTrazabilidad) {
+        var y = + this.mapaTrazabilidad[i].Id_AtencionPaso;
         if (y > max) {
           max = y; 
         }
       }
-      var regPasoAnterior = newArray.find(x => x.Id_AtencionPaso == max);
-      if (regPasoAnterior.CodPaso == Id_Paso) {
-        this.mapaTrazabilidad.splice(this.mapaTrazabilidad.findIndex(x => x.CodPaso == Id_Paso), 1);
-      }
-
+      var regPasoAnterior = this.mapaTrazabilidad.find(x => x.Id_AtencionPaso == max);
       const anteriorPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso && x.CodPaso_Origen == regPasoAnterior.CodPaso);
       this.pasoActual = anteriorPaso.CodPaso_Origen;
       this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == regPasoAnterior.CodPaso);
@@ -348,9 +351,6 @@ export class AtencionComponentsComponent implements OnInit {
       ///////////////////////////////////////////////////////
 
     })
-
-
-
   }
 
 

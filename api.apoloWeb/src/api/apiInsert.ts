@@ -1,19 +1,15 @@
 import { Router } from 'express';
-/**
+import { cors } from 'cors';
+/*
  * constantes de coneccion 
  */
-const express = require('express'),
-  cors = require('cors'),//**** */
-  bodyParser = require('body-parser'),//**** */
-  http = require('http'),//
-  request = require("request"),
-  axios = require("axios");//
+const bodyParser = require('body-parser'),axios = require("axios");
 
 // Express settings
 /**
  * constantes de coneccion 
  */
-const app = express();
+const app = require('express')
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -38,7 +34,7 @@ export class ApiInsert {
    */
   async  postCrearAtencion(params: any) {
     try {
-      this.url = "http://localhost:3000/api/atencion/create";
+      this.url = "http://10.203.221.51:3000/api/atencion/create";
       this.res = await axios.post(this.url, params);
       return this.res.data;
     } catch (error) {
@@ -50,7 +46,7 @@ export class ApiInsert {
    */
   async postConsumirProceso(body) {
     try {
-      this.url = "http://localhost:3000/api/proceso/fake";
+      this.url = "http://10.203.221.51:3000/api/proceso/fake";
       this.res = await axios.post(this.url, body);
       return this.res.data;
     } catch (error) {
@@ -62,7 +58,7 @@ export class ApiInsert {
    */
   async postAtencionPaso(data) {
     try {
-      this.url = "http://localhost:3000/api/atencion-paso-campo/create";
+      this.url = "http://10.203.221.51:3000/api/atencion-paso-campo/create";
       this.res = await axios.post(this.url, data);
       return this.res.data;
     } catch (error) {
