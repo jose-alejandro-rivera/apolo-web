@@ -31,7 +31,6 @@ export class ApiConsult {
   async  getFlujoPorCategoria(idCategoria) {
       try {
         this.res = await axios.get(this.baseUrl + '/api/flujos/por/Categorias/' + idCategoria);
-        console.log(this.res.data);
         return this.res.data;
       } catch (error) {
         console.error(error)
