@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewInit, ɵConsole } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
@@ -122,9 +122,12 @@ export class HomeComponent implements OnInit {
           this.usuario = categoria.Usuario
         }
       }
-      let url = this.URL + 'flujos/por/categorias/' + idCatefgoria;
+      let url = this.URL + 'flujos/por/Categorias/' + idCatefgoria;
+      console.log(url);
       this.ejecucionAtencionService.getData(url).subscribe((data: IRecordResponse) => {
-        this.flujoList = data.recordsets[0];
+        console.log("resultado lisa flujos");
+        console.log(data);
+        this.flujoList = data.recordset[0];
       })
     }
   }

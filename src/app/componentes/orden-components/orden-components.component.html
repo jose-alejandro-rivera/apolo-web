@@ -1,21 +1,17 @@
-<div class="apolo" >
+<div class="apolo">
 
-        <div class="apolo-cuadriula apolo-margen apolo-actividades-principales rounded">
-                <form [formGroup]="formOrden" (ngSubmit)="ingresoOrden($event)">
-                  <div class="form-group ">
-                    <label for="idOrden">Por favor digitar el numero de orden</label>
-                    <input type="text" value="{{orden}}" formControlName="orden" class="form-control" id="idOrden"
-                      [ngClass]="{ 'is-invalid': submitted && f.orden.errors }" placeholder="N° de Orden">
-            
-                      <div *ngIf="submitted && f.orden.errors" class="invalid-feedback">
-                          <div *ngIf="f.orden.errors.required">Debe ingresar el numero de orden</div>
-                      </div>
-            
-                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-                  </div>
-                  
-                  <button type="submit" class="apolo-button-crear apolo-button-crear-medium apolo-fuente">entrar</button>
-                </form>
-              </div>
+  <div class="apolo-cuadriula apolo-margen apolo-actividades-principales rounded">
+    <form [formGroup]="formOrden" (ngSubmit)="ingresoOrden($event)">
+      <div class="form-group ">
+        <label for="idOrden">Por favor digitar el numero de orden</label>
+        <input type="text" value="{{orden}}" formControlName="orden" class="form-control" id="idOrden"
+          [ngClass]="{ 'is-invalid': submitted && f.orden.errors }" placeholder="N° de Orden">
+        <div *ngIf="submitted && f.orden.errors" class="invalid-feedback">
+          <div *ngIf="f.orden.errors.required">Debe ingresar el numero de orden</div>
+        </div>
+      </div>
+      <button type="submit" class="apolo-button-crear apolo-button-crear-medium apolo-fuente">entrar</button>
+    </form>
+  </div>
 
 </div>
