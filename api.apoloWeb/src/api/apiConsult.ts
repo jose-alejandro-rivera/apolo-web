@@ -23,6 +23,21 @@ export class ApiConsult {
       return error;
     }
   }
+
+  /**
+   * funcion que consulta los flujos con el id de las categorias
+   * @param id: id de la categoria a consultar 
+   */
+  async  getFlujoPorCategoria(idCategoria) {
+      try {
+        this.res = await axios.get(this.baseUrl + '/api/flujos/por/Categorias/' + idCategoria);
+        console.log(this.res.data);
+        return this.res.data;
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  
   /**
    * funcion que consulta los componentes del flujo
    * @param id: id del flujo a consultar
