@@ -122,7 +122,7 @@ export class HomeComponent implements OnInit {
           this.usuario = categoria.Usuario
         }
       }
-      let url = this.URL + 'flujos/por/categorias/' + idCatefgoria;
+      let url = this.URL + 'flujos/por/Categorias/' + idCatefgoria;
       console.log(url);
       this.ejecucionAtencionService.getData(url).subscribe((data: IRecordResponse) => {
         console.log("resultado lisa flujos");
