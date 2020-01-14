@@ -127,7 +127,7 @@ export class HomeComponent implements OnInit {
       this.ejecucionAtencionService.getData(url).subscribe((data: IRecordResponse) => {
         console.log("resultado lisa flujos");
         console.log(data);
-        this.flujoList = data.recordset[0];
+        this.flujoList = data.recordset;
       })
     }
   }
