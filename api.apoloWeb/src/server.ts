@@ -82,7 +82,7 @@ export class Server {
      * funcion que obtiene el listado de los flujos asociado a la categoria seleccionada
      */
     app.get('/api/flujos/por/Categorias/:id', async (request, response) => {
-        const data = this.apiConsult.getFlujoPorCategoria(request.params.id);
+        const data = await this.apiConsult.getFlujoPorCategoria(request.params.id);
         return response.send(data);
       });
   
