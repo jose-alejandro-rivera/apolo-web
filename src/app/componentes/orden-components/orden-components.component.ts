@@ -73,7 +73,6 @@ export class OrdenComponentsComponent implements OnInit {
   }
 
   ingresoOrden($event) {
-    debugger
     if (this.formOrden.invalid) {
       this.submitted = true;
       return;
