@@ -7,13 +7,15 @@
 <form [formGroup]="formCategorias" (ngSubmit)="crearAtencion($event)">
   <div class="apolo-cuadriula apolo-margen apolo-actividades-principales rounded">
       <div class="apolo-formulario apolo-text ">
+          <div class="apolo-text-title-orden" >
+              Orden: {{dataFlujoOrden}} 
+           </div>
         <div class="form-group">
-            <div class="apolo-text-title-orden" >
-               Orden: {{dataFlujoOrden}}
+            <div class="apolo-text-title-content">
+              <label >
+                Categorias:
+              </label>
             </div>
-          <label class="apolo-text-title-content">
-            Categorias:
-          </label>
 
           <select class="col-lg-9 col-sm-12 form-control" (change)="cargueFlujo($event)" formControlName="idCategoria" [ngClass]="{ 'is-invalid': submitted && f.idCategoria.errors }">
             <option value="">Seleccione una categoria</option>
