@@ -24,6 +24,11 @@ export class AppGlobals {
             this.url ='http://10.203.221.51:8080/api/'
             console.log("usted se encuentra aca -- 1234")
         }
+        if(urlIp.indexOf("http://10.203.220.30") > -1){
+            this.url ='http://10.203.220.30:8080/api/'
+            console.log("usted se encuentra aca -- 1234")
+        }
+
         if(urlIp.indexOf("https://apilab.telefonica.co:20203/") > -1){
             this.url ='"https://apilab.telefonica.co:20203/api/'
         }
