@@ -35,10 +35,12 @@
     "jquery": "^3.4.1",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
+    "nativescript-camera": "^4.5.0",
     "ng": "0.0.0",
     "ngx-order-pipe": "^2.0.4",
     "popper.js": "^1.16.0",
     "rxjs": "^6.5.3",
+    "tns-core-modules": "^6.3.2",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },

@@ -1,21 +1,16 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {  Event, Router } from '@angular/router';
+import { AppGlobals } from 'src/app/app.global';
 
-import {
-  NavigationCancel,
-  Event,
-  NavigationEnd,
-  NavigationError,
-  NavigationStart,
-  Router
-} from '@angular/router';
 /**
  * componente inicial
  */
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [AppGlobals]
 })
 /**
  * clase que relaciona los componentes creados para la aplicacion web
@@ -41,15 +36,20 @@ export class AppComponent {
    * variable que obtiene el item del atencion-component
    */
   atencionComponet: any;
-
+  /**
+   * 
+   */
   ordenComponente: any;
 
+  userview:any;
+  
   /**
    * variables de secion
    * @param router 
    */
   constructor(private router: Router,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private global: AppGlobals) {
     this.componentFlujo = false;
     this.componentCategoria = false;
     this.router.events.subscribe((event: Event) => {
@@ -66,7 +66,7 @@ export class AppComponent {
     this.homeAtencion = localStorage.getItem('home_component');
     this.atencionComponet = localStorage.getItem('atencion_component');
     this.ordenComponente = localStorage.getItem('orden_componet');
-
+    this.userview=this.global.usuarioView;
     this.enrutamiento();
   }
 

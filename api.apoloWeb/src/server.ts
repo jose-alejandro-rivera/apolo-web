@@ -94,11 +94,20 @@ export class Server {
       return response.send(data);
     });
 
-    //parametros de insercion
+    app.get('/api/integracion/apolo/toa/:param/:orden/:tipo', async (request, response) => {
+      const data = await this.apiConsult.getOrdenActiva(request.params);
+      return response.send(data);
+    });
+
+
+    //parametros de insercion POS
+
+
     /**
      * funcion que realiza la cracion de la atencion
      */
     app.post('/api/atencion/create/', async (request, response) => {
+      console.log( 'crear atencion')
       const data = await this.apiInsert.postCrearAtencion(request.body);
       return response.send(data);
     });

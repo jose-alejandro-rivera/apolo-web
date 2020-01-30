@@ -64,4 +64,20 @@ export class ApiConsult {
       console.error(error)
     }
   }
+
+
+  /**
+   * funcion que consulta el estad de la orden 
+   * @param formOrden parametros para consuktar la orden
+   */
+  async  getOrdenActiva(formOrden) {
+    try {
+      this.res = await axios.get(this.baseUrl + '/api/integracion/apolo/toa/' + formOrden.param +'/'+ formOrden.orden +'/'+formOrden.tipo);
+      return this.res.data;
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
 }

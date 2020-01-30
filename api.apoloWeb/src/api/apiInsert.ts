@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { cors } from 'cors';
+
+import config from '../../config';
 /*
  * constantes de coneccion 
  */
@@ -10,13 +10,11 @@ const bodyParser = require('body-parser'),axios = require("axios");
  */
 export class ApiInsert {
   private res : any;
-  private url: any;
-    constructor(
-    router: Router) {
+  private baseUrl: string;
+  constructor() {
       this.res = null;
-      this.url = null;
+      this.baseUrl = config.BASE_URL;
   }
-
  
   /**
    * funcion que crea la atencion
@@ -24,8 +22,7 @@ export class ApiInsert {
    */
   async  postCrearAtencion(params: any) {
     try {
-      this.url = "http://10.203.221.51:3000/api/atencion/create";
-      this.res = await axios.post(this.url, params);
+      this.res = await axios.post(this.baseUrl +"/api/atencion/create", params);
       return this.res.data;
     } catch (error) {
       console.error(error)
@@ -36,8 +33,7 @@ export class ApiInsert {
    */
   async postConsumirProceso(body) {
     try {
-      this.url = "http://10.203.221.51:3000/api/proceso/fake";
-      this.res = await axios.post(this.url, body);
+      this.res = await axios.post(this.baseUrl +"/api/proceso/fake", body);
       return this.res.data;
     } catch (error) {
       console.error(error)
@@ -48,8 +44,7 @@ export class ApiInsert {
    */
   async postAtencionPaso(data) {
     try {
-      this.url = "http://10.203.221.51:3000/api/atencion-paso-campo/create";
-      this.res = await axios.post(this.url, data);
+      this.res = await axios.post(this.baseUrl +"/api/atencion-paso-campo/create", data);
       return this.res.data;
     } catch (error) {
       console.error(error)

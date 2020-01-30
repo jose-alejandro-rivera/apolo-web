@@ -84,8 +84,9 @@ export class AtencionComponentsComponent implements OnInit {
   /**
    * validar con ejecucion del proceso
    */
-  pruebaproceso: any;//validar con el proceso de crear
-  respuestaProcesoActual: IServiceResponse = { data: { status: 200, response: "proceso ejecutado exitosamente" } };
+  pruebaproceso: any;
+  //validar con el proceso de crear
+  respuestaProcesoActual: IServiceResponse = { data: { status: 200, response: "1" } };
   /**
    * variable que obtiene el listado de pasos
    */
@@ -125,10 +126,11 @@ export class AtencionComponentsComponent implements OnInit {
   * variable que guarda la ruta que va seleccionado en un flujo cuando el paso tiene multiples opciones
   */
   mapaTrazabilidad: any[] = [];
-   /**
-   * 
-   */
+  /**
+  * 
+  */
   dataFlujoOrden: any;
+  orden: any;
 
   seleccionCampo: any;
   url: any;
@@ -159,6 +161,15 @@ export class AtencionComponentsComponent implements OnInit {
   */
   ngOnInit() {
     this.dataFlujoOrden = JSON.parse(localStorage.getItem('dataFlujoOrden'));
+    this.orden = this.dataFlujoOrden.formOrden.orden;
+    if (this.dataFlujoOrden.retoma) {
+
+    } else {
+      this.ejecucionFlujo();
+    }
+  }
+
+  ejecucionFlujo() {
     this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
@@ -324,7 +335,7 @@ export class AtencionComponentsComponent implements OnInit {
       for (let i in this.mapaTrazabilidad) {
         var y = + this.mapaTrazabilidad[i].Id_AtencionPaso;
         if (y > max) {
-          max = y; 
+          max = y;
         }
       }
       var regPasoAnterior = this.mapaTrazabilidad.find(x => x.Id_AtencionPaso == max);
@@ -410,6 +421,7 @@ export class AtencionComponentsComponent implements OnInit {
     // informacion para determinar que contiene el paso a registrar
     const cuestionario = this.info.Cuestionarios.find(x => x.Id_Paso == Id_Paso);
     const proceso = this.info.Procesos.find(x => x.Id_Paso == Id_Paso);
+    const orden = this.dataFlujoOrden;
     // Si el paso tiene un proceso
     if (proceso) {
       const respuestaProceso = this.respuestaProcesoActual.data.response;
@@ -418,7 +430,8 @@ export class AtencionComponentsComponent implements OnInit {
         TipoServicio: proceso.TipoServicio,
         Servicio: proceso.Servicio,
         Request: proceso.TipoServicio,
-        Response: respuestaProceso
+        Response: respuestaProceso,
+        NumOrden: orden
       };
       atencionProcesoSalida = {
         CodProcesoSalida: proceso.Id_ProcesoSalida,
@@ -431,7 +444,9 @@ export class AtencionComponentsComponent implements OnInit {
         "TipoServicio": "",
         "Servicio": "",
         "Request": "",
-        "Response": ""
+        "Response": "",
+        "NumOrden": ""
+
       };
       atencionProcesoSalida = {
         "CodProcesoSalida": "",
@@ -485,7 +500,7 @@ export class AtencionComponentsComponent implements OnInit {
       this.atencionComponente = false;
       localStorage.setItem('dataFlujoCat', '');
       //Se redirije a la pagina de inicio 
-      this.router.navigate(['home/componet']);
+      this.router.navigate(['home/orden']);
     } else {
       console.log('seleccione una opcion');
     }
