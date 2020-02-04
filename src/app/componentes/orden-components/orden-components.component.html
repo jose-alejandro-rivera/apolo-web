@@ -28,6 +28,17 @@
           <div *ngIf="f.orden.errors.required">Debe ingresar el numero de orden</div>
         </div>
 
+        <div class="boxes">
+            <input type="checkbox" id="box" (click)="updateRol($event)">
+            <label for="box">Retoma</label>
+
+        </div>
+<!-- 
+        <div>
+          <input type="checkbox" class="custom-control-input" id="defaultInline1">
+          <label class="custom-control-label" for="defaultInline1"> Retoma </label>
+        </div> -->
+
         <div *ngIf="ordenInexistente" class="col-12 apolo-alert-danger   ">
           <strong>Atencion! </strong>{{mensajeOrden}}
         </div>

@@ -99,6 +99,10 @@ export class Server {
       return response.send(data);
     });
 
+    app.get('/api/retoma/apolo/:orden', async (request, response) => {
+      const data = await this.apiConsult.getOrdenRetoma(request.params.orden);
+      return response.send(data);
+    });
 
     //parametros de insercion POS
 
@@ -107,7 +111,6 @@ export class Server {
      * funcion que realiza la cracion de la atencion
      */
     app.post('/api/atencion/create/', async (request, response) => {
-      console.log( 'crear atencion')
       const data = await this.apiInsert.postCrearAtencion(request.body);
       return response.send(data);
     });

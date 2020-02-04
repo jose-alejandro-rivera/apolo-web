@@ -42,6 +42,8 @@ export class AppComponent {
   ordenComponente: any;
 
   userview:any;
+  admin:Boolean;
+  name: any;
   
   /**
    * variables de secion
@@ -52,6 +54,8 @@ export class AppComponent {
     private global: AppGlobals) {
     this.componentFlujo = false;
     this.componentCategoria = false;
+    this.userview=this.global.usuarioView;
+    this.admin=(this.userview != '')?true: false;
     this.router.events.subscribe((event: Event) => {
     });
   }
@@ -66,7 +70,7 @@ export class AppComponent {
     this.homeAtencion = localStorage.getItem('home_component');
     this.atencionComponet = localStorage.getItem('atencion_component');
     this.ordenComponente = localStorage.getItem('orden_componet');
-    this.userview=this.global.usuarioView;
+
     this.enrutamiento();
   }
 

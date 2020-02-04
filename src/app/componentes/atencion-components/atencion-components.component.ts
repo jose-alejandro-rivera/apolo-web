@@ -84,9 +84,8 @@ export class AtencionComponentsComponent implements OnInit {
   /**
    * validar con ejecucion del proceso
    */
-  pruebaproceso: any;
-  //validar con el proceso de crear
-  respuestaProcesoActual: IServiceResponse = { data: { status: 200, response: "1" } };
+  pruebaproceso: any;//validar con el proceso de crear
+  respuestaProcesoActual: IServiceResponse = { data: { status: 200, response: "proceso ejecutado exitosamente" } };
   /**
    * variable que obtiene el listado de pasos
    */
@@ -131,7 +130,6 @@ export class AtencionComponentsComponent implements OnInit {
   */
   dataFlujoOrden: any;
   orden: any;
-
   seleccionCampo: any;
   url: any;
 
@@ -161,16 +159,18 @@ export class AtencionComponentsComponent implements OnInit {
   */
   ngOnInit() {
     this.dataFlujoOrden = JSON.parse(localStorage.getItem('dataFlujoOrden'));
-    this.orden = this.dataFlujoOrden.formOrden.orden;
-    if (this.dataFlujoOrden.retoma) {
-
+    this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
+    this.orden= this.dataFlujoOrden.formOrden.orden;
+    if (this.dataFlujoOrden.formOrden.retomaOrden) {
+      this.listRetoma();
     } else {
-      this.ejecucionFlujo();
+      this.listFlujo();
     }
+
   }
 
-  ejecucionFlujo() {
-    this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
+
+  listFlujo() {
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
     this.url = this.URL + 'flujo/list/' + this.idFlujo;
@@ -192,6 +192,41 @@ export class AtencionComponentsComponent implements OnInit {
         this.cuestionarioPaso = data.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
         this.CuestionarioActual = true;
       } else if (data.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
+        this.procesoPaso = data.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
+        this.ProcesoActual = true;
+      }
+      this.finflujo = this.flujoPaso.finaliza;
+    });
+  }
+
+
+  listRetoma() {
+    debugger
+    let url = this.URL + 'retoma/apolo/' + this.dataFlujoOrden.formOrden.orden;
+    return this.atencionService.getData(url).toPromise().then(data => {
+      let info = data;
+      return info;
+    }).then(data => {
+      this.info = data.recordsets;
+      this.info = this.info[0];
+      this.info = this.info[0];
+      let retomaPasoActual = data.rowsAtaencionPaso;
+      this.idFlujo =  this.info.Id_Flujo;
+      this.nombreFlujo =  this.info.NomFlujo;
+      if (retomaPasoActual) {
+        this.pasoActual = retomaPasoActual.CodPaso;
+      } else {
+        this.pasoActual = this.info.CodPaso_Inicial;
+      }
+      this.ListaPasos = this.info.Pasos;
+      const pasoFlujo = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
+      this.pasoActual= pasoFlujo.CodPaso_Destino;
+      this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
+      this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
+      if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
+        this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
+        this.CuestionarioActual = true;
+      } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
         this.procesoPaso = data.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
         this.ProcesoActual = true;
       }
@@ -416,12 +451,12 @@ export class AtencionComponentsComponent implements OnInit {
       CodAtencion: this.atencionService.idAtencion,
       CodPaso: Id_Paso,
       Secuencia: 1,
-      Soluciona: this.atencionSoluciona
+      Soluciona: this.atencionSoluciona,
+      CodPasoDestino: this.flujoPaso.CodPaso_Destino
     };
     // informacion para determinar que contiene el paso a registrar
     const cuestionario = this.info.Cuestionarios.find(x => x.Id_Paso == Id_Paso);
     const proceso = this.info.Procesos.find(x => x.Id_Paso == Id_Paso);
-    const orden = this.dataFlujoOrden;
     // Si el paso tiene un proceso
     if (proceso) {
       const respuestaProceso = this.respuestaProcesoActual.data.response;
@@ -430,8 +465,7 @@ export class AtencionComponentsComponent implements OnInit {
         TipoServicio: proceso.TipoServicio,
         Servicio: proceso.Servicio,
         Request: proceso.TipoServicio,
-        Response: respuestaProceso,
-        NumOrden: orden
+        Response: respuestaProceso
       };
       atencionProcesoSalida = {
         CodProcesoSalida: proceso.Id_ProcesoSalida,
@@ -446,7 +480,6 @@ export class AtencionComponentsComponent implements OnInit {
         "Request": "",
         "Response": "",
         "NumOrden": ""
-
       };
       atencionProcesoSalida = {
         "CodProcesoSalida": "",
@@ -500,7 +533,7 @@ export class AtencionComponentsComponent implements OnInit {
       this.atencionComponente = false;
       localStorage.setItem('dataFlujoCat', '');
       //Se redirije a la pagina de inicio 
-      this.router.navigate(['home/orden']);
+      this.router.navigate(['home/componet']);
     } else {
       console.log('seleccione una opcion');
     }
