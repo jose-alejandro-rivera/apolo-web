@@ -79,5 +79,22 @@ export class ApiConsult {
     }
   }
 
+/**
+   * funcion que consulta el estad de la orden 
+   * @param formOrden parametro para consuktar la orden
+   */
+  async  getOrdenRetoma(orden) {
+    try {
+      this.res = await axios.get(this.baseUrl + '/api/retoma/apolo/' + orden);
+      console.log(this.res.data , 'return events ');
+      return this.res.data;
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
+
+
 
 }

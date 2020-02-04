@@ -4,6 +4,7 @@ import { Event, Router } from '@angular/router';
 import { AppGlobals } from 'src/app/app.global';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 import * as camera from 'nativescript-camera';
+import { AppComponent } from 'src/app/app.component';
 
 
 /**
@@ -61,7 +62,7 @@ export class OrdenComponentsComponent implements OnInit {
    */
   public ordenResponse: any;
 
-  retomaOrden: any;
+  retomaOrden: Boolean;
   tipoEjecucion: any;
 
 
@@ -75,10 +76,10 @@ export class OrdenComponentsComponent implements OnInit {
   constructor(private router: Router,
     private ejecucionAtencionService: EjecucionAtencionService,
     private formBuilder: FormBuilder,
-    private global: AppGlobals) {
+    private global: AppGlobals,
+    private appComponent: AppComponent) {
     this.componentFlujo = false;
     this.componentCategoria = false;
-    this.ordenInexistente = false;
     this.URL = this.global.url;
     localStorage.setItem('dataFlujoOrden', '');
     this.router.events.subscribe((event: Event) => {
@@ -90,7 +91,7 @@ export class OrdenComponentsComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.ordenInexistente = false;
   }
 
   get f() {
@@ -109,31 +110,30 @@ export class OrdenComponentsComponent implements OnInit {
       return;
     } else {
       this.orden = this.formOrden.value.orden;
-      //validacion orden con atencion 
       if (this.retomaOrden) {
-
-        let url = this.URL + 'integracion/apolo/toa/' + this.param + '/' + this.orden;
-        return this.ejecucionAtencionService.getData(url).toPromise().then(data => {
-          console.log(data + ' imprecion data')
-          let info: any = data;
-          info = info.responseToa;
-          return info;
-        }).then(data => {
-          this.ordenResponse = data;
-          this.ordenResponse.retoma = data.retoma;
-          localStorage.setItem('dataFlujoOrden', JSON.stringify(this.ordenResponse));
-          this.enrutamientoFlujo();
-        })
-
+        this.ordenResponse = {
+          "formOrden":
+          {
+            "retomaOrden": this.retomaOrden,
+            "orden": this.orden
+          }
+        };
+        localStorage.setItem('dataFlujoOrden', JSON.stringify(this.ordenResponse));
+        this.enrutamientoFlujo();
       } else {
         this.validacionOrden();
       }
     }
   }
 
+  updateRol($event) {
+    const event = $event.target.checked;
+    this.retomaOrden = event;
+  }
+
 
   validacionOrden() {
-    this.tipoEjecucion='orden';
+    this.tipoEjecucion = 'orden';
     let url = this.URL + 'integracion/apolo/toa/' + this.param + '/' + this.orden + '/' + this.tipoEjecucion;
     return this.ejecucionAtencionService.getData(url).toPromise().then(data => {
       console.log(data + ' imprecion data')
@@ -146,6 +146,8 @@ export class OrdenComponentsComponent implements OnInit {
       if (this.ordenResponse.status) {
         if (this.ordenResponse.status === 'started') {
           localStorage.setItem('dataFlujoOrden', JSON.stringify(this.ordenResponse));
+          this.appComponent.userview = this.ordenResponse.name;
+          this.appComponent.admin = (this.appComponent.userview != '') ? true : false;
           this.enrutamientoHome();
         } else {
           this.mensajeOrden = this.global.mensajeOrdenNoIniciada;

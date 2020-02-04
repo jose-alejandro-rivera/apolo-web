@@ -18,6 +18,16 @@
       "es2018",
       "dom"
     ]
+    // ,
+    // "paths": {
+    //   "~/*": [
+    //     "src/*"
+    //   ],
+    //   "*": [
+    //     "./node_modules/tns-core-modules/*",
+    //     "./node_modules/*"
+    //   ]
+    // }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

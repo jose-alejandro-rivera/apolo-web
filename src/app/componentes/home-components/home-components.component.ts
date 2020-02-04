@@ -75,8 +75,7 @@ export class HomeComponent implements OnInit {
     private ejecucionAtencionService: EjecucionAtencionService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private global: AppGlobals,
-    private appComponent:AppComponent) {
+    private global: AppGlobals) {
     this.homeComponent = true;
     this.URL = this.global.url;
     localStorage.setItem('dataFlujoCat', '');
@@ -95,7 +94,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.dataFlujoOrden = JSON.parse(localStorage.getItem('dataFlujoOrden'));
     this.orden=this.dataFlujoOrden.formOrden.orden;
-    this.appComponent.userview=this.dataFlujoOrden.name;
     this.ejecucionAtencionService.getData(this.URL + 'flujo/categorias').subscribe((res: any) => {
       setTimeout(() => {
         this.arregloCat = res;
@@ -173,7 +171,7 @@ export class HomeComponent implements OnInit {
       this.crearCategoria = {
         "CodLogin": 1,
         "CodFlujo": this.idFlujo.Id_Flujo,
-        // "NumOrden": this.orden
+         "NumOrden": this.orden
       };
       this.homeComponent = false;
       let url = this.URL + 'atencion/create/';
