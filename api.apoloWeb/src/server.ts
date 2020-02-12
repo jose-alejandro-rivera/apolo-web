@@ -2,6 +2,7 @@ import { ApiConsult } from './api/apiConsult';
 import { ApiInsert } from './api/apiInsert';
 import { ServicePasoMock } from '../unitTest/mocks/service.pasoMocks';
 import { Inject, Container } from "typescript-ioc";
+import { ApiConsultProces } from './api/apiConsultProces';
 
 /**
  * constantes de coneccion 
@@ -41,6 +42,9 @@ export class Server {
    * variable que contiene las funciones de insercion
    */
   apiInsert: ApiInsert = Container.get(ApiInsert);
+
+  
+  apiConsultProces: ApiConsultProces= Container.get(ApiConsultProces);;
   /**
    * variable que contine los mocks para pruebas unitarias
    */
@@ -104,9 +108,8 @@ export class Server {
       return response.send(data);
     });
 
+
     //parametros de insercion POS
-
-
     /**
      * funcion que realiza la cracion de la atencion
      */
@@ -129,6 +132,14 @@ export class Server {
       const data = await this.apiInsert.postAtencionPaso(request.body);
       return response.send(data);
     });
+
+    // parametros de configuaracion de procesos (integraciones)
+
+    app.get('/api/autoconfiguracion/rest/:ordenActivity/:autoconfig', async (request, response) => {
+      const data = await this.apiConsultProces.getActivationAutoconfi(request.params);
+      return response.send(data);
+    });
+
   }
 }
 /**

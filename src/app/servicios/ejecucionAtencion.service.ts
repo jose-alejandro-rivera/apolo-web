@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 /**
  * injeccion de componente root
@@ -24,13 +24,14 @@ export class EjecucionAtencionService {
    * variables de secion 
    * @param http 
    */
-  constructor(private http: HttpClient) { }
+  constructor(@Optional() private http: HttpClient) { }
 
   /**
    * funcion para traer la informacion de la api
    * @param url url del servicio
    */
   getData(url){
+    console.log(this.http)
     return this.http.get(url);
   }
 

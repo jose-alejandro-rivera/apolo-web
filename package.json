@@ -45,11 +45,12 @@
     "rxjs": "^6.5.4",
     "tns-core-modules": "^6.3.2",
     "tslib": "^1.10.0",
+    "typescript-ioc": "^1.2.6",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.803.24",
-    "@angular/cli": "^8.3.24",
+    "@angular-devkit/build-angular": "^0.803.25",
+    "@angular/cli": "^8.3.25",
     "@angular/compiler-cli": "^8.2.14",
     "@angular/language-service": "^8.2.14",
     "@compodoc/compodoc": "^1.1.11",
@@ -63,7 +64,7 @@
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
-    "karma-jasmine-html-reporter": "^1.5.1",
+    "karma-jasmine-html-reporter": "^1.5.2",
     "nodemon": "^1.19.4",
     "protractor": "^5.4.3",
     "ts-node": "~7.0.0",
