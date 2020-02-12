@@ -25,6 +25,7 @@ import { OrdenComponentsComponent } from './componentes/orden-components/orden-c
     AgGridModule.withComponents([]),
     ReactiveFormsModule,
     FormsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

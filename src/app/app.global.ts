@@ -10,6 +10,8 @@ export class AppGlobals {
     readonly mensajeCampoDecision: string = ' Debe seleccionar el punto anterior';
     readonly mensajeOrdenNoIniciada: string= ' La orden no se encuentra en estado iniciada, por favor inicia la orden e intenta de nuevo.';
     readonly mensajeOrdenNoExiste: string= ' La orden indicada no existe en TOA o se ha relacionado mal el parámetro de búsqueda.';
+    readonly mensajeAutoconfigBA: string=' Debes asegurar que la autoconfiguración de BA sea correcta en TOA. Por favor valida y asegura el resultado en TOA.';
+    readonly mensajeProcesNotFound: string=' El proceso se encuentra sin integracion';
     
     constructor(){
         this.usuarioView = '';

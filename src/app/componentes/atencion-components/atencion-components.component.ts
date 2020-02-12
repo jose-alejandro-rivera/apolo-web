@@ -6,133 +6,55 @@ import { AppGlobals } from 'src/app/app.global';
 import { IRecordResponse } from '../../interfaces/recordResponse';
 import { async } from '@angular/core/testing';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Integracion } from '../../integraciones/integracion';
 
 @Component({
   selector: 'app-atencion-components',
   templateUrl: './atencion-components.component.html',
   styleUrls: ['./atencion-components.component.css'],
-  providers: [AppGlobals]
+  providers: [AppGlobals, Integracion]
 })
 /**
  * provee la injeccion de los componentes del flujo seleccionado
  */
 export class AtencionComponentsComponent implements OnInit {
-  /**
-   * variable que permite visualizar el componente
-   */
+ 
   atencionComponente: boolean;
-  /**
-   * varible que contiene el local storach
-   */
   dataFlujoCat: any;
-  /**
-   * variable que contiene el valor del flujo a consultar
-   */
   idFlujo: any;
-  /**
-   * variable qu econtiene el nombre del flujo
-   */
   nombreFlujo: any;
-  /**
-   * variable que captura la estructura del flujo 
-   */
   info: any;
-  /**
-   * variable que identifica el paso actual
-   */
   pasoActual: any;
-  /**
-   * variable que identifica el tipo de decicion a tomar
-   */
   decisionActual: any;
-  /**
-   * variable que intencifica la decision seleccionada
-   */
   decisionSeleccionada: any;
-  /**
-   * variable que optiene el llistado de los campo que tiene el cuestionario
-   */
   cuestionarioPaso: any[] = [];
-  /**
-   * variable que optiene el proceso de paso a visualizar 
-   */
   procesoPaso: any;
-  /**
-   * variable que optien el flujo completo con sus componentes
-   */
   flujoPaso: any;
-  /**
-   * variable que contiene los componentes del paso
-   */
   codComponentePasos: any;
-  /**
-   * variable que obtiene los campos del cuestionario
-   */
   atencionCuestionario: any[] = [];
-  /**
-   * variable que valida la respuesta del servicio
-   */
   response: any;
-  /**
-   * variable que representa la finalizaciond el flujo
-   */
   finflujo: boolean;
-  /**
-   * variable que almacena el proceso
-   */
-  consumirProceso: any;
-  /**
-   * validar con ejecucion del proceso
-   */
+  integracionProceso: any;
   pruebaproceso: any;//validar con el proceso de crear
-  respuestaProcesoActual: IServiceResponse = { data: { status: 200, response: "proceso ejecutado exitosamente" } };
-  /**
-   * variable que obtiene el listado de pasos
-   */
+  respuestaProcesoActual: any; //IServiceResponse = { data: { status: 200, response: "1" } };
   ListaPasos = [];
-  /**
-   * variable que calcula el cuestionario
-   */
   CuestionarioActual: boolean;
-  /**
-   * variable que calcula el proceso 
-   */
   ProcesoActual: boolean;
-  /**
-   * variable que obtiene el paso actual
-   */
   actualPaso: any;
-  /**
-   * variable que valida la solucion del paso 
-   */
   atencionSoluciona: any;
-  /**
-   * variable que trae la url de conexion
-   */
   URL: any;
-  /**
-   * variable que calcula el proceso 
-   */
   seleccionObligatoria: boolean;
-  /**
-   * variable que contiene el mensaje del campo obligatorio
-   */
   mensajeCampoCuestionario: any;
-
   seleccionPositiva: boolean;
-
-  /**
-  * variable que guarda la ruta que va seleccionado en un flujo cuando el paso tiene multiples opciones
-  */
   mapaTrazabilidad: any[] = [];
-  /**
-  * 
-  */
   dataFlujoOrden: any;
   orden: any;
   seleccionCampo: any;
+  retoma: any;
   url: any;
-
+  parametrosPoceso: any;
+  procesoMensage: Boolean;
+  procesButton: Boolean;
 
   /**
    * 
@@ -142,13 +64,16 @@ export class AtencionComponentsComponent implements OnInit {
   constructor(
     private atencionService: EjecucionAtencionService,
     private router: Router,
-    private global: AppGlobals
+    private global: AppGlobals,
+    private integracionProces: Integracion
   ) {
     this.atencionComponente = true;
     this.atencionSoluciona = "0";
     this.URL = this.global.url;
     this.seleccionObligatoria = false;
-    this.seleccionPositiva = true;
+    this.seleccionPositiva = false;
+    this.procesoMensage= true;
+    this.procesButton=false;
   }
 
   /**
@@ -160,15 +85,13 @@ export class AtencionComponentsComponent implements OnInit {
   ngOnInit() {
     this.dataFlujoOrden = JSON.parse(localStorage.getItem('dataFlujoOrden'));
     this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
-    this.orden= this.dataFlujoOrden.formOrden.orden;
+    this.orden = this.dataFlujoOrden.formOrden.orden;
     if (this.dataFlujoOrden.formOrden.retomaOrden) {
       this.listRetoma();
     } else {
       this.listFlujo();
     }
-
   }
-
 
   listFlujo() {
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
@@ -198,42 +121,42 @@ export class AtencionComponentsComponent implements OnInit {
       this.finflujo = this.flujoPaso.finaliza;
     });
   }
-
-
   listRetoma() {
     debugger
-    let url = this.URL + 'retoma/apolo/' + this.dataFlujoOrden.formOrden.orden;
+    let url = this.URL + 'retoma/apolo/' + this.orden;
     return this.atencionService.getData(url).toPromise().then(data => {
       let info = data;
       return info;
     }).then(data => {
-      this.info = data.recordsets;
+      this.retoma = data;
+      this.info = this.retoma.recordsets;
       this.info = this.info[0];
       this.info = this.info[0];
-      let retomaPasoActual = data.rowsAtaencionPaso;
-      this.idFlujo =  this.info.Id_Flujo;
-      this.nombreFlujo =  this.info.NomFlujo;
+      let retomaPasoActual = this.retoma.rowsAtaencionPaso;
+      this.idFlujo = this.info.Id_Flujo;
+      this.nombreFlujo = this.info.NomFlujo;
       if (retomaPasoActual) {
-        this.pasoActual = retomaPasoActual.CodPaso;
+        this.pasoActual = retomaPasoActual.CodPasoDestino;
       } else {
         this.pasoActual = this.info.CodPaso_Inicial;
       }
+      this.atencionService.idAtencion = retomaPasoActual.CodAtencion;
       this.ListaPasos = this.info.Pasos;
-      const pasoFlujo = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
-      this.pasoActual= pasoFlujo.CodPaso_Destino;
       this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
       this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
       if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
         this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
         this.CuestionarioActual = true;
+        this.seleccionPositiva = true;
       } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
-        this.procesoPaso = data.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
+        this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
+        this.procesButton=true;
         this.ProcesoActual = true;
+        this.seleccionPositiva = true;
       }
       this.finflujo = this.flujoPaso.finaliza;
     });
   }
-
   /**
    * Funcion que valida las opciones seleccionadas del cuestionario 
    *
@@ -256,7 +179,6 @@ export class AtencionComponentsComponent implements OnInit {
         ValorCampo: event.target.value
       };
       this.seleccionObligatoria = false;
-      // this.seleccionPositiva=false;
       //validacion de la existencia del campoCuestionario guardado
       if (this.atencionCuestionario.find(x => x.CodCuestionarioCampo == IdCuestionarioCampo)) {
         for (let i = 0; i < this.atencionCuestionario.length; i++) {
@@ -272,7 +194,6 @@ export class AtencionComponentsComponent implements OnInit {
       }
     }
   }
-
   /**
    * Funcion que valida la opcion seleccionada de la decision del cuestionario 
    *
@@ -284,7 +205,6 @@ export class AtencionComponentsComponent implements OnInit {
     this.seleccionObligatoria = false;
     this.seleccionPositiva = false;
   }
-
   /**
    * Funcion que realiza la continuidad de los pasos expuestos por el flujo seleccionado 
    *
@@ -338,7 +258,6 @@ export class AtencionComponentsComponent implements OnInit {
       this.seleccionPositiva = true;
     }
     this.decisionSeleccionada = '';
-
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
   /**
@@ -398,8 +317,6 @@ export class AtencionComponentsComponent implements OnInit {
 
     })
   }
-
-
   /**
    * Funcion que realiza la limpieza de las variables para seguir con el proceso 
    *
@@ -413,28 +330,9 @@ export class AtencionComponentsComponent implements OnInit {
     this.procesoPaso = [];
     this.finflujo = false;
     this.atencionCuestionario = [];
+    this.procesButton=true;
+    this.procesoMensage=true;
   }
-
-  /**
-   * Funcion que realiza la ejecucion del proceso
-   *
-   * @Param event: variable que identifica el id del proceso a ejecutar
-   * @return atencionService: respuesta del proceso ejecutado
-   */
-  ejecutarProceso(event) {
-    this.consumirProceso = {
-      "Id_Proceso": this.procesoPaso.Id_Proceso,
-      "TipoServicio": this.procesoPaso.Servicio,
-      "Servicio": "http://localhost:3000/api/proceso/fake/ok"
-    };
-    this.response = true;
-    this.url = this.URL + 'proceso/fake/';
-    this.atencionService.postData(this.url, this.consumirProceso).subscribe((data: IServiceResponse) => {
-      this.respuestaProcesoActual = data;
-      return this.respuestaProcesoActual;
-    })
-  }
-
   /**
    * Funcion que realiza el registro del seguimiento e los pasos ejecutados
    *
@@ -446,6 +344,8 @@ export class AtencionComponentsComponent implements OnInit {
     let atencionProceso;
     let atencionProcesoSalida;
     let atencionCampo;
+
+    this.pasoDestino(Id_Paso);
     // Armar JSON paso registro de Atencion Paso
     let atencionPaso = {
       CodAtencion: this.atencionService.idAtencion,
@@ -459,17 +359,17 @@ export class AtencionComponentsComponent implements OnInit {
     const proceso = this.info.Procesos.find(x => x.Id_Paso == Id_Paso);
     // Si el paso tiene un proceso
     if (proceso) {
-      const respuestaProceso = this.respuestaProcesoActual.data.response;
+      const respuestaProceso = this.respuestaProcesoActual;
       atencionProceso = {
         CodProceso: proceso.Id_Proceso,
-        TipoServicio: proceso.TipoServicio,
-        Servicio: proceso.Servicio,
-        Request: proceso.TipoServicio,
-        Response: respuestaProceso
+        TipoServicio: respuestaProceso.TipoServicio,
+        Servicio: respuestaProceso.Servicio,
+        Request: respuestaProceso.request,
+        Response: respuestaProceso.response
       };
       atencionProcesoSalida = {
         CodProcesoSalida: proceso.Id_ProcesoSalida,
-        Valor: respuestaProceso
+        Valor: respuestaProceso.statusOrden
       };
     } else {
       atencionProceso = {
@@ -502,7 +402,6 @@ export class AtencionComponentsComponent implements OnInit {
       }];
     }
     // Arma Obj para registro del paso
-    // Variable para envio del la informacion
     let data = [{
       atencionPaso: atencionPaso,
       atencionProceso: atencionProceso,
@@ -518,7 +417,6 @@ export class AtencionComponentsComponent implements OnInit {
       }
     });
   }
-
   /**
     * metodo que realiza la finalizaciond ell metodo
     * la 
@@ -538,6 +436,60 @@ export class AtencionComponentsComponent implements OnInit {
       console.log('seleccione una opcion');
     }
   }
+  pasoDestino(Id_Paso: number) {
 
+    const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
+    if (actualPaso.Id_TipoPaso == 2) {
+      const opcionesSiguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso);
+      for (let op of opcionesSiguientePaso) {
+        let Cuestionario = this.info.Cuestionarios.filter(x => x.Id_Paso == op.CodPaso_Origen);
+        let exp = '@' + Cuestionario[0].Id_Cuestionario + '.' + Cuestionario[0].Sigla + '==' + this.decisionSeleccionada;
+        if (op.ExpresionEjecucion == exp) {
+          const pasoSiguiente = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso && x.CodPaso_Destino == op.CodPaso_Destino);
+          this.flujoPaso = pasoSiguiente[0];
+        }
+      }
+    } else {
+      this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == Id_Paso);
+    }
+  }
+  /**
+   * Funcion que realiza la ejecucion del proceso
+   *
+   * @Param event: variable que identifica el id del proceso a ejecutar
+   * @return atencionService: respuesta del proceso ejecutado
+   */
+  async ejecutarProceso(event) {
+    debugger
+    this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
+    this.integracionProceso = {
+      "parametros": {
+        "orden": this.orden,
+        "paramtros": {
+          "value": this.parametrosPoceso || ''
+        },
+      },
+      "sigla": this.codComponentePasos.sigla || ''
+    };
+    this.respuestaProcesoActual= await this.integracionProces.proces(this.integracionProceso);
+    // for(let procesoIntegra of this.respuestaProcesoActual){
+    if(this.respuestaProcesoActual.llavePropiedad == 'undefine'){
+      this.mensajeCampoCuestionario =  this.respuestaProcesoActual.mensajeError;
+      this.procesButton=true;
+      this.procesoMensage = true;
+      this.seleccionObligatoria = true;
+    } else if (this.respuestaProcesoActual.llavePropiedad == 'NOOK') {
+        this.mensajeCampoCuestionario = this.respuestaProcesoActual.mensajeError;
+        this.procesButton=true;
+        this.procesoMensage = false;
+        this.seleccionObligatoria = true;
+      } else {
+        this.procesButton=false;
+        this.procesoMensage = false;
+        this.seleccionObligatoria = false;
+        this.seleccionPositiva = false;
+      }
+    // }
+  }
 }
 

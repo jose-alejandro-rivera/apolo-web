@@ -123,6 +123,14 @@
     color: #ffffff;
     font-size: 12px;
 }
+
+.flujo-img-proces{
+    
+        vertical-align: middle !important;
+        border-style: none !important;
+        height: 20px !important;
+        margin-left: 10px !important;
+}
 @media only screen and (max-width: 768px) {    
     .flujo-label {
         display: none;
