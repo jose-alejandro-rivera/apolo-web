@@ -48,7 +48,6 @@ export class Integracion {
                         this.dataProces.llavePropiedad = 'NOOK'
                         this.dataProces.mensajeError = this.global.mensajeAutoconfigBA;
                     }
-                    this.dataProces.responseToa.label =  this.dataProces.response.label;
                     return this.dataProces;
                     break;
                 }
@@ -68,7 +67,6 @@ export class Integracion {
                         this.dataProces.llavePropiedad = 'NOOK'
                         this.dataProces.mensajeError = this.global.mensajeAutoconfigBA;
                     }
-                    this.dataProces.responseToa.label = this.dataProces.response.label;
                     return this.dataProces;
                     break;
                 }
