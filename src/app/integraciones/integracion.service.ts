@@ -1,71 +1,65 @@
-import EnvioIntegracion from './envioIntegracion';
-import { Component, OnInit, Optional } from '@angular/core';
-import { EjecucionAtencionService } from '../servicios/ejecucionAtencion.service';
-import { Router, RouterStateSnapshot } from '@angular/router';
-import { AppGlobals } from 'src/app/app.global';
+import EnvioIntegracion from './envioIntegracion.service';
+import { Component, OnInit, Optional, Injectable, Inject } from '@angular/core';
 
-@Component({
-    providers: [AppGlobals]
+
+@Injectable({
+    providedIn: 'root'
 })
 export class Integracion {
 
     Integaciones: any;
-    URL: any;
     dataFlujoCat: any;
     dataFlujoOrden: any;
     dataProces: any;
+    private enivoIntegracion: EnvioIntegracion;
+    private mensajesApolo: any;
 
-    constructor(@Optional()
-    private enivoIntegracion: EnvioIntegracion,
-        private atencionService: EjecucionAtencionService,
-        private router: Router,
-        private global: AppGlobals
-    ) {
-        this.URL = this.global.url;
+    constructor(
+        @Inject(EnvioIntegracion) enivoIntegracion: EnvioIntegracion) {
+        this.enivoIntegracion = enivoIntegracion;
     }
 
     ngOnInit() {
     }
 
-    async proces(parametrosIntegracion) {
-        debugger
-
+    async proces(parametrosIntegracion, urlApi) {
+        this.mensajesIntegraciones();
         switch (parametrosIntegracion.sigla) {
             case 'VSBA':
                 {
-                    let url = this.URL + 'autoconfiguracion/rest/' + parametrosIntegracion.parametros.orden + '/BA';
+                    let url = urlApi + 'autoconfiguracion/rest/' + parametrosIntegracion.parametros.ordenAtivity + '/BA';
                     console.log(this.enivoIntegracion)
                     this.dataProces = await this.enivoIntegracion.ejecutarProceso(url);
 
                     if (this.dataProces.response.statusOrden == 'no_encontrada') {
                         this.dataProces.llavePropiedad = 'NOOK'
-                        this.dataProces.mensajeError = this.global.mensajeAutoconfigBA;
+                        this.dataProces.mensajeError = this.mensajesApolo.mensajeAutoconfigBA;
                     } else if (this.dataProces.response.propiedad_value === 'A_ACS_RESULT_CODE') {
                         if (this.dataProces.response.propiedad_key === 'OK') {
                             this.dataProces.llavePropiedad = this.dataProces.response.propiedad_key;
                         }
                     } else {
                         this.dataProces.llavePropiedad = 'NOOK'
-                        this.dataProces.mensajeError = this.global.mensajeAutoconfigBA;
+                        this.dataProces.mensajeError = this.mensajesApolo.mensajeAutoconfigBA;
                     }
                     return this.dataProces;
                     break;
                 }
             case 'ATV':
                 {
-                    let url = this.URL + 'autoconfiguracion/rest/' + parametrosIntegracion.parametros.orden + '/TV';
+                    let url = urlApi + 'autoconfiguracion/rest/' + parametrosIntegracion.parametros.ordenAtivity + '/TV';
                     console.log(this.enivoIntegracion)
                     this.dataProces = await this.enivoIntegracion.ejecutarProceso(url);
                     if (this.dataProces.response.statusOrden == 'no_encontrada') {
                         this.dataProces.llavePropiedad = 'NOOK'
-                        this.dataProces.mensajeError = this.global.mensajeAutoconfigBA;
+                        this.dataProces.mensajeError = this.mensajesApolo.mensajeActivacionTV;
                     } else if (this.dataProces.response.propiedad_value === 'A_HC_RESULT_CODE') {
                         if (this.dataProces.response.propiedad_key === 'OK') {
                             this.dataProces.llavePropiedad = this.dataProces.response.propiedad_key;
                         }
                     } else {
                         this.dataProces.llavePropiedad = 'NOOK'
-                        this.dataProces.mensajeError = this.global.mensajeAutoconfigBA;
+                        this.dataProces.mensajeError = this.mensajesApolo.mensajeActivacionTV;
                     }
                     return this.dataProces;
                     break;
@@ -73,15 +67,30 @@ export class Integracion {
             default:
                 {
                     this.dataProces = {
+                        "response":{
+                            "TipoServicio": '',
+                            "Servicio":'',
+                            "Request": '',
+                            "Response": '',
+                        },
                         "llavePropiedad": 'undefine'
                     }
-                    this.dataProces.mensajeError = this.global.mensajeProcesNotFound;
+                    this.dataProces.mensajeError = this.mensajesApolo.mensajeProcesNotFound;
                     return this.dataProces;
                     break;
                 }
 
         }
 
+    }
+
+
+    mensajesIntegraciones() {
+        this.mensajesApolo = {
+            mensajeProcesNotFound: ' El proceso se encuentra sin integracion',
+            mensajeAutoconfigBA: ' Debes asegurar que la autoconfiguración de BA sea correcta en TOA. Por favor valida y asegura el resultado en TOA.',
+            mensajeActivacionTV: ' Debes asegurar que la activación de TV sea correcta en TOA. Por favor valida y asegura el resultado en TOA'
+        }
     }
 
 

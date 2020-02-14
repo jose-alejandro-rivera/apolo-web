@@ -69,25 +69,30 @@
                                     {{procesoPaso.Descripcion}}
                                 </label>
                             </div>
-                            <div class="col-12" *ngIf="!procesoMensage" role="alert">
-                                <div>
-                                    <label>
-                                        {{respuestaProcesoActual.response.label}} 
-                                    </label>
-                                    <img class="flujo-img-proces" *ngIf="respuestaProcesoActual.llavePropiedad == 'OK'"
-                                        alt="CheckOk" src="/assets/imagenes apoloweb/successfully.png">
+                            <!-- <div *ngIf="loading" style="text-align: center;">
+                                <img class="apolo-imagen-loading" alt="Loading"
+                                    src="/assets/imagenes apoloweb/loader02.gif">
+                            </div> -->
+                            <div *ngIf="!loading">
+                                <div class="col-12" *ngIf="!procesoMensage" role="alert">
+                                    <div>
+                                        <label>
+                                            {{respuestaProcesoActual.response.label}}
+                                        </label>
+                                        <img class="flujo-img-proces"
+                                            *ngIf="respuestaProcesoActual.llavePropiedad == 'OK'" alt="CheckOk"
+                                            src="/assets/imagenes apoloweb/successfully.png">
 
-                                    <img class="flujo-img-proces " *ngIf="respuestaProcesoActual.llavePropiedad == 'NOOK'"
-                                        alt="CheckNoOk" src="/assets/imagenes apoloweb/wrong.png">
+                                        <img class="flujo-img-proces "
+                                            *ngIf="respuestaProcesoActual.llavePropiedad == 'NOOK'" alt="CheckNoOk"
+                                            src="/assets/imagenes apoloweb/wrong.png">
 
+                                    </div>
                                 </div>
-
-
                             </div>
 
                             <div class="col text-center" *ngIf="!finflujo">
-                                <button *ngIf="procesButton" type="button"
-                                    class="flujo-button-procesar flujo-fuente"
+                                <button *ngIf="procesButton" type="button" class="flujo-button-procesar flujo-fuente"
                                     (click)="ejecutarProceso($event)">Ejecutar</button>
                             </div>
                         </div>

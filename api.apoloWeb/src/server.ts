@@ -3,6 +3,7 @@ import { ApiInsert } from './api/apiInsert';
 import { ServicePasoMock } from '../unitTest/mocks/service.pasoMocks';
 import { Inject, Container } from "typescript-ioc";
 import { ApiConsultProces } from './api/apiConsultProces';
+import { ApiInsertProces } from './api/apiInsertProces';
 
 /**
  * constantes de coneccion 
@@ -34,20 +35,11 @@ const server = app.listen(PORT, () => {
  * clase de inicializacion de los servidores
  */
 export class Server {
-  /**
-   * variable que contiene las funciones de consulta 
-   */
-  apiConsult: ApiConsult = Container.get(ApiConsult);
-  /**
-   * variable que contiene las funciones de insercion
-   */
-  apiInsert: ApiInsert = Container.get(ApiInsert);
 
-  
-  apiConsultProces: ApiConsultProces= Container.get(ApiConsultProces);;
-  /**
-   * variable que contine los mocks para pruebas unitarias
-   */
+  apiConsult: ApiConsult = Container.get(ApiConsult);
+  apiInsert: ApiInsert = Container.get(ApiInsert);
+  apiConsultProces: ApiConsultProces= Container.get(ApiConsultProces);
+  apiInsertProces: ApiInsertProces = Container.get(ApiInsertProces);
   serviceMocks: ServicePasoMock = Container.get(ServicePasoMock);
   public data: any;
 
@@ -60,44 +52,25 @@ export class Server {
   router(): void {
 
     //parametros de consulta
-    /**
-     * funcion de validacion de prueba a la coneccion
-     */
     app.get('/api/testConnection', function (req, res) {
       return res.status(200).json('testConnection OK');
     });
-
-    /**
-     * funcion que obtiene ultimo paso de una atencion
-     */
     app.get('/api/atencion/lastStep/:id', async (request, response) => {
       const data = await this.apiConsult.getUltimoAtencionPaso(request.params.id);
       return response.send(data);
     });
-
-    /**
-     * funcion que obtiene el listado de las categorias
-     */
     app.get('/api/flujo/categorias', async (request, response) => {
       this.data = await this.apiConsult.getCategoriasFlujo();
       return response.send(this.data);
     });
-    /**
-     * funcion que obtiene el listado de los flujos asociado a la categoria seleccionada
-     */
     app.get('/api/flujos/por/Categorias/:id', async (request, response) => {
         const data = await this.apiConsult.getFlujoPorCategoria(request.params.id);
         return response.send(data);
       });
-  
-    /**
-     * funcion que obtiene el listado de componentes del flujo 
-     */
     app.get('/api/flujo/list/:id', async (request, response) => {
       const data = await this.apiConsult.getPasosCategoria(request.params.id);
       return response.send(data);
     });
-
     app.get('/api/integracion/apolo/toa/:param/:orden/:tipo', async (request, response) => {
       const data = await this.apiConsult.getOrdenActiva(request.params);
       return response.send(data);
@@ -110,33 +83,29 @@ export class Server {
 
 
     //parametros de insercion POS
-    /**
-     * funcion que realiza la cracion de la atencion
-     */
     app.post('/api/atencion/create/', async (request, response) => {
       const data = await this.apiInsert.postCrearAtencion(request.body);
       return response.send(data);
     });
-    /**
-     * funcion rueba
-     */
     app.post('/api/proceso/fake', async (request, response) => {
       const data = await this.apiInsert.postConsumirProceso(request.body);
       return response.send(data);
     });
-
-    /**
-     * funcion que registra el paso a paso ejecutado por el usuario
-     */
     app.post('/api/atencion-paso-campo/create', async (request, response) => {
       const data = await this.apiInsert.postAtencionPaso(request.body);
       return response.send(data);
     });
 
-    // parametros de configuaracion de procesos (integraciones)
 
+    // GET parametros de configuaracion de procesos (integraciones) 
     app.get('/api/autoconfiguracion/rest/:ordenActivity/:autoconfig', async (request, response) => {
       const data = await this.apiConsultProces.getActivationAutoconfi(request.params);
+      return response.send(data);
+    });
+
+    // PASTCH parametros de configuaracion de procesos (integraciones) 
+    app.patch('/api/integracion/toa/finaliza/rest/:num_orden', async (request, response) => {
+      const data = await this.apiInsertProces.pastchActualizarOrden(request.params.num_orden,request.body);
       return response.send(data);
     });
 

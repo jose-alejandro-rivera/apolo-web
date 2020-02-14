@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Event, Router } from '@angular/router';
 import { AppGlobals } from 'src/app/app.global';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
-import * as camera from 'nativescript-camera';
 import { AppComponent } from 'src/app/app.component';
 
 
@@ -21,49 +20,33 @@ import { AppComponent } from 'src/app/app.component';
  */
 export class OrdenComponentsComponent implements OnInit {
 
-  /**
- * variable que itera el componente atencion
- */
+  @ViewChild('video', { static: true }) videoElement: ElementRef;
+  @ViewChild('canvas', { static: true }) canvas: ElementRef;
+
   componentFlujo: boolean;
-  /**
-   * variable que itera el componente de categorias
-   */
   componentCategoria: boolean;
-
-  /**
-   * 
-   */
   public orden: any;
-  /**
-   * 
-   */
   public param: any;
-  /**
-   * 
-   * 
-   */
   public URL: any;
-  /**
-   * 
-   */
   public formOrden: FormGroup;
-  /**
-   * 
-   */
   public submitted = false;
-
   public ordenInexistente: boolean;
-  /**
-   * 
-   */
   public mensajeOrden: any;
-  /**
-   * 
-   */
   public ordenResponse: any;
 
   retomaOrden: Boolean;
   tipoEjecucion: any;
+  loading: Boolean;
+
+  // videoWidth = 0;
+  // videoHeight = 0;
+  // constraints = {
+  //   video: {
+  //     facingMode: "environment",
+  //     width: { ideal: 4096 },
+  //     height: { ideal: 2160 }
+  //   }
+  // };
 
 
   /**
@@ -77,7 +60,8 @@ export class OrdenComponentsComponent implements OnInit {
     private ejecucionAtencionService: EjecucionAtencionService,
     private formBuilder: FormBuilder,
     private global: AppGlobals,
-    private appComponent: AppComponent) {
+    private appComponent: AppComponent,
+    private renderer: Renderer2) {
     this.componentFlujo = false;
     this.componentCategoria = false;
     this.URL = this.global.url;
@@ -92,6 +76,8 @@ export class OrdenComponentsComponent implements OnInit {
 
   ngOnInit() {
     this.ordenInexistente = false;
+    this.loading= false;
+    // this.startCamera();
   }
 
   get f() {
@@ -99,10 +85,11 @@ export class OrdenComponentsComponent implements OnInit {
   }
 
   parametroSeleccion($event) {
-    debugger
+    // debugger
     this.param = this.formOrden.value.param;
     this.ordenInexistente = false;
   }
+
 
   ingresoOrden($event) {
     if (this.formOrden.invalid) {
@@ -110,75 +97,92 @@ export class OrdenComponentsComponent implements OnInit {
       return;
     } else {
       this.orden = this.formOrden.value.orden;
-      if (this.retomaOrden) {
-        this.ordenResponse = {
-          "formOrden":
-          {
-            "retomaOrden": this.retomaOrden,
-            "orden": this.orden
+      this.tipoEjecucion = 'orden';
+      let url = this.URL + 'integracion/apolo/toa/' + this.param + '/' + this.orden + '/' + this.tipoEjecucion;
+      this.loading= true;
+      return this.ejecucionAtencionService.getData(url).toPromise().then(data => {
+        console.log(data + ' imprecion data')
+        let info: any = data;
+        info = info.response;
+        return info;
+      }).then(data => {
+        this.ordenResponse = data;
+        this.ordenResponse.formOrden = this.formOrden.value;
+        if (this.retomaOrden) {
+          this.ordenResponse.retomaOrden = this.retomaOrden;
+          localStorage.setItem('dataFlujoOrden', JSON.stringify(this.ordenResponse));
+          this.enrutamientoFlujo();
+        } else {
+          if (this.ordenResponse.status) {
+            if (this.ordenResponse.status === 'started') {
+              localStorage.setItem('dataFlujoOrden', JSON.stringify(this.ordenResponse));
+              this.appComponent.userview = this.ordenResponse.name;
+              this.appComponent.admin = (this.appComponent.userview != '') ? true : false;
+              this.enrutamientoHome();
+            } else {
+              this.mensajeOrden = this.global.mensajeOrdenNoIniciada;
+              this.ordenInexistente = true;
+              this.loading= false;
+            }
+          } else {
+            this.mensajeOrden = this.global.mensajeOrdenNoExiste;
+            this.ordenInexistente = true;
+            this.loading= false;
           }
-        };
-        localStorage.setItem('dataFlujoOrden', JSON.stringify(this.ordenResponse));
-        this.enrutamientoFlujo();
-      } else {
-        this.validacionOrden();
-      }
+        }
+
+      });
+
+
     }
   }
+
 
   updateRol($event) {
     const event = $event.target.checked;
     this.retomaOrden = event;
   }
 
-
-  validacionOrden() {
-    this.tipoEjecucion = 'orden';
-    let url = this.URL + 'integracion/apolo/toa/' + this.param + '/' + this.orden + '/' + this.tipoEjecucion;
-    return this.ejecucionAtencionService.getData(url).toPromise().then(data => {
-      console.log(data + ' imprecion data')
-      let info: any = data;
-      info = info.responseToa;
-      return info;
-    }).then(data => {
-      this.ordenResponse = data;
-      this.ordenResponse.formOrden = this.formOrden.value;
-      if (this.ordenResponse.status) {
-        if (this.ordenResponse.status === 'started') {
-          localStorage.setItem('dataFlujoOrden', JSON.stringify(this.ordenResponse));
-          this.appComponent.userview = this.ordenResponse.name;
-          this.appComponent.admin = (this.appComponent.userview != '') ? true : false;
-          this.enrutamientoHome();
-        } else {
-          this.mensajeOrden = this.global.mensajeOrdenNoIniciada;
-          this.ordenInexistente = true;
-        }
-      } else {
-        this.mensajeOrden = this.global.mensajeOrdenNoExiste;
-        this.ordenInexistente = true;
-      }
-    })
-
-  }
-
   enrutamientoHome() {
+    this.loading= false;
     this.router.navigate(['home/componet']);
     return false;
   }
 
   enrutamientoFlujo() {
+    this.loading= false;
     this.router.navigate(['flujo/list']);
     return false;
   }
 
 
 
-  // onButoonTap():void{
-  //   Image
-  //   camera.requestCameraPermissions().then(
-
-
-  //   );
+  /////prueva camara
+  //   startCamera() {
+  //     if (!!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
+  //         navigator.mediaDevices.getUserMedia(this.constraints).then(this.attachVideo.bind(this)).catch(this.handleError);
+  //     } else {
+  //         alert('Sorry, camera not available.');
+  //     }
   // }
+
+  // attachVideo(stream) {
+  //     this.renderer.setProperty(this.videoElement.nativeElement, 'srcObject', stream);
+  //     this.renderer.listen(this.videoElement.nativeElement, 'play', (event) => {
+  //         this.videoHeight = this.videoElement.nativeElement.videoHeight;
+  //         this.videoWidth = this.videoElement.nativeElement.videoWidth;
+  //     });
+  // }
+
+  // capture() {
+  //     this.renderer.setProperty(this.canvas.nativeElement, 'width', this.videoWidth);
+  //     this.renderer.setProperty(this.canvas.nativeElement, 'height', this.videoHeight);
+  //     this.canvas.nativeElement.getContext('2d').drawImage(this.videoElement.nativeElement, 0, 0);
+  // }
+
+  // handleError(error) {
+  //     console.log('Error: ', error);
+  // }
+
 
 }

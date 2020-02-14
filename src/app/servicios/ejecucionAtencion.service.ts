@@ -31,7 +31,6 @@ export class EjecucionAtencionService {
    * @param url url del servicio
    */
   getData(url){
-    console.log(this.http)
     return this.http.get(url);
   }
 
@@ -42,6 +41,15 @@ export class EjecucionAtencionService {
    */
   postData(url, body){
     return this.http.post(url,body);
+  }
+
+    /**
+   * funcion que realiza el envio de infomacion a la api 
+   * @param url url del servicio
+   * @param body informacion a enviar al api
+   */
+  pastchData(url, body){
+    return this.http.patch(url,body);
   }
 
   /**

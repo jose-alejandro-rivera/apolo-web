@@ -16,6 +16,13 @@
     padding: 20px;
 }
 
+.apolo-imagen-loading {
+    text-align: center !important;
+    width: 140px !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+
 .apolo-actividades-principales {
     width: 100%;
     float: left;
@@ -113,6 +120,7 @@
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
   }
+  
 
 @media only screen and (max-width: 768px) {    
     .apolo-img {
@@ -149,6 +157,14 @@
         font-family: "telefonica", Arial, Helvetica, sans-serif;
         font-size: 16px;
         margin-top: 30px;
+    }
+
+    
+    .apolo-imagen-loading {
+        text-align: center !important;
+        width: 100px !important;
+        margin-top: 20px !important;
+        margin-bottom: 20px !important;
     }
 
 }
