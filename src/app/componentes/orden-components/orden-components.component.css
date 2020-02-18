@@ -16,6 +16,13 @@
     padding: 20px;
 }
 
+.apolo-imagen-loading {
+    text-align: center !important;
+    width: 140px !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+
 .apolo-actividades-principales {
     width: 100%;
     float: left;
@@ -67,6 +74,14 @@
     padding: 0.75rem 1.25rem;
 }
 
+.apolo-alert-confirm {
+    color: #158f1b;
+    background-color: #d7f8d9;
+    border-color: #c6f5d0;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1.25rem;
+}
+
 .boxes {
     margin: auto;
     padding: 10px;
@@ -113,6 +128,7 @@
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
   }
+  
 
 @media only screen and (max-width: 768px) {    
     .apolo-img {
@@ -149,6 +165,14 @@
         font-family: "telefonica", Arial, Helvetica, sans-serif;
         font-size: 16px;
         margin-top: 30px;
+    }
+
+    
+    .apolo-imagen-loading {
+        text-align: center !important;
+        width: 100px !important;
+        margin-top: 20px !important;
+        margin-bottom: 20px !important;
     }
 
 }

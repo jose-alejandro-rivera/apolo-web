@@ -10,6 +10,7 @@ import { HomeComponent } from './componentes/home-components/home-components.com
 import { AtencionComponentsComponent } from './componentes/atencion-components/atencion-components.component';
 import { OrdenComponentsComponent } from './componentes/orden-components/orden-components.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

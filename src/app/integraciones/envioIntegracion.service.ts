@@ -1,15 +1,8 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, ɵConsole, Optional,Injectable } from '@angular/core';
-import { IServiceResponse } from '../interfaces/serviceResponse';
-import { Router, RouterStateSnapshot } from '@angular/router';
-import { IRecordResponse } from '../interfaces/recordResponse';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, ɵConsole, Optional,Injectable, Inject } from '@angular/core';
 import { EjecucionAtencionService } from '../servicios/ejecucionAtencion.service';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
-})
-@Component({
-    providers: [EjecucionAtencionService,]
 })
 export default class EnvioIntegracion implements OnInit {
     Integaciones: any;
@@ -17,19 +10,18 @@ export default class EnvioIntegracion implements OnInit {
     dataFlujoCat: any;
     dataFlujoOrden: any;
     dataProces: any;
+     private atencionService: EjecucionAtencionService
   
-    constructor( @Optional()
-        private atencionService: EjecucionAtencionService
-    ) {
-
+    constructor( 
+        @Inject(EjecucionAtencionService) atencionService:EjecucionAtencionService)
+     {
+        this.atencionService = atencionService;
     }
 
     ngOnInit() {
     }
 
     ejecutarProceso(parametrosProceso) {
-        debugger
-
         return this.atencionService.getData(parametrosProceso)
         .toPromise().then(data => {
             let info = data;
@@ -44,6 +36,20 @@ export default class EnvioIntegracion implements OnInit {
 
     insertProces(){
         console.log('prueba insert procesos')
+    }
+
+
+    updateProces(url,param){
+        return this.atencionService.pastchData(url,param)
+        .toPromise().then(data => {
+            let info = data;
+            return info;
+        }).then(data => {
+            this.dataProces = data;
+                console.log(data);
+            return this.dataProces;
+        });
+
     }
 
 

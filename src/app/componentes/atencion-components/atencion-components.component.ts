@@ -6,7 +6,7 @@ import { AppGlobals } from 'src/app/app.global';
 import { IRecordResponse } from '../../interfaces/recordResponse';
 import { async } from '@angular/core/testing';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Integracion } from '../../integraciones/integracion';
+import { Integracion } from '../../integraciones/integracion.service';
 
 @Component({
   selector: 'app-atencion-components',
@@ -18,7 +18,9 @@ import { Integracion } from '../../integraciones/integracion';
  * provee la injeccion de los componentes del flujo seleccionado
  */
 export class AtencionComponentsComponent implements OnInit {
- 
+
+  
+  loading: Boolean;
   atencionComponente: boolean;
   dataFlujoCat: any;
   idFlujo: any;
@@ -49,12 +51,15 @@ export class AtencionComponentsComponent implements OnInit {
   mapaTrazabilidad: any[] = [];
   dataFlujoOrden: any;
   orden: any;
+  ordenActivity: any;
   seleccionCampo: any;
   retoma: any;
   url: any;
   parametrosPoceso: any;
   procesoMensage: Boolean;
   procesButton: Boolean;
+  responseFinalliza: any;
+  paramFinaliza: any;
 
   /**
    * 
@@ -72,8 +77,9 @@ export class AtencionComponentsComponent implements OnInit {
     this.URL = this.global.url;
     this.seleccionObligatoria = false;
     this.seleccionPositiva = false;
-    this.procesoMensage= true;
-    this.procesButton=false;
+    this.procesoMensage = true;
+    this.procesButton = false;
+    this.loading=false;
   }
 
   /**
@@ -84,11 +90,12 @@ export class AtencionComponentsComponent implements OnInit {
   */
   ngOnInit() {
     this.dataFlujoOrden = JSON.parse(localStorage.getItem('dataFlujoOrden'));
-    this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
     this.orden = this.dataFlujoOrden.formOrden.orden;
-    if (this.dataFlujoOrden.formOrden.retomaOrden) {
+    this.ordenActivity = this.dataFlujoOrden.activityId;
+    if (this.dataFlujoOrden.retomaOrden) {
       this.listRetoma();
     } else {
+      this.dataFlujoCat = JSON.parse(localStorage.getItem('dataFlujoCat'));
       this.listFlujo();
     }
   }
@@ -117,12 +124,13 @@ export class AtencionComponentsComponent implements OnInit {
       } else if (data.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
         this.procesoPaso = data.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
         this.ProcesoActual = true;
+        this.seleccionPositiva = true;
       }
       this.finflujo = this.flujoPaso.finaliza;
     });
   }
   listRetoma() {
-    debugger
+    // debugger
     let url = this.URL + 'retoma/apolo/' + this.orden;
     return this.atencionService.getData(url).toPromise().then(data => {
       let info = data;
@@ -143,6 +151,9 @@ export class AtencionComponentsComponent implements OnInit {
       this.atencionService.idAtencion = retomaPasoActual.CodAtencion;
       this.ListaPasos = this.info.Pasos;
       this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
+      if(!this.flujoPaso){
+        this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == this.pasoActual);
+      }
       this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
       if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
         this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
@@ -150,7 +161,7 @@ export class AtencionComponentsComponent implements OnInit {
         this.seleccionPositiva = true;
       } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
         this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
-        this.procesButton=true;
+        this.procesButton = true;
         this.ProcesoActual = true;
         this.seleccionPositiva = true;
       }
@@ -253,6 +264,7 @@ export class AtencionComponentsComponent implements OnInit {
     } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
       this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
       this.ProcesoActual = true;
+      this.seleccionPositiva = true;
     }
     if (this.finflujo) {
       this.seleccionPositiva = true;
@@ -268,6 +280,7 @@ export class AtencionComponentsComponent implements OnInit {
    */
   Atras(Id_Paso: number) {
     this.limpiarVariables();
+    this.loading=true;
     this.response = false;
     // servicio para validar historial
     let url = this.URL + 'atencion/lastStep/' + this.atencionService.idAtencion;
@@ -314,7 +327,8 @@ export class AtencionComponentsComponent implements OnInit {
       this.finflujo = this.actualPaso.finaliza;
       this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
       ///////////////////////////////////////////////////////
-
+      
+    this.loading=false;
     })
   }
   /**
@@ -330,8 +344,9 @@ export class AtencionComponentsComponent implements OnInit {
     this.procesoPaso = [];
     this.finflujo = false;
     this.atencionCuestionario = [];
-    this.procesButton=true;
-    this.procesoMensage=true;
+    this.procesButton = true;
+    this.procesoMensage = true;
+    this.seleccionObligatoria = false;
   }
   /**
    * Funcion que realiza el registro del seguimiento e los pasos ejecutados
@@ -344,6 +359,8 @@ export class AtencionComponentsComponent implements OnInit {
     let atencionProceso;
     let atencionProcesoSalida;
     let atencionCampo;
+    
+    this.loading=true;
 
     this.pasoDestino(Id_Paso);
     // Armar JSON paso registro de Atencion Paso
@@ -359,7 +376,7 @@ export class AtencionComponentsComponent implements OnInit {
     const proceso = this.info.Procesos.find(x => x.Id_Paso == Id_Paso);
     // Si el paso tiene un proceso
     if (proceso) {
-      const respuestaProceso = this.respuestaProcesoActual;
+      const respuestaProceso = this.respuestaProcesoActual.response;
       atencionProceso = {
         CodProceso: proceso.Id_Proceso,
         TipoServicio: respuestaProceso.TipoServicio,
@@ -415,6 +432,7 @@ export class AtencionComponentsComponent implements OnInit {
         //llamar al siguiente paso
         this.Siguiente(Id_Paso);
       }
+      
     });
   }
   /**
@@ -422,19 +440,42 @@ export class AtencionComponentsComponent implements OnInit {
     * la 
     * @param Id_Paso 
     */
-  finalizarAtencion(Id_Paso: number) {
+  async finalizarAtencion(Id_Paso: number) {
     this.pasoActual = 0;
     if (this.decisionSeleccionada != '') {
       this.atencionSoluciona = this.decisionSeleccionada;
       // Se realiza el registro del paso final
-      this.RegistrarAtencionPaso(Id_Paso);
-      this.atencionComponente = false;
-      localStorage.setItem('dataFlujoCat', '');
-      //Se redirije a la pagina de inicio 
-      this.router.navigate(['home/componet']);
+      this.paramFinaliza = {
+        "XA_LINEAMIENTO_ACT": "1"
+      }
+      this.url = this.URL + 'integracion/toa/finaliza/rest/' + this.ordenActivity;
+
+      return this.atencionService.pastchData(this.url, this.paramFinaliza)
+        .toPromise().then(data => {
+          let info = data;
+          return info;
+        }).then(data => {
+          this.respuestaProcesoActual = data;
+          if(this.respuestaProcesoActual.response.status==200){
+            this.RegistrarAtencionPaso(Id_Paso);
+          this.atencionComponente = false;
+          localStorage.setItem('dataFlujoOrden', '');
+          localStorage.setItem('dataFlujoCat', '');
+          //Se redirije a la pagina de inicio 
+          this.global.mensajeOk= true;
+          localStorage.setItem('dataFlujoMensajeOk', JSON.stringify(this.global.mensajeOk));
+          this.router.navigate(['home/orden']);
+          return this.responseFinalliza;
+          }else{
+            this.mensajeCampoCuestionario = this.global.mensajeCampoDecision;
+            this.seleccionObligatoria = true;
+          }
+          
+        });
     } else {
       console.log('seleccione una opcion');
     }
+    
   }
   pasoDestino(Id_Paso: number) {
 
@@ -450,7 +491,11 @@ export class AtencionComponentsComponent implements OnInit {
         }
       }
     } else {
-      this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == Id_Paso);
+      if (this.finflujo){
+        this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso);
+      }else{
+        this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == Id_Paso);
+      }
     }
   }
   /**
@@ -460,36 +505,41 @@ export class AtencionComponentsComponent implements OnInit {
    * @return atencionService: respuesta del proceso ejecutado
    */
   async ejecutarProceso(event) {
-    debugger
+    // debugger
+    this.loading=true;
     this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
     this.integracionProceso = {
       "parametros": {
-        "orden": this.orden,
+        "ordenAtivity": this.ordenActivity,
         "paramtros": {
           "value": this.parametrosPoceso || ''
         },
       },
-      "sigla": this.codComponentePasos.sigla || ''
+      "sigla": this.codComponentePasos.Sigla || ''
     };
-    this.respuestaProcesoActual= await this.integracionProces.proces(this.integracionProceso);
+    this.respuestaProcesoActual = await this.integracionProces.proces(this.integracionProceso, this.URL);
     // for(let procesoIntegra of this.respuestaProcesoActual){
-    if(this.respuestaProcesoActual.llavePropiedad == 'undefine'){
-      this.mensajeCampoCuestionario =  this.respuestaProcesoActual.mensajeError;
-      this.procesButton=true;
+    if (this.respuestaProcesoActual.llavePropiedad == 'undefine') {
+      this.mensajeCampoCuestionario = this.respuestaProcesoActual.mensajeError;
+      this.procesButton = true;
       this.procesoMensage = true;
       this.seleccionObligatoria = true;
+      this.seleccionPositiva = false;
     } else if (this.respuestaProcesoActual.llavePropiedad == 'NOOK') {
-        this.mensajeCampoCuestionario = this.respuestaProcesoActual.mensajeError;
-        this.procesButton=true;
-        this.procesoMensage = false;
-        this.seleccionObligatoria = true;
-      } else {
-        this.procesButton=false;
-        this.procesoMensage = false;
-        this.seleccionObligatoria = false;
-        this.seleccionPositiva = false;
-      }
+      this.mensajeCampoCuestionario = this.respuestaProcesoActual.mensajeError;
+      this.procesButton = true;
+      this.procesoMensage = false;
+      this.seleccionObligatoria = true;
+    } else {
+      this.procesButton = false;
+      this.procesoMensage = false;
+      this.seleccionObligatoria = false;
+      this.seleccionPositiva = false;
+    }
+    
+    
     // }
+    this.loading=false;
   }
 }
 

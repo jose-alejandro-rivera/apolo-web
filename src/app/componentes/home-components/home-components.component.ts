@@ -19,50 +19,19 @@ import { AppComponent } from 'src/app/app.component';
  * provee el almacenamiento de categorias y de flujos 
  */
 export class HomeComponent implements OnInit {
-  /**
-   * variable que obtiene el listado de flujos
-   */
+
   public flujoList: any;
-  /**
-   * variable que itera el id del flujo seleccionado
-   */
   private idFlujo: any;
-  /**
-   * variable que obtiene el formulario del componente
-   */
   public formCategorias: FormGroup;
-  /**
-   * variable que evalua la visualizacion del componente
-   */
   public homeComponent: boolean;
-  /**
-   * variable que evalia el envio de la informacion
-   */
   public submitted = false;
-  /**
-   * variabe que conprende el listado de categorias
-   */
   public arregloCat: any;
-  /**
-   * variable de usuario
-   */
   private usuario: any;
-  /**
-   * variable que evalua la creacion e la atencion
-   */
   private crearCategoria: any;
-  /**
-   * 
-   */
   public URL: any;
-  /**
-   * 
-   */
   dataFlujoOrden: any;
   orden: any;
-
   idCatefgoria: any;
-
   public categoria: any;
 
   /**
