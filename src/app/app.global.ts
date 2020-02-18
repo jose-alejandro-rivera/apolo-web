@@ -15,6 +15,7 @@ export class AppGlobals {
     readonly mesnajeConfirmacionActividad: string = ' Actividad terminada exitosamente.';
     readonly mensajeNoFinaliza: string = ' No se finalizo exitosamente.';
     readonly mensajeProcesNotFound: string = ' El proceso se encuentra sin integración';
+    readonly mensajeRetomaFound: string= ' La orden ya cuenta con un proceso, selecciona el botón de ‘Retoma’.';
 
     constructor() {
         this.usuarioView = '';

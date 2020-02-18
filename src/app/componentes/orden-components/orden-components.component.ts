@@ -66,7 +66,7 @@ export class OrdenComponentsComponent implements OnInit {
     private renderer: Renderer2) {
     this.componentFlujo = false;
     this.componentCategoria = false;
-    this.ejecucionExitosa= false;
+    this.ejecucionExitosa = false;
     this.URL = this.global.url;
     localStorage.setItem('dataFlujoOrden', '');
     this.router.events.subscribe((event: Event) => {
@@ -81,7 +81,7 @@ export class OrdenComponentsComponent implements OnInit {
     this.ordenInexistente = false;
     this.loading = false;
     this.mesnajeConfirmacionActividad = this.global.mesnajeConfirmacionActividad;
-    this.ejecucionExitosa=JSON.parse(localStorage.getItem('dataFlujoMensajeOk'));;
+    this.ejecucionExitosa = JSON.parse(localStorage.getItem('dataFlujoMensajeOk'));;
     localStorage.setItem('dataFlujoMensajeOk', JSON.stringify(false));
     // this.startCamera();
   }
@@ -114,26 +114,32 @@ export class OrdenComponentsComponent implements OnInit {
       }).then(data => {
         this.ordenResponse = data;
         this.ordenResponse.formOrden = this.formOrden.value;
-        if (this.retomaOrden) {
-          this.ordenResponse.retomaOrden = this.retomaOrden;
-          localStorage.setItem('dataFlujoOrden', JSON.stringify(this.ordenResponse));
-          this.enrutamientoFlujo();
+        if (this.ordenResponse.status == 'retoma' && !this.retomaOrden) {
+          this.mensajeOrden = this.global.mensajeRetomaFound;
+          this.ordenInexistente = true;
+          this.loading = false;
         } else {
-          if (this.ordenResponse.status) {
-            if (this.ordenResponse.status === 'started') {
-              localStorage.setItem('dataFlujoOrden', JSON.stringify(this.ordenResponse));
-              this.appComponent.userview = this.ordenResponse.name;
-              this.appComponent.admin = (this.appComponent.userview != '') ? true : false;
-              this.enrutamientoHome();
+          if (this.retomaOrden) {
+            this.ordenResponse.retomaOrden = this.retomaOrden;
+            localStorage.setItem('dataFlujoOrden', JSON.stringify(this.ordenResponse));
+            this.enrutamientoFlujo();
+          } else {
+            if (this.ordenResponse.status) {
+              if (this.ordenResponse.status === 'started') {
+                localStorage.setItem('dataFlujoOrden', JSON.stringify(this.ordenResponse));
+                this.appComponent.userview = this.ordenResponse.name;
+                this.appComponent.admin = (this.appComponent.userview != '') ? true : false;
+                this.enrutamientoHome();
+              } else {
+                this.mensajeOrden = this.global.mensajeOrdenNoIniciada;
+                this.ordenInexistente = true;
+                this.loading = false;
+              }
             } else {
-              this.mensajeOrden = this.global.mensajeOrdenNoIniciada;
+              this.mensajeOrden = this.global.mensajeOrdenNoExiste;
               this.ordenInexistente = true;
               this.loading = false;
             }
-          } else {
-            this.mensajeOrden = this.global.mensajeOrdenNoExiste;
-            this.ordenInexistente = true;
-            this.loading = false;
           }
         }
 
@@ -147,6 +153,8 @@ export class OrdenComponentsComponent implements OnInit {
   updateRol($event) {
     const event = $event.target.checked;
     this.retomaOrden = event;
+    this.ordenInexistente = false;
+
   }
 
   enrutamientoHome() {

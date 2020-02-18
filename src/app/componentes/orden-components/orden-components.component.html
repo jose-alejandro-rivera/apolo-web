@@ -1,7 +1,5 @@
 <div class="apolo">
-  <!-- <div *ngIf="loading">
-    <img alt="Loading" src="/assets/imagenes apoloweb/loading2.gif">
-  </div> -->
+
   <div  class="apolo-cuadriula apolo-margen apolo-actividades-principales rounded">
     <div *ngIf="loading" style="text-align: center;">
       <img class="apolo-imagen-loading" alt="Loading" src="/assets/imagenes apoloweb/loader.gif">
@@ -27,7 +25,7 @@
               <div *ngIf="f.param.errors.required">Seleccione un parametro de busqueda </div>
             </div>
           </div>
-          <label for="idOrden">Orden</label>
+          <label for="idOrden">Orden:</label>
           <input type="text" value="{{orden}}" formControlName="orden" class="form-control" id="idOrden"
             [ngClass]="{ 'is-invalid': submitted && f.orden.errors }" placeholder="N° de Orden">
           <div *ngIf="submitted && f.orden.errors" class="invalid-feedback">
@@ -55,8 +53,8 @@
       </form>
     </div>
 
-    <!-- 
-    <div class="container vh-100">
+    
+    <!-- <div class="container vh-100">
       <div class="d-flex flex-column align-items-center">
          <div class="p-1">
             <video #video class="vid" autoplay></video>

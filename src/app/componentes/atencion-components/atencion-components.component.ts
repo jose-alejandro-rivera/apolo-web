@@ -4,8 +4,6 @@ import { IServiceResponse } from '../../interfaces/serviceResponse';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { AppGlobals } from 'src/app/app.global';
 import { IRecordResponse } from '../../interfaces/recordResponse';
-import { async } from '@angular/core/testing';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Integracion } from '../../integraciones/integracion.service';
 
 @Component({
@@ -131,7 +129,7 @@ export class AtencionComponentsComponent implements OnInit {
   }
   listRetoma() {
     // debugger
-    let url = this.URL + 'retoma/apolo/' + this.orden;
+    let url = this.URL + 'retoma/apolo/' + this.orden+'/'+this.dataFlujoOrden.formOrden;
     return this.atencionService.getData(url).toPromise().then(data => {
       let info = data;
       return info;
