@@ -124,6 +124,7 @@ export class AtencionComponentsComponent implements OnInit {
       } else if (data.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
         this.procesoPaso = data.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
         this.ProcesoActual = true;
+        this.seleccionPositiva = true;
       }
       this.finflujo = this.flujoPaso.finaliza;
     });
@@ -263,6 +264,7 @@ export class AtencionComponentsComponent implements OnInit {
     } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
       this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
       this.ProcesoActual = true;
+      this.seleccionPositiva = true;
     }
     if (this.finflujo) {
       this.seleccionPositiva = true;
@@ -460,6 +462,8 @@ export class AtencionComponentsComponent implements OnInit {
           localStorage.setItem('dataFlujoOrden', '');
           localStorage.setItem('dataFlujoCat', '');
           //Se redirije a la pagina de inicio 
+          this.global.mensajeOk= true;
+          localStorage.setItem('dataFlujoMensajeOk', JSON.stringify(this.global.mensajeOk));
           this.router.navigate(['home/orden']);
           return this.responseFinalliza;
           }else{
@@ -511,7 +515,7 @@ export class AtencionComponentsComponent implements OnInit {
           "value": this.parametrosPoceso || ''
         },
       },
-      "sigla": this.codComponentePasos.sigla || 'VSBA'
+      "sigla": this.codComponentePasos.Sigla || ''
     };
     this.respuestaProcesoActual = await this.integracionProces.proces(this.integracionProceso, this.URL);
     // for(let procesoIntegra of this.respuestaProcesoActual){

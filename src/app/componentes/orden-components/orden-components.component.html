@@ -12,16 +12,16 @@
           <div>
             <div class="apolo-text-title-content">
               <label>
-                Por favor selecciona el parámetro de búsqueda
+                Por favor selecciona el parámetro de búsqueda:
               </label>
             </div>
             <select class="col-9 form-control" name="select" required (change)="parametroSeleccion($event.target.value)"
               formControlName="param" [ngClass]="{ 'is-invalid': submitted && f.param.errors }">
-              <option value="" selected aria-placeholder="--">seleccione</option>
+              <option value="" selected aria-placeholder="--">Seleccione</option>
               <option value="XA_ORDER_ATIS"> Atis</option>
               <option value="apptNumber"> Número de orden de trabajo TOA</option>
               <option value="PROCESS_ID"> ProcessID</option>
-              <option value="XA_ACCESS_ID"> ID de la orden en SOM</option>
+              <option value="XA_ORDER_SOM"> ID de la orden en SOM</option>
             </select>
             <div *ngIf="submitted && f.param.errors" class="invalid-feedback">
               <div *ngIf="f.param.errors.required">Seleccione un parametro de busqueda </div>
@@ -40,11 +40,17 @@
 
           </div>
 
-          <div *ngIf="ordenInexistente" class="col-12 apolo-alert-danger   ">
-            <strong>Atencion! </strong>{{mensajeOrden}}
+          <div *ngIf="ordenInexistente" class="alert alert-danger alert-dismissible">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Atención! </strong>{{mensajeOrden}}
+         
           </div>
+          <div *ngIf="ejecucionExitosa" class="alert alert-success alert-dismissible">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Atención! </strong>{{mesnajeConfirmacionActividad}}
+            </div>
         </div>
-        <button type="submit" class="apolo-button-crear apolo-button-crear-medium apolo-fuente">entrar</button>
+        <button type="submit" class="apolo-button-crear apolo-button-crear-medium apolo-fuente">Cargar</button>
         <!-- <button text="foto"  class="apolo-button-crear apolo-button-crear-medium apolo-fuente" (tap)="onButoonTap()" ></button> -->
       </form>
     </div>

@@ -5,19 +5,22 @@ export class AppGlobals {
     public url: string
     public usuarioView: any;
     public mensajesApolo: any;
+    public mensajeOk: Boolean;
 
     //readonly url: string = 'http://localhost:8080/api/';
-    readonly mensajeCampoObligatorio: string = ' Debe seleccionar los puntos anteriores';
-    readonly mensajeCampoDecision: string = ' Debe seleccionar el punto anterior';
+    readonly mensajeCampoObligatorio: string = ' Por favor, seleccione los campos requeridos';
+    readonly mensajeCampoDecision: string = ' Por favor, seleccione una de las opciones';
     readonly mensajeOrdenNoIniciada: string = ' La orden no se encuentra en estado iniciada, por favor inicia la orden e intenta de nuevo.';
     readonly mensajeOrdenNoExiste: string = ' La orden indicada no existe en TOA o se ha relacionado mal el parámetro de búsqueda.';
-    
-    readonly mensajeNoFinaliza: string = ' no fue posible realizar la finalizacion exitosamente.';
-    readonly mensajeProcesNotFound: string = ' El proceso se encuentra sin integracion';
+    readonly mesnajeConfirmacionActividad: string = ' Actividad terminada exitosamente.';
+    readonly mensajeNoFinaliza: string = ' No se finalizo exitosamente.';
+    readonly mensajeProcesNotFound: string = ' El proceso se encuentra sin integración';
 
     constructor() {
         this.usuarioView = '';
+        this.mensajeOk = false;
         this.validateIP();
+
     }
     public validateIP() {
 
@@ -63,6 +66,6 @@ export class AppGlobals {
         return cadena;
     }
 
-   
+
 
 }

@@ -25,7 +25,7 @@ export class Integracion {
     async proces(parametrosIntegracion, urlApi) {
         this.mensajesIntegraciones();
         switch (parametrosIntegracion.sigla) {
-            case 'VSBA':
+            case 'AutoBA':
                 {
                     let url = urlApi + 'autoconfiguracion/rest/' + parametrosIntegracion.parametros.ordenAtivity + '/BA';
                     console.log(this.enivoIntegracion)
@@ -37,6 +37,9 @@ export class Integracion {
                     } else if (this.dataProces.response.propiedad_value === 'A_ACS_RESULT_CODE') {
                         if (this.dataProces.response.propiedad_key === 'OK') {
                             this.dataProces.llavePropiedad = this.dataProces.response.propiedad_key;
+                        }else{
+                        this.dataProces.llavePropiedad = 'NOOK'
+                        this.dataProces.mensajeError = this.mensajesApolo.mensajeAutoconfigBA;
                         }
                     } else {
                         this.dataProces.llavePropiedad = 'NOOK'
@@ -45,7 +48,7 @@ export class Integracion {
                     return this.dataProces;
                     break;
                 }
-            case 'ATV':
+            case 'ActiTV':
                 {
                     let url = urlApi + 'autoconfiguracion/rest/' + parametrosIntegracion.parametros.ordenAtivity + '/TV';
                     console.log(this.enivoIntegracion)
@@ -56,6 +59,9 @@ export class Integracion {
                     } else if (this.dataProces.response.propiedad_value === 'A_HC_RESULT_CODE') {
                         if (this.dataProces.response.propiedad_key === 'OK') {
                             this.dataProces.llavePropiedad = this.dataProces.response.propiedad_key;
+                        }else{
+                            this.dataProces.llavePropiedad = 'NOOK'
+                            this.dataProces.mensajeError = this.mensajesApolo.mensajeActivacionTV;
                         }
                     } else {
                         this.dataProces.llavePropiedad = 'NOOK'
@@ -87,7 +93,7 @@ export class Integracion {
 
     mensajesIntegraciones() {
         this.mensajesApolo = {
-            mensajeProcesNotFound: ' El proceso se encuentra sin integracion',
+            mensajeProcesNotFound: ' El proceso de encuentra sin integración',
             mensajeAutoconfigBA: ' Debes asegurar que la autoconfiguración de BA sea correcta en TOA. Por favor valida y asegura el resultado en TOA.',
             mensajeActivacionTV: ' Debes asegurar que la activación de TV sea correcta en TOA. Por favor valida y asegura el resultado en TOA'
         }

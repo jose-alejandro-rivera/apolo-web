@@ -37,6 +37,8 @@ export class OrdenComponentsComponent implements OnInit {
   retomaOrden: Boolean;
   tipoEjecucion: any;
   loading: Boolean;
+  mesnajeConfirmacionActividad: any;
+  ejecucionExitosa: Boolean;
 
   // videoWidth = 0;
   // videoHeight = 0;
@@ -64,6 +66,7 @@ export class OrdenComponentsComponent implements OnInit {
     private renderer: Renderer2) {
     this.componentFlujo = false;
     this.componentCategoria = false;
+    this.ejecucionExitosa= false;
     this.URL = this.global.url;
     localStorage.setItem('dataFlujoOrden', '');
     this.router.events.subscribe((event: Event) => {
@@ -76,7 +79,10 @@ export class OrdenComponentsComponent implements OnInit {
 
   ngOnInit() {
     this.ordenInexistente = false;
-    this.loading= false;
+    this.loading = false;
+    this.mesnajeConfirmacionActividad = this.global.mesnajeConfirmacionActividad;
+    this.ejecucionExitosa=JSON.parse(localStorage.getItem('dataFlujoMensajeOk'));;
+    localStorage.setItem('dataFlujoMensajeOk', JSON.stringify(false));
     // this.startCamera();
   }
 
@@ -99,7 +105,7 @@ export class OrdenComponentsComponent implements OnInit {
       this.orden = this.formOrden.value.orden;
       this.tipoEjecucion = 'orden';
       let url = this.URL + 'integracion/apolo/toa/' + this.param + '/' + this.orden + '/' + this.tipoEjecucion;
-      this.loading= true;
+      this.loading = true;
       return this.ejecucionAtencionService.getData(url).toPromise().then(data => {
         console.log(data + ' imprecion data')
         let info: any = data;
@@ -122,12 +128,12 @@ export class OrdenComponentsComponent implements OnInit {
             } else {
               this.mensajeOrden = this.global.mensajeOrdenNoIniciada;
               this.ordenInexistente = true;
-              this.loading= false;
+              this.loading = false;
             }
           } else {
             this.mensajeOrden = this.global.mensajeOrdenNoExiste;
             this.ordenInexistente = true;
-            this.loading= false;
+            this.loading = false;
           }
         }
 
@@ -144,13 +150,13 @@ export class OrdenComponentsComponent implements OnInit {
   }
 
   enrutamientoHome() {
-    this.loading= false;
+    this.loading = false;
     this.router.navigate(['home/componet']);
     return false;
   }
 
   enrutamientoFlujo() {
-    this.loading= false;
+    this.loading = false;
     this.router.navigate(['flujo/list']);
     return false;
   }

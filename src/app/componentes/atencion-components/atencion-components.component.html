@@ -120,8 +120,9 @@
                         <button type="button" class="flujo-button-procesar flujo-fuente align-items-center"
                             [disabled]="seleccionPositiva" (click)="finalizarAtencion(paso.Id_Paso)">Finalizar</button>
                     </div>
-                    <div *ngIf="seleccionObligatoria " class="col-12 apolo-alert-danger   ">
-                        <strong>Atencion!</strong>{{mensajeCampoCuestionario}}
+                    <div *ngIf="seleccionObligatoria "class="alert alert-danger alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Atención!</strong>{{mensajeCampoCuestionario}}
                     </div>
 
                     <div>
