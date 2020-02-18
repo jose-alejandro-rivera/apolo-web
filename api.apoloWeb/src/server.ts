@@ -71,15 +71,7 @@ export class Server {
       const data = await this.apiConsult.getPasosCategoria(request.params.id);
       return response.send(data);
     });
-    app.get('/api/integracion/apolo/toa/:param/:orden/:tipo', async (request, response) => {
-      const data = await this.apiConsult.getOrdenActiva(request.params);
-      return response.send(data);
-    });
-
-    app.get('/api/retoma/apolo/:orden', async (request, response) => {
-      const data = await this.apiConsult.getOrdenRetoma(request.params.orden);
-      return response.send(data);
-    });
+ 
 
 
     //parametros de insercion POS
@@ -98,6 +90,14 @@ export class Server {
 
 
     // GET parametros de configuaracion de procesos (integraciones) 
+    app.get('/api/integracion/apolo/toa/:param/:orden/:tipo', async (request, response) => {
+      const data = await this.apiConsultProces.getOrdenActiva(request.params);
+      return response.send(data);
+    });
+    app.get('/api/retoma/apolo/:orden/:param', async (request, response) => {
+      const data = await this.apiConsultProces.getOrdenRetoma(request.params);
+      return response.send(data);
+    });
     app.get('/api/autoconfiguracion/rest/:ordenActivity/:autoconfig', async (request, response) => {
       const data = await this.apiConsultProces.getActivationAutoconfi(request.params);
       return response.send(data);
