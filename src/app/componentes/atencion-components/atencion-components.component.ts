@@ -5,6 +5,7 @@ import { Router, RouterStateSnapshot } from '@angular/router';
 import { AppGlobals } from 'src/app/app.global';
 import { IRecordResponse } from '../../interfaces/recordResponse';
 import { Integracion } from '../../integraciones/integracion.service';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-atencion-components',
@@ -58,6 +59,7 @@ export class AtencionComponentsComponent implements OnInit {
   procesButton: Boolean;
   responseFinalliza: any;
   paramFinaliza: any;
+  webCamIntegracion = false;
 
   /**
    * 
@@ -100,8 +102,8 @@ export class AtencionComponentsComponent implements OnInit {
 
   listFlujo() {
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
-    this.nombreFlujo = this.dataFlujoCat.NomFlujo;
-    this.url = this.URL + 'flujo/list/' + this.idFlujo;
+   this.nombreFlujo = this.dataFlujoCat.NomFlujo;
+    this.url = this.URL + 'flujo/list/' + this.idFlujo; 
     //se obtiene la atencion seleccionada con todos sus componentes
     return this.atencionService.getData(this.url).toPromise().then(data => {
       let info: any = data;
@@ -162,6 +164,10 @@ export class AtencionComponentsComponent implements OnInit {
         this.procesButton = true;
         this.ProcesoActual = true;
         this.seleccionPositiva = true;
+        const obtSigla = this.pasoActual.Sigla;
+        let valSigla =  obtSigla.Sigla;
+        console.log('Retomaaaaaa  ---> ', valSigla);
+        this.ActivarDesactivarCamara(valSigla); 
       }
       this.finflujo = this.flujoPaso.finaliza;
     });
@@ -224,6 +230,10 @@ export class AtencionComponentsComponent implements OnInit {
     this.limpiarVariables();
     //buscar el siguiente paso a visualizar
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
+
+    console.log('Siguienteeeeeee ---> ', actualPaso.Sigla);
+    this.ActivarDesactivarCamara(actualPaso.Sigla); 
+
     this.response = false;
     let siguientePaso;
     //caso de paso tipo decision
@@ -250,6 +260,8 @@ export class AtencionComponentsComponent implements OnInit {
     } else {
       //buscar el siguiente paso
       siguientePaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == Id_Paso);
+      /*console.log('Siguienteeeeeee pasoooooo ---> ', siguientePaso.Sigla);
+      this.ActivarDesactivarCamara(siguientePaso.Sigla); */
       //paso tipo actividad
       this.pasoActual = siguientePaso.CodPaso_Destino;
       this.finflujo = siguientePaso.finaliza;
@@ -261,6 +273,8 @@ export class AtencionComponentsComponent implements OnInit {
       this.seleccionPositiva = true;
     } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
       this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
+      console.log('this.procesoPaso.Sigla --->>> ', this.procesoPaso.Sigla);
+      this.ActivarDesactivarCamara(this.procesoPaso.Sigla);
       this.ProcesoActual = true;
       this.seleccionPositiva = true;
     }
@@ -270,6 +284,20 @@ export class AtencionComponentsComponent implements OnInit {
     this.decisionSeleccionada = '';
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
   }
+
+
+  /**
+   * Este metodo evalua si la funcion trae como sigla RGFG
+   */
+  ActivarDesactivarCamara(sigla: String){
+    console.log('sigla siglasiglasigla ', sigla);
+    if(sigla === 'RGFG'){
+      this.webCamIntegracion = true;
+    }else{
+      this.webCamIntegracion = false;
+    }
+    console.log('this.webCamIntegracion >>>>>>>>>>>>> ', this.webCamIntegracion);
+  }
   /**
    * Funcion que realiza la opcion atras del flujo presentando el paso anterior  
    *
@@ -277,11 +305,15 @@ export class AtencionComponentsComponent implements OnInit {
    * @returns pasoActual: id del paso anterior que sera visualizado 
    */
   Atras(Id_Paso: number) {
+    this.ActivarDesactivarCamara(this.pasoActual.Sigla);
+    console.log('paso atrassss <<<<<>>> ', this.pasoActual.Sigla);
+
     this.limpiarVariables();
     this.loading=true;
     this.response = false;
     // servicio para validar historial
     let url = this.URL + 'atencion/lastStep/' + this.atencionService.idAtencion;
+
     this.atencionService.getData(url).toPromise().then((data: IRecordResponse) => {
       //Asignacion de la data en un arreglo
       var newArray = [];
@@ -345,6 +377,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.procesButton = true;
     this.procesoMensage = true;
     this.seleccionObligatoria = false;
+    this.webCamIntegracion = false;
   }
   /**
    * Funcion que realiza el registro del seguimiento e los pasos ejecutados
@@ -439,6 +472,7 @@ export class AtencionComponentsComponent implements OnInit {
     * @param Id_Paso 
     */
   async finalizarAtencion(Id_Paso: number) {
+    this.ActivarDesactivarCamara('');
     this.pasoActual = 0;
     if (this.decisionSeleccionada != '') {
       this.atencionSoluciona = this.decisionSeleccionada;
@@ -476,7 +510,6 @@ export class AtencionComponentsComponent implements OnInit {
     
   }
   pasoDestino(Id_Paso: number) {
-
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
     if (actualPaso.Id_TipoPaso == 2) {
       const opcionesSiguientePaso = this.info.FlujoPasos.filter(x => x.CodPaso_Origen == Id_Paso);

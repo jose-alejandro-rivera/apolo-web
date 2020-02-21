@@ -70,6 +70,7 @@ export class Integracion {
                     return this.dataProces;
                     break;
                 }
+          
             default:
                 {
                     this.dataProces = {
