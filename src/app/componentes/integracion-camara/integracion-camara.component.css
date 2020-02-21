@@ -1,0 +1,72 @@
+.actionBtn {
+    font-size: 4em;
+    cursor: pointer;
+    width: 45%;
+    float: left;
+    margin: 20px;
+    text-align: right;
+  }
+  .actionBtnRrefresh {
+    font-size: 4em;
+    cursor: pointer;
+    width: 45%;
+    float: left;
+    margin: 20px;
+    text-align: left;
+  }
+  .centrado {
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+ .snapshot {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  } 
+  
+  .img-fluid {
+     max-width: 100%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+  .btnacciones {
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    float: left;
+  }
+  
+  ul.links {
+    padding-bottom: 20px;
+  }
+
+  .camara {
+    width: 100%;
+    float: left;
+    margin-top: 30px;
+  }
+  .camara .webcam-wrapper{
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    float: left;
+  }
+
+  .camara  .webcam-wrapper[_ngcontent-ojr-c3] video.mirrored[_ngcontent-ojr-c3] {
+    transform: scale(-1,1);
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+

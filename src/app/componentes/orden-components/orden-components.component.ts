@@ -4,6 +4,7 @@ import { Event, Router } from '@angular/router';
 import { AppGlobals } from 'src/app/app.global';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 import { AppComponent } from 'src/app/app.component';
+import {WebcamImage} from 'ngx-webcam';
 
 
 /**
@@ -33,6 +34,8 @@ export class OrdenComponentsComponent implements OnInit {
   public ordenInexistente: boolean;
   public mensajeOrden: any;
   public ordenResponse: any;
+  public webcamImage: WebcamImage = null;
+  public webCamIntegracion = false;
 
   retomaOrden: Boolean;
   tipoEjecucion: any;
@@ -105,6 +108,7 @@ export class OrdenComponentsComponent implements OnInit {
       this.orden = this.formOrden.value.orden;
       this.tipoEjecucion = 'orden';
       let url = this.URL + 'integracion/apolo/toa/' + this.param + '/' + this.orden + '/' + this.tipoEjecucion;
+      console.log('url ----------------- ', url);
       this.loading = true;
       return this.ejecucionAtencionService.getData(url).toPromise().then(data => {
         console.log(data + ' imprecion data')
@@ -169,6 +173,9 @@ export class OrdenComponentsComponent implements OnInit {
     return false;
   }
 
+  handleImage(webcamImage: WebcamImage) {
+    this.webcamImage = webcamImage;
+  }
 
 
   /////prueva camara

@@ -138,5 +138,18 @@
 
 
         </div>
+
+        <app-integracion-camara *ngIf="webCamIntegracion" (pictureTaken)="handleImage($event)"></app-integracion-camara>
+
+        <div class="snapshot" *ngIf="webcamImage">
+          <img [src]="webcamImage.imageAsDataUrl" class="img-fluid camara-root" />
+          <div class="btn-guardar-foto ">
+            <button type="button" class="apolo-button-guardar-foto"
+              (click)="guardarFoto(paso.Id_Paso)">Guardar
+            </button>
+          </div>
+        </div>        
     </div>
+    
+
 </div>
