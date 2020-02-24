@@ -1,24 +1,32 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy, ɵConsole } from '@angular/core';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 import { IServiceResponse } from '../../interfaces/serviceResponse';
-import { Router, RouterStateSnapshot } from '@angular/router';
+import { Router, Event, RouterStateSnapshot } from '@angular/router';
 import { AppGlobals } from 'src/app/app.global';
 import { IRecordResponse } from '../../interfaces/recordResponse';
 import { Integracion } from '../../integraciones/integracion.service';
-import { debug } from 'util';
+import { IntegracionCamaraComponent } from '../integracion-camara/integracion-camara.component';
+import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
+import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
+import { knownFolders, path, File, Folder } from "tns-core-modules/file-system";
+
+//import * as fs  from 'fs';
 
 @Component({
   selector: 'app-atencion-components',
   templateUrl: './atencion-components.component.html',
   styleUrls: ['./atencion-components.component.css'],
-  providers: [AppGlobals, Integracion]
+  providers: [AppGlobals, Integracion, IntegracionCamaraComponent]
 })
 /**
  * provee la injeccion de los componentes del flujo seleccionado
  */
 export class AtencionComponentsComponent implements OnInit {
 
-  
+  @Output()
+  public pictureTaken = new EventEmitter<WebcamImage>();
+
   loading: Boolean;
   atencionComponente: boolean;
   dataFlujoCat: any;
@@ -59,7 +67,18 @@ export class AtencionComponentsComponent implements OnInit {
   procesButton: Boolean;
   responseFinalliza: any;
   paramFinaliza: any;
-  webCamIntegracion = false;
+  public webCamIntegracion = true;
+
+  // toggle webcam on/off
+  public showWebcam = true;
+  public allowCameraSwitch = true;
+  public multipleWebcamsAvailable = false;
+  public tomaFoto = true;
+  public eliminaFoto = false;
+  public webcamImage = true;
+  public ocultaBtn = true;
+
+
 
   /**
    * 
@@ -70,7 +89,8 @@ export class AtencionComponentsComponent implements OnInit {
     private atencionService: EjecucionAtencionService,
     private router: Router,
     private global: AppGlobals,
-    private integracionProces: Integracion
+    private integracionProces: Integracion,
+    private integracionCamaraComponent: IntegracionCamaraComponent
   ) {
     this.atencionComponente = true;
     this.atencionSoluciona = "0";
@@ -79,9 +99,20 @@ export class AtencionComponentsComponent implements OnInit {
     this.seleccionPositiva = false;
     this.procesoMensage = true;
     this.procesButton = false;
-    this.loading=false;
+    this.loading = false;
   }
 
+
+  public deviceId: string;
+  public videoOptions: MediaTrackConstraints = {
+    // width: {ideal: 1024},
+    // height: {ideal: 576}
+  };
+  public errors: WebcamInitError[] = [];
+  // webcam snapshot trigger
+  private trigger: Subject<void> = new Subject<void>();
+  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
+  private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
   /**
   * Funcion que retorna el listado de 
   *
@@ -92,6 +123,8 @@ export class AtencionComponentsComponent implements OnInit {
     this.dataFlujoOrden = JSON.parse(localStorage.getItem('dataFlujoOrden'));
     this.orden = this.dataFlujoOrden.formOrden.orden;
     this.ordenActivity = this.dataFlujoOrden.activityId;
+    WebcamUtil.getAvailableVideoInputs()
+    //this.RedimensionarImg();
     if (this.dataFlujoOrden.retomaOrden) {
       this.listRetoma();
     } else {
@@ -102,8 +135,8 @@ export class AtencionComponentsComponent implements OnInit {
 
   listFlujo() {
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
-   this.nombreFlujo = this.dataFlujoCat.NomFlujo;
-    this.url = this.URL + 'flujo/list/' + this.idFlujo; 
+    this.nombreFlujo = this.dataFlujoCat.NomFlujo;
+    this.url = this.URL + 'flujo/list/' + this.idFlujo;
     //se obtiene la atencion seleccionada con todos sus componentes
     return this.atencionService.getData(this.url).toPromise().then(data => {
       let info: any = data;
@@ -131,7 +164,7 @@ export class AtencionComponentsComponent implements OnInit {
   }
   listRetoma() {
     // debugger
-    let url = this.URL + 'retoma/apolo/' + this.orden+'/'+this.dataFlujoOrden.formOrden;
+    let url = this.URL + 'retoma/apolo/' + this.orden + '/' + this.dataFlujoOrden.formOrden.param;
     return this.atencionService.getData(url).toPromise().then(data => {
       let info = data;
       return info;
@@ -151,7 +184,7 @@ export class AtencionComponentsComponent implements OnInit {
       this.atencionService.idAtencion = retomaPasoActual.CodAtencion;
       this.ListaPasos = this.info.Pasos;
       this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
-      if(!this.flujoPaso){
+      if (!this.flujoPaso) {
         this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == this.pasoActual);
       }
       this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
@@ -161,13 +194,12 @@ export class AtencionComponentsComponent implements OnInit {
         this.seleccionPositiva = true;
       } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
         this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
-        this.procesButton = true;
+        this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
+        this.ActivarDesactivarCamara(this.codComponentePasos.Sigla);
+        this.ocultaBtn = true;
+        this.webcamImage = false;
         this.ProcesoActual = true;
         this.seleccionPositiva = true;
-        const obtSigla = this.pasoActual.Sigla;
-        let valSigla =  obtSigla.Sigla;
-        console.log('Retomaaaaaa  ---> ', valSigla);
-        this.ActivarDesactivarCamara(valSigla); 
       }
       this.finflujo = this.flujoPaso.finaliza;
     });
@@ -231,9 +263,8 @@ export class AtencionComponentsComponent implements OnInit {
     //buscar el siguiente paso a visualizar
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
 
-    console.log('Siguienteeeeeee ---> ', actualPaso.Sigla);
-    this.ActivarDesactivarCamara(actualPaso.Sigla); 
-
+    this.ActivarDesactivarCamara(actualPaso.Sigla);
+    this.procesButton = false;
     this.response = false;
     let siguientePaso;
     //caso de paso tipo decision
@@ -260,9 +291,6 @@ export class AtencionComponentsComponent implements OnInit {
     } else {
       //buscar el siguiente paso
       siguientePaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == Id_Paso);
-      /*console.log('Siguienteeeeeee pasoooooo ---> ', siguientePaso.Sigla);
-      this.ActivarDesactivarCamara(siguientePaso.Sigla); */
-      //paso tipo actividad
       this.pasoActual = siguientePaso.CodPaso_Destino;
       this.finflujo = siguientePaso.finaliza;
     }
@@ -274,7 +302,10 @@ export class AtencionComponentsComponent implements OnInit {
     } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
       this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
       console.log('this.procesoPaso.Sigla --->>> ', this.procesoPaso.Sigla);
-      this.ActivarDesactivarCamara(this.procesoPaso.Sigla);
+      this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
+      this.ActivarDesactivarCamara(this.codComponentePasos.Sigla);
+      this.ocultaBtn = true;
+      this.procesButton = false;
       this.ProcesoActual = true;
       this.seleccionPositiva = true;
     }
@@ -289,11 +320,10 @@ export class AtencionComponentsComponent implements OnInit {
   /**
    * Este metodo evalua si la funcion trae como sigla RGFG
    */
-  ActivarDesactivarCamara(sigla: String){
-    console.log('sigla siglasiglasigla ', sigla);
-    if(sigla === 'RGFG'){
+  ActivarDesactivarCamara(sigla: String) {
+    if (sigla === 'RGFG') {
       this.webCamIntegracion = true;
-    }else{
+    } else {
       this.webCamIntegracion = false;
     }
     console.log('this.webCamIntegracion >>>>>>>>>>>>> ', this.webCamIntegracion);
@@ -305,11 +335,9 @@ export class AtencionComponentsComponent implements OnInit {
    * @returns pasoActual: id del paso anterior que sera visualizado 
    */
   Atras(Id_Paso: number) {
-    this.ActivarDesactivarCamara(this.pasoActual.Sigla);
-    console.log('paso atrassss <<<<<>>> ', this.pasoActual.Sigla);
 
     this.limpiarVariables();
-    this.loading=true;
+    this.loading = true;
     this.response = false;
     // servicio para validar historial
     let url = this.URL + 'atencion/lastStep/' + this.atencionService.idAtencion;
@@ -346,6 +374,10 @@ export class AtencionComponentsComponent implements OnInit {
         this.CuestionarioActual = true;
       } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
         this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
+        this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
+        this.ActivarDesactivarCamara(this.codComponentePasos.Sigla);
+        this.webcamImage = false;
+        this.procesButton = false;
         this.ProcesoActual = true;
       }
       //se evalua si el anterior paso finaliza la atencion
@@ -357,8 +389,8 @@ export class AtencionComponentsComponent implements OnInit {
       this.finflujo = this.actualPaso.finaliza;
       this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
       ///////////////////////////////////////////////////////
-      
-    this.loading=false;
+
+      this.loading = false;
     })
   }
   /**
@@ -390,8 +422,8 @@ export class AtencionComponentsComponent implements OnInit {
     let atencionProceso;
     let atencionProcesoSalida;
     let atencionCampo;
-    
-    this.loading=true;
+
+    this.loading = true;
 
     this.pasoDestino(Id_Paso);
     // Armar JSON paso registro de Atencion Paso
@@ -463,7 +495,7 @@ export class AtencionComponentsComponent implements OnInit {
         //llamar al siguiente paso
         this.Siguiente(Id_Paso);
       }
-      
+
     });
   }
   /**
@@ -488,26 +520,26 @@ export class AtencionComponentsComponent implements OnInit {
           return info;
         }).then(data => {
           this.respuestaProcesoActual = data;
-          if(this.respuestaProcesoActual.response.status==200){
+          if (this.respuestaProcesoActual.response.status == 200) {
             this.RegistrarAtencionPaso(Id_Paso);
-          this.atencionComponente = false;
-          localStorage.setItem('dataFlujoOrden', '');
-          localStorage.setItem('dataFlujoCat', '');
-          //Se redirije a la pagina de inicio 
-          this.global.mensajeOk= true;
-          localStorage.setItem('dataFlujoMensajeOk', JSON.stringify(this.global.mensajeOk));
-          this.router.navigate(['home/orden']);
-          return this.responseFinalliza;
-          }else{
+            this.atencionComponente = false;
+            localStorage.setItem('dataFlujoOrden', '');
+            localStorage.setItem('dataFlujoCat', '');
+            //Se redirije a la pagina de inicio 
+            this.global.mensajeOk = true;
+            localStorage.setItem('dataFlujoMensajeOk', JSON.stringify(this.global.mensajeOk));
+            this.router.navigate(['home/orden']);
+            return this.responseFinalliza;
+          } else {
             this.mensajeCampoCuestionario = this.global.mensajeCampoDecision;
             this.seleccionObligatoria = true;
           }
-          
+
         });
     } else {
       console.log('seleccione una opcion');
     }
-    
+
   }
   pasoDestino(Id_Paso: number) {
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
@@ -522,9 +554,9 @@ export class AtencionComponentsComponent implements OnInit {
         }
       }
     } else {
-      if (this.finflujo){
+      if (this.finflujo) {
         this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso);
-      }else{
+      } else {
         this.flujoPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == Id_Paso);
       }
     }
@@ -537,7 +569,7 @@ export class AtencionComponentsComponent implements OnInit {
    */
   async ejecutarProceso(event) {
     // debugger
-    this.loading=true;
+    this.loading = true;
     this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
     this.integracionProceso = {
       "parametros": {
@@ -567,10 +599,223 @@ export class AtencionComponentsComponent implements OnInit {
       this.seleccionObligatoria = false;
       this.seleccionPositiva = false;
     }
-    
-    
+
+
     // }
-    this.loading=false;
+    this.loading = false;
   }
+
+  /**
+   * 
+   * inicio implementacion de la camara
+   */
+
+  public triggerSnapshot(): void {
+    this.trigger.next();
+  }
+
+  public toggleWebcam(): void {
+    this.showWebcam = !this.showWebcam;
+  }
+
+  public handleInitError(error: WebcamInitError): void {
+    this.errors.push(error);
+  }
+
+  public showNextWebcam(directionOrDeviceId: boolean | string): void {
+    // true => move forward through devices
+    // false => move backwards through devices
+    // string => move to device with given deviceId
+    this.nextWebcam.next(directionOrDeviceId);
+    this.eliminarFoto();
+  }
+
+  /**
+   * Recibe la imagen de la camara
+   * Se asigna el nombre de la imagen
+   * Se obtiene el paso y el numero de la orden
+   * Se redimensiona la imagen
+   */
+
+  public handleImage(webcamImage: WebcamImage): void {
+    this.botonTomaFoto(webcamImage.imageAsBase64);
+    this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
+    let nombreImg = this.codComponentePasos.NomPaso;
+    nombreImg = nombreImg.substr(0, 40);
+    let otrosDatos = this.codComponentePasos;
+    let numpaso = otrosDatos.Id_Paso;
+    let numOrden = this.orden;
+    console.log('nombreImg ', nombreImg, ' --- ', numpaso, ' ---->>> ', numOrden);
+    console.info('received webcam image data', webcamImage.imageAsBase64);
+    console.info('received webcam image imageAsDataUrl', webcamImage.imageAsDataUrl.slice);
+    console.log('otrosDatis', otrosDatos);
+    console.log('imageAsDataUrl objeto ---->>>> ', webcamImage.imageAsDataUrl);
+    let fecAct = this.fechaActual();
+    let nombreFoto: String = nombreImg + ' ' + fecAct + ' ' + numOrden;
+    console.log('subCadena--- ', nombreFoto);
+    this.pictureTaken.emit(webcamImage);
+    //this.decodeB64ToImg(webcamImage.imageAsBase64, nombreFoto);
+    this.decodeBase64Image(webcamImage.imageAsBase64);
+
+
+    //this.RedimensionarImg(webcamImage.imageAsBase64);
+  }
+
+  /**
+   * 
+   * Acciones que se ejecutan al boton de la camara tomar foto
+   */
+  public botonTomaFoto(imagen: String) {
+    if (imagen != '') {
+      this.tomaFoto = false;
+      this.eliminaFoto = true;
+      this.webcamImage = true;
+      this.ocultaBtn = true;
+
+    } else {
+      this.eliminaFoto = false;
+     // this.ocultaBtn = true;
+    }
+    console.log('eliminaFoto ', this.eliminaFoto);
+  }
+
+  /**
+   * Activa o desactiva boton eliminar foto
+   */
+  public eliminarFoto() {
+    this.eliminaFoto = false;
+    this.tomaFoto = true;
+    this.webcamImage = false;
+    this.codComponentePasos = null;
+    this.webcamImage = null;
+    this.ocultaBtn = false;
+    console.log('Eliminaaaaaa  ----->>>>', this.webcamImage);
+  }
+
+  /**
+   * Se obtiene la fecha actual
+   * 
+   */
+  public fechaActual() {
+    let fechaact = new Date();
+    let fecAct = fechaact.toString();
+    let fecActmod = this.eliminaEspacios(fecAct);
+    return fecActmod;
+  }
+  /**
+   * 
+   * Este metodo elimina espacios en String de 0 - 16 caracteres iniciales
+   */
+  public eliminaEspacios(cadena: any) {
+    let inicio = 3;
+    let fin = 16;
+    let subCadena = cadena.substring(inicio, fin);
+    let sub = subCadena.replace(/ /g, "");
+    return sub;
+  }
+
+  public cameraWasSwitched(deviceId: string): void {
+    console.log('active device: ' + deviceId);
+    this.deviceId = deviceId;
+  }
+
+  public get triggerObservable(): Observable<void> {
+    return this.trigger.asObservable();
+  }
+
+  public get nextWebcamObservable(): Observable<boolean | string> {
+    return this.nextWebcam.asObservable();
+  }
+
+
+
+  public decodeB64ToImg(imagen: String, nombreImg: String) {
+    let fileName = null;
+    let optionalObj = null;
+    let path= 'c:/'
+    let url = this.URL + 'retoma/apolo/' + imagen+ '/' +nombreImg;
+
+    //ar fs = require('fs');
+
+   /* optionalObj = optionalObj || {};
+
+    let imageBuffer = decodeBase64Image(imagen);
+    let imageType = optionalObj.type || imageBuffer.type || 'png';
+    fileName = optionalObj.fileName || 'nombreImg';
+    let abs;
+    fileName = '' + fileName;
+
+    if (fileName.indexOf('.') === -1) { 
+      imageType = imageType.replace('image/', '');
+      fileName = fileName + '.' + imageType;
+    }
+
+    abs = path + fileName;
+    fs.writeFile(abs, imageBuffer.data, 'base64', function (err) {
+      if (err && optionalObj.debug) {
+        console.log("File image write error", err);
+      }
+
+    });
+    return {
+      'imageType': imageType,
+      'fileName': fileName
+    }; */
+  }
+
+  public decodeBase64Image(imagen) {
+  /*var matches = base64Str.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+  var image = {};
+  if (!matches || matches.length !== 3) {
+    throw new Error('Invalid base64 string');
+  }
+
+  image.type = matches[1];
+  image.data = new Buffer(matches[2], 'base64');
+
+  return image; */
+  const Buffer = null;
+  let fs = require('fs');
+      // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
+      let bitmap = new Buffer(imagen, 'base64');
+      // write buffer to file
+      let carpeta = 'c:\\'
+      fs.writeFileSync(carpeta, bitmap);
+      console.log('******** File created from base64 encoded string ********');
+}
+
+  public redimensionarImg(imagen: String) {
+
+}
+
+
+/*
+let fs = require('fs');
+
+// function to encode file data to base64 encoded string
+function base64_encode(file) {
+    // read binary data
+    var bitmap = fs.readFileSync(file);
+    // convert binary data to base64 encoded string
+    return new Buffer(bitmap).toString('base64');
+}
+
+// function to create file from base64 encoded string
+function base64_decode(base64str, file) {
+    // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
+    var bitmap = new Buffer(base64str, 'base64');
+    // write buffer to file
+    fs.writeFileSync(file, bitmap);
+    console.log('******** File created from base64 encoded string ********');
+}
+
+// convert image to base64 encoded string
+var base64str = base64_encode('salvarDocumento.png');
+console.log(base64str);
+// convert base64 string back to image 
+base64_decode(base64str, 'copy_salvarDocumento.png');
+
+*/
+
 }
 

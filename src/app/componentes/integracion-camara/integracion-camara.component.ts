@@ -21,7 +21,6 @@ export class IntegracionCamaraComponent implements OnInit {
   public multipleWebcamsAvailable = false;
   public webCamIntegracion = true;
   public URL: any;
-
   public deviceId: string;
   public videoOptions: MediaTrackConstraints = {
     // width: {ideal: 1024},
@@ -82,12 +81,6 @@ export class IntegracionCamaraComponent implements OnInit {
 
   public get nextWebcamObservable(): Observable<boolean|string> {
     return this.nextWebcam.asObservable();
-  }
-
-  public ocultarCamara (){
-
-    //let url = this.URL + 'integracion/apolo/toa/' + this.param + '/' + this.orden + '/' + this.tipoEjecucion;
-
   }
   
   }

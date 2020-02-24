@@ -138,6 +138,89 @@
         height: 20px !important;
         margin-left: 10px !important;
 }
+
+
+/*  componente camara */
+.actionBtn {
+    font-size: 4em;
+    cursor: pointer;
+    width: 100%;
+    float: left;
+    text-align: center;
+  }
+  .actionBtnRrefresh {
+    font-size: 4em;
+    cursor: pointer;
+    width: 100%;
+    float: left;
+    text-align: center;
+  }
+  .centrado {
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .snapshot{
+    text-align: center;
+    img{
+        max-width: 500px;
+        max-height: 500px;
+    }
+}
+  
+  .img-fluid {
+     max-width: 100%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+  .btnacciones {
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    float: left;
+  }
+  
+  ul.links {
+    padding-bottom: 20px;
+  }
+
+  .camara {
+    width: 100%;
+    float: left;
+    margin-top: 30px;
+  }
+
+.camaraImg {
+  width: 10%;
+}
+.foto {
+    width: 100%;
+    float: left;
+}
+.apolo-button-guardar-foto{
+
+    border-radius: 8px !important;
+    background-color: #00A9E0;
+    width: 120px;
+    height: 30px;
+    color: #ffffff;
+    font-size: 12px;
+    font-family: "telefonicaReg", Arial, Helvetica, sans-serif;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+/* fin componente camara */
+
 @media only screen and (max-width: 768px) {    
     .flujo-label {
         display: none;
