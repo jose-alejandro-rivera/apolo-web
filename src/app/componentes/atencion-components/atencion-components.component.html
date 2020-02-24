@@ -1,3 +1,4 @@
+
 <div class="flujo" *ngIf="atencionComponente">
 
     <div class="flujo-title-principales flujo-margen apolo-actividades-principales  rounded">
@@ -125,30 +126,55 @@
                         <strong>Atención!</strong>{{mensajeCampoCuestionario}}
                     </div>
 
+                    <!--app-integracion-camara *ngIf="webCamIntegracion" (pictureTaken)="handleImage($event)"></app-integracion-camara-->
+                    <div *ngIf="webCamIntegracion">
+                    <div class="camara centrado" style="text-align: center;">
+                            <webcam [height]="400" [width]="400" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"
+                                *ngIf="showWebcam" [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+                                [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+                                (initError)="handleInitError($event)">
+                            </webcam>
+                        </div>
+                        
+                            
+                            <div class="btnacciones centrado" style="text-align: center;">
+                                
+                                <div  class="actionBtn" *ngIf="tomaFoto" (click)="triggerSnapshot();" title="Tomar foto">
+                                        <img class="camaraImg" src="/assets/imagenes apoloweb/camara.jpg" style="width: 60px;">
+                                </div>
+                                <div  class="actionBtnRrefresh" *ngIf="eliminaFoto" (click)="showNextWebcam(true);" title="Eliminar imagen">
+                                        <img class="camaraImg" src="/assets/imagenes apoloweb/refresh.jpg" style="width: 60px;">
+                                </div>
+                            </div>
+                            <div class="snapshot foto" *ngIf="webcamImage">
+                                    <img [src]="webcamImage.imageAsDataUrl" class="camara-root">
+                                    <div class="btn-guardar-foto ">
+                                      <button type="button" class="apolo-button-guardar-foto"
+                                        (click)="guardarFoto(paso.Id_Paso)">Guardar foto
+                                      </button>
+                                    </div>
+                            </div>                               
+                        </div>
+                   
+                   
+
+
                     <div>
                         <button type="button" class="flujo-button-atras flujo-fuente"
                             *ngIf="paso.Id_Paso != info.CodPaso_Inicial" (click)="Atras(paso.Id_Paso)">Atras</button>
-
+                        <div class="flujo-button-siguiente flujo-fuente"  *ngIf="ocultaBtn">
                         <button type="button" class="flujo-button-siguiente flujo-fuente" *ngIf="!finflujo"
                             (click)="RegistrarAtencionPaso(paso.Id_Paso)"
                             [disabled]="seleccionPositiva">Siguiente</button>
+                        </div>
                     </div>
+                    
                 </div>
             </div>
 
 
-        </div>
-
-        <app-integracion-camara *ngIf="webCamIntegracion" (pictureTaken)="handleImage($event)"></app-integracion-camara>
-
-        <div class="snapshot" *ngIf="webcamImage">
-          <img [src]="webcamImage.imageAsDataUrl" class="img-fluid camara-root" />
-          <div class="btn-guardar-foto ">
-            <button type="button" class="apolo-button-guardar-foto"
-              (click)="guardarFoto(paso.Id_Paso)">Guardar
-            </button>
-          </div>
-        </div>        
+        </div>                
+      
     </div>
     
 

@@ -21,11 +21,13 @@
     margin-right: auto;
   }
   
- .snapshot {
-    display: flex;
-    align-items: center;
-    width: 100%;
-  } 
+  .snapshot{
+    text-align: center;
+    img{
+        max-width: 800px;
+        max-height: 800px;
+    }
+}
   
   .img-fluid {
      max-width: 100%;
@@ -53,20 +55,28 @@
     float: left;
     margin-top: 30px;
   }
-  .camara .webcam-wrapper{
-    height: auto;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    float: left;
+
+.camaraImg {
+  width: 10%;
+}
+
+@media only screen and (max-width: 600px) {
+  .actionBtn {
+    width: 38%;
   }
 
-  .camara  .webcam-wrapper[_ngcontent-ojr-c3] video.mirrored[_ngcontent-ojr-c3] {
-    transform: scale(-1,1);
-    height: auto;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+  .actionBtnRrefresh {
+    width: 30%;
+  }  
+}
+
+@media only screen and (max-width: 768px) {
+  .actionBtn {
+    width: 40%;
+  }
+
+  .actionBtnRrefresh {
+    width: 40%;
+  }  
 }
 
