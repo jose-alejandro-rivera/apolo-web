@@ -10,12 +10,15 @@ export class AppGlobals {
     //readonly url: string = 'http://localhost:8080/api/';
     readonly mensajeCampoObligatorio: string = ' Por favor, seleccione los campos requeridos';
     readonly mensajeCampoDecision: string = ' Por favor, seleccione una de las opciones';
-    readonly mensajeOrdenNoIniciada: string = ' La orden no se encuentra en estado iniciada, por favor inicia la orden e intenta de nuevo.';
+    readonly mensajeOrdenNoIniciada: string = ' La orden no< se encuentra en estado iniciada, por favor inicia la orden e intenta de nuevo.';
     readonly mensajeOrdenNoExiste: string = ' La orden indicada no existe en TOA o se ha relacionado mal el parámetro de búsqueda.';
     readonly mesnajeConfirmacionActividad: string = ' Actividad terminada exitosamente.';
     readonly mensajeNoFinaliza: string = ' No se finalizo exitosamente.';
     readonly mensajeProcesNotFound: string = ' El proceso se encuentra sin integración';
-    readonly mensajeRetomaFound: string= ' La orden ya cuenta con un proceso, selecciona el botón de ‘Retoma’.';
+    readonly mensajeRetomaFound: string = ' La orden ya se encuentra con un proceso, selecciona el botón de retoma';
+    readonly mensajeCargaFoto: string = ' Para continuar con el flujo debe tomar una foto reflejando lo indicado en la actividad.';
+
+
 
     constructor() {
         this.usuarioView = '';

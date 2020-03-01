@@ -9,30 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
+const config_1 = require("../../config");
+/*
  * constantes de coneccion
  */
-const express = require('express'), cors = require('cors'), //**** */
-bodyParser = require('body-parser'), //**** */
-http = require('http'), //
-request = require("request"), axios = require("axios"); //
-// Express settings
-/**
- * constantes de coneccion
- */
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+const bodyParser = require('body-parser'), axios = require("axios");
 /**
  * clase de insercion en la base de datos
  */
 class ApiInsert {
-    constructor(router) {
+    constructor() {
         this.res = null;
-        this.url = null;
+        this.baseUrl = config_1.default.BASE_URL;
     }
     /**
      * funcion que crea la atencion
@@ -41,8 +29,7 @@ class ApiInsert {
     postCrearAtencion(params) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.url = "http://localhost:3000/api/atencion/create";
-                this.res = yield axios.post(this.url, params);
+                this.res = yield axios.post(this.baseUrl + "/api/atencion/create", params);
                 return this.res.data;
             }
             catch (error) {
@@ -56,8 +43,7 @@ class ApiInsert {
     postConsumirProceso(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.url = "http://localhost:3000/api/proceso/fake";
-                this.res = yield axios.post(this.url, body);
+                this.res = yield axios.post(this.baseUrl + "/api/proceso/fake", body);
                 return this.res.data;
             }
             catch (error) {
@@ -71,8 +57,37 @@ class ApiInsert {
     postAtencionPaso(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.url = "http://localhost:3000/api/atencion-paso-campo/create";
-                this.res = yield axios.post(this.url, data);
+                this.res = yield axios.post(this.baseUrl + "/api/atencion-paso-campo/create", data);
+                return this.res.data;
+            }
+            catch (error) {
+                console.error(error);
+            }
+        });
+    }
+    /**
+    * funcion que guarda la foto
+    */
+    postGuardarFoto(body, params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('body ---->   ', body);
+            try {
+                this.res = yield axios.post(this.baseUrl + `/api/registro/fotografico/${params.numOrden}/${params.numpaso}`, body);
+                return this.res.data;
+            }
+            catch (error) {
+                console.error(error);
+            }
+        });
+    }
+    /**
+   * Función actualiza el registro fotográfico
+   * @param params
+   */
+    pastchActualizaRegistroFotografico(body, params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.res = yield axios.patch(this.baseUrl + `/api/registro/fotografico/${params.numOrden}/${params.numpaso}`, body);
                 return this.res.data;
             }
             catch (error) {

@@ -71,6 +71,7 @@ export class AppComponent {
     this.atencionComponet = localStorage.getItem('atencion_component');
     this.ordenComponente = localStorage.getItem('orden_componet');
 
+
     this.enrutamiento();
   }
 

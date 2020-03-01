@@ -9,30 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * constantes de coneccion
- */
-const express = require('express'), cors = require('cors'), //**** */
-bodyParser = require('body-parser'), //**** */
-http = require('http'), //
-request = require("request"), axios = require("axios"); //
-// Express settings
-/**
- * constantes de coneccion
- */
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+const axios_1 = require("axios");
+const config_1 = require("../../config");
 /**
  * clase de consulta en la base de datos
  */
 class ApiConsult {
-    constructor(router) {
+    constructor() {
         this.res = null;
-        this.url = null;
+        this.baseUrl = config_1.default.BASE_URL;
     }
     /**
      * funcion que consulta las categorias
@@ -40,23 +25,22 @@ class ApiConsult {
     getCategoriasFlujo() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.res = yield axios.get('http://localhost:3000/api/flujo/categorias');
+                this.res = yield axios_1.default.get(this.baseUrl + '/api/flujo/categorias');
                 return this.res.data;
             }
             catch (error) {
-                console.error(error);
+                return error;
             }
         });
     }
     /**
-     * funcion que consulta los flujos con el id de las categorias
-     * @param id: id de la categoria a consultar
+     * funcion que consulta los flujos con el id de las categorias
+     * @param id: id de la categoria a consultar
      */
-    getFlujoPorCategoria(id) {
+    getFlujoPorCategoria(idCategoria) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.url = "http://localhost:3000/api/flujos/por/categorias/" + id;
-                this.res = yield axios.get(this.url);
+                this.res = yield axios_1.default.get(this.baseUrl + '/api/flujos/por/Categorias/' + idCategoria);
                 return this.res.data;
             }
             catch (error) {
@@ -68,25 +52,45 @@ class ApiConsult {
      * funcion que consulta los componentes del flujo
      * @param id: id del flujo a consultar
      */
-    getPasosCategoria(id) {
+    getPasosCategoria(idFlujo) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.url = "http://localhost:3000/api/flujo/list/" + id;
-                this.res = yield axios.get(this.url);
+                this.res = yield axios_1.default.get(this.baseUrl + '/api/flujo/list/' + idFlujo);
                 return this.res.data;
             }
             catch (error) {
                 console.error(error);
             }
-            /**
-             *
-             */
-            app.use(function (err, req, res, next) {
-                console.error(err.message);
-                if (!err.statusCode)
-                    err.statusCode = 500;
-                res.status(err.statusCode).send(err.message);
-            });
+        });
+    }
+    /**
+     * funcion que consulta el ultimo paso registrado para el boton atras
+     * @param id: id de la atencion
+     */
+    getUltimoAtencionPaso(idAtencion) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.res = yield axios_1.default.get(this.baseUrl + '/api/atencion/lastStep/' + idAtencion);
+                return this.res.data;
+            }
+            catch (error) {
+                console.error(error);
+            }
+        });
+    }
+    /**
+   * funcion que consulta el ultimo paso registrado para el boton atras
+   * @param idAtencion: idAtencion de la atencion
+   */
+    AtencionPasoAtras(idAtencion, idPaso) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.res = yield axios_1.default.get(this.baseUrl + '/api/atencion/paso/atras/' + idAtencion + '/' + idPaso);
+                return this.res.data;
+            }
+            catch (error) {
+                console.error(error);
+            }
         });
     }
 }

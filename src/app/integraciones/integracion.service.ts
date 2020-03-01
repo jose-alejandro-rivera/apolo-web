@@ -64,7 +64,16 @@ export class Integracion {
                             this.dataProces.mensajeError = this.mensajesApolo.mensajeActivacionTV;
                         }
                     } else {
-                        this.dataProces.llavePropiedad = 'NOOK'
+                        
+                        this.dataProces={
+                            "response":{
+                                "TipoServicio": '',
+                                "Servicio":'',
+                                "Request": '',
+                                "Response": '',
+                            },
+                            "llavePropiedad": 'NOOK'
+                        }
                         this.dataProces.mensajeError = this.mensajesApolo.mensajeActivacionTV;
                     }
                     return this.dataProces;

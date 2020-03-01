@@ -7,11 +7,10 @@ import { IRecordResponse } from '../../interfaces/recordResponse';
 import { Integracion } from '../../integraciones/integracion.service';
 import { IntegracionCamaraComponent } from '../integracion-camara/integracion-camara.component';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
-import { Subject } from 'rxjs';
+import { Subject, from } from 'rxjs';
 import { Observable } from 'rxjs';
-import { knownFolders, path, File, Folder } from "tns-core-modules/file-system";
-
-//import * as fs  from 'fs';
+import { HttpClient } from '@angular/common/http';
+import { RegistroFotograficoService } from '../../servicios/registro-fotografico.service'
 
 @Component({
   selector: 'app-atencion-components',
@@ -67,7 +66,7 @@ export class AtencionComponentsComponent implements OnInit {
   procesButton: Boolean;
   responseFinalliza: any;
   paramFinaliza: any;
-  public webCamIntegracion = true;
+  public webCamIntegracion = false;
 
   // toggle webcam on/off
   public showWebcam = true;
@@ -76,7 +75,16 @@ export class AtencionComponentsComponent implements OnInit {
   public tomaFoto = true;
   public eliminaFoto = false;
   public webcamImage = true;
-  public ocultaBtn = true;
+  public srcImg: any;
+  private numpasoFoto: any;
+  private numOrdenFoto: any;
+  private dataRegistroFoto: Object|any;
+  public cargarFoto : number;
+  private dataRegistroFotografico: any;
+  private nombreFoto: any;
+  public  seleccionInactiva : boolean = true;
+  private seleccionActiva : boolean;
+  private fotoCargada: boolean= false;
 
 
 
@@ -86,11 +94,13 @@ export class AtencionComponentsComponent implements OnInit {
    * @param router 
    */
   constructor(
+    private registroFotograficoService: RegistroFotograficoService,
     private atencionService: EjecucionAtencionService,
     private router: Router,
     private global: AppGlobals,
     private integracionProces: Integracion,
-    private integracionCamaraComponent: IntegracionCamaraComponent
+    private integracionCamaraComponent: IntegracionCamaraComponent,
+    private http: HttpClient
   ) {
     this.atencionComponente = true;
     this.atencionSoluciona = "0";
@@ -124,7 +134,6 @@ export class AtencionComponentsComponent implements OnInit {
     this.orden = this.dataFlujoOrden.formOrden.orden;
     this.ordenActivity = this.dataFlujoOrden.activityId;
     WebcamUtil.getAvailableVideoInputs()
-    //this.RedimensionarImg();
     if (this.dataFlujoOrden.retomaOrden) {
       this.listRetoma();
     } else {
@@ -134,6 +143,7 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
   listFlujo() {
+    this.seleccionPositiva = true;
     this.idFlujo = this.dataFlujoCat.Id_Flujo;
     this.nombreFlujo = this.dataFlujoCat.NomFlujo;
     this.url = this.URL + 'flujo/list/' + this.idFlujo;
@@ -170,6 +180,10 @@ export class AtencionComponentsComponent implements OnInit {
       return info;
     }).then(data => {
       this.retoma = data;
+      if(this.retoma.status == 201){
+        this.router.navigate(['home/orden']);
+        return 0
+      }
       this.info = this.retoma.recordsets;
       this.info = this.info[0];
       this.info = this.info[0];
@@ -196,7 +210,6 @@ export class AtencionComponentsComponent implements OnInit {
         this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
         this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
         this.ActivarDesactivarCamara(this.codComponentePasos.Sigla);
-        this.ocultaBtn = true;
         this.webcamImage = false;
         this.ProcesoActual = true;
         this.seleccionPositiva = true;
@@ -260,12 +273,13 @@ export class AtencionComponentsComponent implements OnInit {
    */
   async Siguiente(Id_Paso: number) {
     this.limpiarVariables();
+    this.seleccionInactiva = true;
+   // let obtenerFoto = JSON.parse(localStorage.getItem('registroFotografico')); 
     //buscar el siguiente paso a visualizar
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
-
-    this.ActivarDesactivarCamara(actualPaso.Sigla);
-    this.procesButton = false;
+    
     this.response = false;
+    this.loading = false;
     let siguientePaso;
     //caso de paso tipo decision
     if (actualPaso.Id_TipoPaso == 2) {
@@ -282,9 +296,8 @@ export class AtencionComponentsComponent implements OnInit {
           this.finflujo = siguientePaso[0].finaliza;
           //this.guardaTrazabilidad(Id_Paso, op.CodPaso_Destino);
         } else if (this.decisionSeleccionada === '') {
-
           this.mensajeCampoCuestionario = this.global.mensajeCampoDecision;
-          this.seleccionObligatoria = true;
+         this.seleccionObligatoria = true;
           this.seleccionPositiva = true;
         }
       }
@@ -301,19 +314,18 @@ export class AtencionComponentsComponent implements OnInit {
       this.seleccionPositiva = true;
     } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
       this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
-      console.log('this.procesoPaso.Sigla --->>> ', this.procesoPaso.Sigla);
       this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
       this.ActivarDesactivarCamara(this.codComponentePasos.Sigla);
-      this.ocultaBtn = true;
-      this.procesButton = false;
       this.ProcesoActual = true;
       this.seleccionPositiva = true;
+      this.fotoCargada = false;
     }
     if (this.finflujo) {
       this.seleccionPositiva = true;
     }
     this.decisionSeleccionada = '';
     this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
+    localStorage.setItem('registroFotografico', ''); 
   }
 
 
@@ -323,10 +335,13 @@ export class AtencionComponentsComponent implements OnInit {
   ActivarDesactivarCamara(sigla: String) {
     if (sigla === 'RGFG') {
       this.webCamIntegracion = true;
+      this.procesButton = false;
+      this.seleccionInactiva = false;
     } else {
       this.webCamIntegracion = false;
+      this.procesButton = true;
+      this.seleccionInactiva = true;
     }
-    console.log('this.webCamIntegracion >>>>>>>>>>>>> ', this.webCamIntegracion);
   }
   /**
    * Funcion que realiza la opcion atras del flujo presentando el paso anterior  
@@ -334,15 +349,22 @@ export class AtencionComponentsComponent implements OnInit {
    * @Param Id_Paso: id del paso actual
    * @returns pasoActual: id del paso anterior que sera visualizado 
    */
-  Atras(Id_Paso: number) {
-
+   Atras(Id_Paso: any) {
+    this.seleccionInactiva = true;
+    this.fotoCargada= false;
+    let validarREgistrofotografico: Object|any = {
+          nombreImgen: this.nombreFoto,
+          paso: this.numpasoFoto,
+          numOrdenFoto: this.orden
+    }
+    localStorage.setItem('registroFotografico', JSON.stringify(validarREgistrofotografico)); 
     this.limpiarVariables();
-    this.loading = true;
     this.response = false;
     // servicio para validar historial
-    let url = this.URL + 'atencion/lastStep/' + this.atencionService.idAtencion;
-
+    let url = this.URL + 'atencion/paso/atras/' + this.atencionService.idAtencion + '/' + Id_Paso;
+   //let url = this.URL + 'atencion/lastStep/' + this.atencionService.idAtencion;
     this.atencionService.getData(url).toPromise().then((data: IRecordResponse) => {
+      let pasoAtras:Object|any = data.recordset
       //Asignacion de la data en un arreglo
       var newArray = [];
       for (var i in data.recordset) {
@@ -363,35 +385,51 @@ export class AtencionComponentsComponent implements OnInit {
           max = y;
         }
       }
+
       var regPasoAnterior = this.mapaTrazabilidad.find(x => x.Id_AtencionPaso == max);
-      const anteriorPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == Id_Paso && x.CodPaso_Origen == regPasoAnterior.CodPaso);
+
+      var CodPasOrigen = this.info.FlujoPasos.find((x) => {
+        return parseInt(x.CodPaso_Destino) == parseInt(Id_Paso)
+      });
+     
+      let RACodPaso:any = newArray.find((f) => {
+        return parseInt(f.CodPaso) == parseInt(CodPasOrigen.CodPaso_Origen)
+      });
+
+      const anteriorPaso = this.info.FlujoPasos.find((x) => {
+        return x.CodPaso_Destino == Id_Paso && x.CodPaso_Origen == newArray[0].CodPaso
+      });
+
       this.pasoActual = anteriorPaso.CodPaso_Origen;
-      this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == regPasoAnterior.CodPaso);
+      this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == newArray[0].CodPaso);
+      this.seleccionPositiva = true;
       ////////////////////////////////////////////////////////
       //se evalua la existencia de cuestionario o de un proceso en el paso
       if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
-        this.cuestionarioPaso = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual);
+        this.cuestionarioPaso = this.info.Cuestionarios.filter((x) => { return x.Id_Paso == this.pasoActual });
         this.CuestionarioActual = true;
       } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
         this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
         this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
         this.ActivarDesactivarCamara(this.codComponentePasos.Sigla);
-        this.webcamImage = false;
-        this.procesButton = false;
         this.ProcesoActual = true;
+        this.seleccionPositiva = true;
       }
       //se evalua si el anterior paso finaliza la atencion
       if (this.actualPaso.finaliza) {
         this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Destino == this.pasoActual);
       }
       this.seleccionObligatoria = false;
-      this.seleccionPositiva = false;
       this.finflujo = this.actualPaso.finaliza;
       this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
       ///////////////////////////////////////////////////////
-
-      this.loading = false;
+     
+    this.loading=false;
     })
+  }
+
+  logArrayElements(element, index, array) {
+    return index;
   }
   /**
    * Funcion que realiza la limpieza de las variables para seguir con el proceso 
@@ -439,7 +477,7 @@ export class AtencionComponentsComponent implements OnInit {
     const proceso = this.info.Procesos.find(x => x.Id_Paso == Id_Paso);
     // Si el paso tiene un proceso
     if (proceso) {
-      const respuestaProceso = this.respuestaProcesoActual.response;
+      const respuestaProceso = this.respuestaProcesoActual.response;  
       atencionProceso = {
         CodProceso: proceso.Id_Proceso,
         TipoServicio: respuestaProceso.TipoServicio,
@@ -526,9 +564,9 @@ export class AtencionComponentsComponent implements OnInit {
             localStorage.setItem('dataFlujoOrden', '');
             localStorage.setItem('dataFlujoCat', '');
             //Se redirije a la pagina de inicio 
+            this.router.navigate(['home/orden']);
             this.global.mensajeOk = true;
             localStorage.setItem('dataFlujoMensajeOk', JSON.stringify(this.global.mensajeOk));
-            this.router.navigate(['home/orden']);
             return this.responseFinalliza;
           } else {
             this.mensajeCampoCuestionario = this.global.mensajeCampoDecision;
@@ -536,10 +574,7 @@ export class AtencionComponentsComponent implements OnInit {
           }
 
         });
-    } else {
-      console.log('seleccione una opcion');
     }
-
   }
   pasoDestino(Id_Paso: number) {
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
@@ -581,7 +616,6 @@ export class AtencionComponentsComponent implements OnInit {
       "sigla": this.codComponentePasos.Sigla || ''
     };
     this.respuestaProcesoActual = await this.integracionProces.proces(this.integracionProceso, this.URL);
-    // for(let procesoIntegra of this.respuestaProcesoActual){
     if (this.respuestaProcesoActual.llavePropiedad == 'undefine') {
       this.mensajeCampoCuestionario = this.respuestaProcesoActual.mensajeError;
       this.procesButton = true;
@@ -599,9 +633,6 @@ export class AtencionComponentsComponent implements OnInit {
       this.seleccionObligatoria = false;
       this.seleccionPositiva = false;
     }
-
-
-    // }
     this.loading = false;
   }
 
@@ -611,14 +642,18 @@ export class AtencionComponentsComponent implements OnInit {
    */
 
   public triggerSnapshot(): void {
+    this.seleccionPositiva = true;
+    this.eliminaFoto = false;
     this.trigger.next();
   }
 
   public toggleWebcam(): void {
     this.showWebcam = !this.showWebcam;
+    this.seleccionPositiva = true;
   }
 
   public handleInitError(error: WebcamInitError): void {
+    this.seleccionPositiva = true;
     this.errors.push(error);
   }
 
@@ -626,6 +661,8 @@ export class AtencionComponentsComponent implements OnInit {
     // true => move forward through devices
     // false => move backwards through devices
     // string => move to device with given deviceId
+    this.seleccionPositiva = true;
+    this.fotoCargada = false;
     this.nextWebcam.next(directionOrDeviceId);
     this.eliminarFoto();
   }
@@ -636,29 +673,111 @@ export class AtencionComponentsComponent implements OnInit {
    * Se obtiene el paso y el numero de la orden
    * Se redimensiona la imagen
    */
-
-  public handleImage(webcamImage: WebcamImage): void {
+  public async handleImage(webcamImage: WebcamImage): Promise <any> {
+    this.seleccionPositiva = false;
     this.botonTomaFoto(webcamImage.imageAsBase64);
+    this.webcamImage = true;
     this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
     let nombreImg = this.codComponentePasos.NomPaso;
-    nombreImg = nombreImg.substr(0, 40);
+    nombreImg = nombreImg.substr(0, 20);
     let otrosDatos = this.codComponentePasos;
-    let numpaso = otrosDatos.Id_Paso;
-    let numOrden = this.orden;
-    console.log('nombreImg ', nombreImg, ' --- ', numpaso, ' ---->>> ', numOrden);
-    console.info('received webcam image data', webcamImage.imageAsBase64);
-    console.info('received webcam image imageAsDataUrl', webcamImage.imageAsDataUrl.slice);
-    console.log('otrosDatis', otrosDatos);
-    console.log('imageAsDataUrl objeto ---->>>> ', webcamImage.imageAsDataUrl);
+    this.numpasoFoto = otrosDatos.Id_Paso;
+    this.numOrdenFoto = this.orden;
     let fecAct = this.fechaActual();
-    let nombreFoto: String = nombreImg + ' ' + fecAct + ' ' + numOrden;
-    console.log('subCadena--- ', nombreFoto);
+    this.nombreFoto = nombreImg + '_' + this.numpasoFoto + '_' + this.numOrdenFoto;
     this.pictureTaken.emit(webcamImage);
-    //this.decodeB64ToImg(webcamImage.imageAsBase64, nombreFoto);
-    this.decodeBase64Image(webcamImage.imageAsBase64);
+    this.srcImg = webcamImage.imageAsDataUrl;
+       this.dataRegistroFoto = {
+        nombreImgen: this.nombreFoto,
+        imagen: webcamImage.imageAsDataUrl
+      };
+  }
+/**
+ * Se envia la foto al servicio de registro fotografico
+ */
+  public guardarFoto(){
+    this.seleccionPositiva = true;
+    this.url =  `${this.URL}registro/fotografico/${this.numOrdenFoto}/${this.numpasoFoto}`;
+    this.registroFotograficoService.postRegistroFotografico(this.url, this.dataRegistroFoto).toPromise().then((res: any) => {
+      let response: Object|any = res;
+      if (response.status == 200){
+        this.seleccionPositiva = false;
+        this.webcamImage = false;
+        this.tomaFoto = true;
+        this.eliminaFoto= false;
+        this.seleccionInactiva = false;
+        this.respProcesoActual();
+      }else if(response.status == 201){
+        this.fotoCargada = true;
+        this.tomaFoto = true;
+        this.eliminaFoto= false;
+        this.seleccionPositiva = true;
+        this.actualizarFoto();
+        this.respProcesoActual();
+      }else{
+        this.fotoCargada = false;
+        this.respProcesoActual();
+        return 0;
+      }
+      this.cargarFoto = 205;
+    });
+  } 
 
-
-    //this.RedimensionarImg(webcamImage.imageAsBase64);
+  public respProcesoActual(){
+    this.respuestaProcesoActual={
+      "response":{
+          "TipoServicio": '',
+          "Servicio":'',
+          "Request": '',
+          "Response": '',
+      },
+      "llavePropiedad": 'OK'
+  }
+  }
+  /**
+   * Funcion que permite actualizar el registro fotografico (sobreescribe)
+   */
+  public actualizarFoto(){
+    this.seleccionPositiva = true;
+    this.fechaActual();
+    this.url =  `${this.URL}registro/fotografico/${this.numOrdenFoto}/${this.numpasoFoto}`;
+    this.registroFotograficoService.pastchRegistroFotografico(this.url, this.dataRegistroFoto).toPromise().then((res: any) => {
+      let response: Object|any = res;
+      if (response.status == 200){
+        this.seleccionPositiva = false;
+        this.seleccionInactiva = true;
+        this.fotoCargada = true;
+        this.webcamImage = false;
+        this.tomaFoto = true;
+        this.eliminaFoto= false;
+        this.respProcesoActual();
+      }else if(response.status == 201){
+        this.fotoCargada = true;
+        this.webcamImage = false;
+        this.tomaFoto = true;
+        this.seleccionPositiva = false;
+        this.eliminaFoto= false;
+      }else{
+        this.fotoCargada = false;
+        this.respProcesoActual();
+        this.cargarFoto = 205;
+        return 0;
+      }
+    });
+ 
+ }
+  
+  /**
+   * Funcion que activa el gif de carga en la web
+   * @param cargarFoto
+   * 
+   */
+  public gifCargandoDatos(){
+    if(this.cargarFoto == 200 || this.cargarFoto == 201){
+      this.loading = false;
+    }else{
+      this.loading = true;
+    }
   }
 
   /**
@@ -666,17 +785,17 @@ export class AtencionComponentsComponent implements OnInit {
    * Acciones que se ejecutan al boton de la camara tomar foto
    */
   public botonTomaFoto(imagen: String) {
+    this.fotoCargada= false;
+    this.seleccionPositiva = true;
     if (imagen != '') {
       this.tomaFoto = false;
       this.eliminaFoto = true;
-      this.webcamImage = true;
-      this.ocultaBtn = true;
-
+      this.webcamImage = true;   
+      
     } else {
       this.eliminaFoto = false;
-     // this.ocultaBtn = true;
+     
     }
-    console.log('eliminaFoto ', this.eliminaFoto);
   }
 
   /**
@@ -688,8 +807,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.webcamImage = false;
     this.codComponentePasos = null;
     this.webcamImage = null;
-    this.ocultaBtn = false;
-    console.log('Eliminaaaaaa  ----->>>>', this.webcamImage);
+    this.seleccionInactiva = false;
   }
 
   /**
@@ -715,107 +833,15 @@ export class AtencionComponentsComponent implements OnInit {
   }
 
   public cameraWasSwitched(deviceId: string): void {
-    console.log('active device: ' + deviceId);
     this.deviceId = deviceId;
   }
 
   public get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
-
+  
   public get nextWebcamObservable(): Observable<boolean | string> {
     return this.nextWebcam.asObservable();
   }
-
-
-
-  public decodeB64ToImg(imagen: String, nombreImg: String) {
-    let fileName = null;
-    let optionalObj = null;
-    let path= 'c:/'
-    let url = this.URL + 'retoma/apolo/' + imagen+ '/' +nombreImg;
-
-    //ar fs = require('fs');
-
-   /* optionalObj = optionalObj || {};
-
-    let imageBuffer = decodeBase64Image(imagen);
-    let imageType = optionalObj.type || imageBuffer.type || 'png';
-    fileName = optionalObj.fileName || 'nombreImg';
-    let abs;
-    fileName = '' + fileName;
-
-    if (fileName.indexOf('.') === -1) { 
-      imageType = imageType.replace('image/', '');
-      fileName = fileName + '.' + imageType;
-    }
-
-    abs = path + fileName;
-    fs.writeFile(abs, imageBuffer.data, 'base64', function (err) {
-      if (err && optionalObj.debug) {
-        console.log("File image write error", err);
-      }
-
-    });
-    return {
-      'imageType': imageType,
-      'fileName': fileName
-    }; */
-  }
-
-  public decodeBase64Image(imagen) {
-  /*var matches = base64Str.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-  var image = {};
-  if (!matches || matches.length !== 3) {
-    throw new Error('Invalid base64 string');
-  }
-
-  image.type = matches[1];
-  image.data = new Buffer(matches[2], 'base64');
-
-  return image; */
-  const Buffer = null;
-  let fs = require('fs');
-      // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
-      let bitmap = new Buffer(imagen, 'base64');
-      // write buffer to file
-      let carpeta = 'c:\\'
-      fs.writeFileSync(carpeta, bitmap);
-      console.log('******** File created from base64 encoded string ********');
-}
-
-  public redimensionarImg(imagen: String) {
-
-}
-
-
-/*
-let fs = require('fs');
-
-// function to encode file data to base64 encoded string
-function base64_encode(file) {
-    // read binary data
-    var bitmap = fs.readFileSync(file);
-    // convert binary data to base64 encoded string
-    return new Buffer(bitmap).toString('base64');
-}
-
-// function to create file from base64 encoded string
-function base64_decode(base64str, file) {
-    // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
-    var bitmap = new Buffer(base64str, 'base64');
-    // write buffer to file
-    fs.writeFileSync(file, bitmap);
-    console.log('******** File created from base64 encoded string ********');
-}
-
-// convert image to base64 encoded string
-var base64str = base64_encode('salvarDocumento.png');
-console.log(base64str);
-// convert base64 string back to image 
-base64_decode(base64str, 'copy_salvarDocumento.png');
-
-*/
-
 }
 

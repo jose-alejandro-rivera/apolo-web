@@ -51,4 +51,31 @@ export class ApiInsert {
     }
   }
 
+   /**
+   * funcion que guarda la foto
+   */
+  async postGuardarFoto(body, params) {
+    console.log('body ---->   ', body);
+    try {
+      this.res = await axios.post(this.baseUrl + `/api/registro/fotografico/${params.numOrden}/${params.numpaso}`, body);
+      return this.res.data;
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
+    /**
+   * Función actualiza el registro fotográfico
+   * @param params 
+   */
+  async  pastchActualizaRegistroFotografico(body, params) {
+    try {
+      this.res = await axios.patch(this.baseUrl +`/api/registro/fotografico/${params.numOrden}/${params.numpaso}`, body);
+      return this.res.data;
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
 }

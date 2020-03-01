@@ -64,6 +64,18 @@ export class ApiConsult {
       console.error(error)
     }
   }
+    /**
+   * funcion que consulta el ultimo paso registrado para el boton atras
+   * @param idAtencion: idAtencion de la atencion
+   */
+  async AtencionPasoAtras(idAtencion,idPaso) {
+    try {
+      this.res = await axios.get(this.baseUrl + '/api/atencion/paso/atras/' + idAtencion + '/' + idPaso);
+      return this.res.data;
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
 
 }

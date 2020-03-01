@@ -111,6 +111,7 @@
     height: 30px;
     color: #ffffff;
     font-size: 12px;
+    float: left;
 }
 .flujo-button-siguiente{
     float: right;
@@ -120,6 +121,17 @@
     height: 30px;
     color: #ffffff;
     font-size: 12px;
+}
+
+.flujo-button-siguiente-opaco{
+    float: right;
+    border-radius: 8px !important;
+    background-color: #9c9c9c !important;
+    width: 120px;
+    height: 30px;
+    color: #ffffff;
+    font-size: 12px;
+    opacity: 0.5;
 }
 .flujo-button-procesar{
     float: center;
@@ -131,6 +143,14 @@
     font-size: 12px;
 }
 
+.btnEjecutar{
+    text-align: center !important;
+    margin-bottom: 30px;
+}
+
+.btnFinalizar {
+    float: right;
+}
 .flujo-img-proces{
     
         vertical-align: middle !important;
@@ -281,6 +301,12 @@
     .flujo-cuadriula{
         margin-top: 3px;
         float: left;
+        margin-bottom: 70px;
+    }
+    .btnFooterAtrasSig {
+        margin-bottom: 30px;
+        width: 100%;
+        float: left;
     }
     .flujo-margen{
         border: 1px solid #0029A6;
@@ -381,5 +407,12 @@
         margin-bottom: 20px !important;
     }
 
+
+    @media only screen and (max-width: 900px) and (min-width: 320px) { 
+        .flujo-button-siguiente-opaco{
+            background-color: #9c9c9c;
+        }
+
+    }
 }
 
