@@ -184,6 +184,17 @@ export class AtencionComponentsComponent implements OnInit {
         this.router.navigate(['home/orden']);
         return 0;
       }
+      let response:Object|any = {
+        activityId: this.retoma.ActivityId,
+        status: "retoma",
+        statusOrden: "encontrada",
+        resourceId: this.retoma.rowsTecnico.ResourceId,
+        statusTecnico: this.retoma.rowsTecnico.Id_Login,
+        name: this.retoma.rowsTecnico.Usuario,
+        formOrden: this.dataFlujoOrden.formOrden
+      }
+      localStorage.setItem('dataFlujoOrden', JSON.stringify(response));
+
       this.info = this.retoma.recordsets;
       this.info = this.info[0];
       this.info = this.info[0];
@@ -215,6 +226,11 @@ export class AtencionComponentsComponent implements OnInit {
         this.seleccionPositiva = true;
       }
       this.finflujo = this.flujoPaso.finaliza;
+      this.dataFlujoOrden = JSON.parse(localStorage.getItem('dataFlujoOrden'));
+      this.orden = this.dataFlujoOrden.formOrden.orden;
+      console.log(this.dataFlujoOrden,'actyvityId')
+      this.ordenActivity = this.dataFlujoOrden.activityId;
+      console.log(this.ordenActivity,'actyvityId')
     });
   }
   /**
@@ -573,7 +589,9 @@ export class AtencionComponentsComponent implements OnInit {
             this.mensajeCampoCuestionario = this.global.mensajeCampoDecision;
             this.seleccionObligatoria = true;
           }
-
+          this.router.navigate(['home/orden']);
+          this.global.mensajeOk = true;
+          localStorage.setItem('dataFlujoMensajeOk', JSON.stringify(this.global.mensajeOk));
         });
     }
   }
