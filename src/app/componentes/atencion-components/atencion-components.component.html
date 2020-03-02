@@ -174,7 +174,7 @@
                         <div>
                         <button type="button" [className] = "seleccionInactiva?'flujo-button-siguiente flujo-fuente':'flujo-button-siguiente-opaco'" class="flujo-fuente" *ngIf="!finflujo"
                             (click)="RegistrarAtencionPaso(paso.Id_Paso)"
-                            [disabled]="seleccionPositiva">Siguiente</button> {{seleccionPositiva}}
+                            [disabled]="seleccionPositiva">Siguiente</button>
 
                             <button type="button" class="flujo-button-procesar flujo-fuente align-items-center btnFinalizar" *ngIf="finflujo"
                             [disabled]="seleccionPositiva" (click)="finalizarAtencion(paso.Id_Paso)">Finalizar</button>

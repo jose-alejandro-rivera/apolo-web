@@ -156,54 +156,6 @@ export class Server {
     fs.writeFileSync(`${dir}${body.nombreImgen}.jpg`, bitmap);
     return dir;
   }
-
-
-
-  public reduceTamanoImg(imagen) {
-    let resizebase64 = require('resize-base64');
-    // resizebase64 = function (imagen, maxWidth, maxHeight) {
-    let maxWidth: number = 0;
-    let maxHeight: number = 0;
-    // Max size for thumbnail
-    if (typeof (maxWidth) === 'undefined') maxWidth = 500;
-    if (typeof (maxHeight) === 'undefined') maxHeight = 500;
-
-    console.log('despues del if');
-    // Create and initialize two canvas
-   /* 
-    let canvas = document.createElement("canvas");
-    let ctx = canvas.getContext("2d");
-    let canvasCopy = document.createElement("canvas");
-    let copyContext = canvasCopy.getContext("2d");
-*/
-    // Create original image
-    let img = new Image();
-    console.log('despues del img');
-    img.src = imagen;
-
-    // Determine new ratio based on max size
-    let ratio = 1;
-    if (img.width > maxWidth)
-      ratio = maxWidth / img.width;
-    else if (img.height > maxHeight)
-      ratio = maxHeight / img.height;
-
-      console.log('--------------------->>> ', ratio);
-    // Draw original image in second canvas
-   /* canvasCopy.width = img.width;
-    canvasCopy.height = img.height;
-    copyContext.drawImage(img, 0, 0);
-    */
-
-    // Copy and resize second canvas to first canvas
- /*   canvas.width = img.width * ratio;
-    canvas.height = img.height * ratio;
-    ctx.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvas.width, canvas.height);
-*/
-    //return canvas.toDataURL();
-  }
-
-
 }
 /**
  * variable que inicialilza el server

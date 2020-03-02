@@ -106,7 +106,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.atencionSoluciona = "0";
     this.URL = this.global.url;
     this.seleccionObligatoria = false;
-    this.seleccionPositiva = false;
+    //this.seleccionPositiva = false;
     this.procesoMensage = true;
     this.procesButton = false;
     this.loading = false;
@@ -182,7 +182,7 @@ export class AtencionComponentsComponent implements OnInit {
       this.retoma = data;
       if(this.retoma.status == 201){
         this.router.navigate(['home/orden']);
-        return 0
+        return 0;
       }
       this.info = this.retoma.recordsets;
       this.info = this.info[0];
@@ -402,12 +402,14 @@ export class AtencionComponentsComponent implements OnInit {
 
       this.pasoActual = anteriorPaso.CodPaso_Origen;
       this.actualPaso = this.info.FlujoPasos.find(x => x.CodPaso_Origen == newArray[0].CodPaso);
-      this.seleccionPositiva = true;
+      this.seleccionPositiva = false;
       ////////////////////////////////////////////////////////
       //se evalua la existencia de cuestionario o de un proceso en el paso
       if (this.info.Cuestionarios.find(x => x.Id_Paso == this.pasoActual)) {
         this.cuestionarioPaso = this.info.Cuestionarios.filter((x) => { return x.Id_Paso == this.pasoActual });
         this.CuestionarioActual = true;
+        this.seleccionPositiva = true;
+        
       } else if (this.info.Procesos.find(x => x.Id_Paso == this.pasoActual)) {
         this.procesoPaso = this.info.Procesos.filter(x => x.Id_Paso == this.pasoActual)[0];
         this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
@@ -423,7 +425,6 @@ export class AtencionComponentsComponent implements OnInit {
       this.finflujo = this.actualPaso.finaliza;
       this.decisionActual = this.info.Cuestionarios.filter(x => x.Id_Paso == this.pasoActual)[0];
       ///////////////////////////////////////////////////////
-     
     this.loading=false;
     })
   }

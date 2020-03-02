@@ -64,8 +64,7 @@ export class ApiInsert {
     }
   }
 
-
-    /**
+   /**
    * Función actualiza el registro fotográfico
    * @param params 
    */
