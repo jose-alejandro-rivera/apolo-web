@@ -1,4 +1,4 @@
-import { Injectable, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 /**
  * injeccion de componente root
@@ -24,7 +24,7 @@ export class EjecucionAtencionService {
    * variables de secion 
    * @param http 
    */
-  constructor(@Optional() private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   /**
    * funcion para traer la informacion de la api
@@ -41,15 +41,6 @@ export class EjecucionAtencionService {
    */
   postData(url, body){
     return this.http.post(url,body);
-  }
-
-    /**
-   * funcion que realiza el envio de infomacion a la api 
-   * @param url url del servicio
-   * @param body informacion a enviar al api
-   */
-  pastchData(url, body){
-    return this.http.patch(url,body);
   }
 
   /**

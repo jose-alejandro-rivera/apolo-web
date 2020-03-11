@@ -1,8 +1,13 @@
-import { ApiInsert } from '../../src/api/apiInsert'
+import { ApiInsert } from '../../src/api/apiInsert';
+import axios from 'axios';
+import { Container } from 'typescript-ioc';
 
 describe('Excute apiInsert test', () => {
 
-    let apiInsert = new ApiInsert();
+    jest.mock('axios');
+
+    const apiInser = Container.get(ApiInsert);
+
     let body = {
         "CodAtencionPaso": "1",
         "CodProceso": "1",
@@ -13,65 +18,59 @@ describe('Excute apiInsert test', () => {
         "NumOrden": "1123516536132"
     };
     let params = {
-        "imagenRuta": "c://",
+        "imagenRuta": "",
         "nombreImagen": "imagenPrueba.jpg",
     };
 
-
-    let bodyfalso = {
-        "CodAtencionPaso": 'jjjmm------',
-        "CodProceso": '---wefwerwe',
-        "TipoServicio": "erwerw-werwer",
-        "Servicio": '',
-        "Request": '',
-        "Response": '',
-        "NumOrden": ""
-    };
-    let paramsfalso = {
-        "imagenRuta": "xxxxxc",
-        "nombreImagen": "imagenPrueba.",
-    };
     beforeEach(() => {
-
     });
 
-    describe('test postCrearAtencion', () => {
-        it('Validate run postCrearAtencion', async () => {
-            apiInsert.postCrearAtencion(body);
-        })
+    describe('test postCrearAtencion()', () => {
+        test('Validando postCrearAtencion', async () => {
+            const expectedResult: object | any = '';
+            const mock = jest.spyOn(axios, 'post');
+            mock.mockResolvedValue(expectedResult);
+            expect(apiInser.postCrearAtencion(params)).toBeDefined();
+        });
     });
 
-    describe('test postCrearAtencion erroneo', () => {
-        it('Validate run postCrearAtencion', async () => {
-            apiInsert.postCrearAtencion(bodyfalso);
-        })
+    describe('test postConsumirProceso()', () => {
+        test('Validando postConsumirProceso', async () => {
+            const expectedResult: object | any = '';
+            const mock = jest.spyOn(axios, 'post');
+            mock.mockResolvedValue(expectedResult);
+            expect(apiInser.postConsumirProceso(body)).toBeDefined();
+        });
     });
 
-
-    describe('test postConsumirProceso', () => {
-        it('Validate run postCrearAtencion', async () => {
-            apiInsert.postConsumirProceso(body);
-        })
+    describe('test postAtencionPaso()', () => {
+        test('Validando postAtencionPaso', async () => {
+            const expectedResult: object | any = '';
+            const mock = jest.spyOn(axios, 'post');
+            mock.mockResolvedValue(expectedResult);
+            expect(apiInser.postAtencionPaso(body)).toBeDefined();
+        });
     });
 
-    describe('test postAtencionPaso', () => {
-        it('Validate run postCrearAtencion', async () => {
-            apiInsert.postAtencionPaso(body);
-        })
+    describe('test postGuardarFoto()', () => {
+        test('Validando postGuardarFoto', async () => {
+            const expectedResult: object | any = '';
+            const mock = jest.spyOn(axios, 'post');
+            mock.mockResolvedValue(expectedResult);
+            expect(apiInser.postGuardarFoto(body, params)).toBeDefined();
+        });
     });
 
-    describe('test postGuardarFoto', () => {
-        it('Validate run postCrearAtencion', async () => {
-            apiInsert.postGuardarFoto(body, params);
-        })
+    describe('test pastchActualizaRegistroFotografico()', () => {
+        test('Validando pastchActualizaRegistroFotografico', async () => {
+            const expectedResult: object | any = '';
+            const mock = jest.spyOn(axios, 'patch');
+            mock.mockResolvedValue(expectedResult);
+            expect(apiInser.pastchActualizaRegistroFotografico(body, params)).toBeDefined();
+        });
     });
-
-    describe('test pastchActualizaRegistroFotografico', () => {
-        it('Validate run postCrearAtencion', async () => {
-            apiInsert.pastchActualizaRegistroFotografico(body, params);
-        })
+    afterEach(() => {
+        jest.restoreAllMocks();
     });
-    
-
 });
 

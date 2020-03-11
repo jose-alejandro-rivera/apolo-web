@@ -28,9 +28,11 @@ class ApiInsert {
      */
     postCrearAtencion(params) {
         return __awaiter(this, void 0, void 0, function* () {
+            let resp;
             try {
                 this.res = yield axios.post(this.baseUrl + "/api/atencion/create", params);
-                return this.res.data;
+                resp = this.res.data;
+                return resp;
             }
             catch (error) {
                 console.error(error);
@@ -70,7 +72,6 @@ class ApiInsert {
     */
     postGuardarFoto(body, params) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('body ---->   ', body);
             try {
                 this.res = yield axios.post(this.baseUrl + `/api/registro/fotografico/${params.numOrden}/${params.numpaso}`, body);
                 return this.res.data;
@@ -81,9 +82,9 @@ class ApiInsert {
         });
     }
     /**
-   * Función actualiza el registro fotográfico
-   * @param params
-   */
+    * Función actualiza el registro fotográfico
+    * @param params
+    */
     pastchActualizaRegistroFotografico(body, params) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

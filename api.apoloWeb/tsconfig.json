@@ -5,16 +5,16 @@
         "pretty": true,
         "sourceMap": true,
         "target": "es6",
-        "outDir": "./build",
-        // "baseUrl": "./",
+        "outDir": "./build/src",
+        "baseUrl": "./",
         "experimentalDecorators": true, 
         "emitDecoratorMetadata": true,
         "types": ["reflect-metadata", "jest"],
         "typeRoots": ["./types", "./node_modules/@types"]
     },
-    // "include": [
-    //     "./src/**/*", "jest.config.js", "unitTest/mocks"
-    // ],
+    "include": [
+        "./src/**/*", "jest.config.js", "unitTest/mocks"
+    ],
     "exclude": [
         "node_modules"
     ]

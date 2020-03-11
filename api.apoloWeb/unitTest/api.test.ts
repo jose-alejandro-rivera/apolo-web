@@ -14,8 +14,11 @@ it('Gets the test endpoint', async done => {
 
   //let objectModel = chargeJsonResponse('menuResponseObj');
   //database.setProcedureResponse(objectModel, true);
-  // console.log(serviceMock.categoriasData);
-  //let dataResponse = await apiConsult.getCategoriasFlujo;
+  console.log(serviceMock.categoriasData);
+
+  let dataResponse = await apiConsult.getCategoriasFlujo();
+  console.log(dataResponse);
+
   let app = new ApiConsult();
   // Sends GET Request to /test endpoint
   const res = await app.getCategoriasFlujo();

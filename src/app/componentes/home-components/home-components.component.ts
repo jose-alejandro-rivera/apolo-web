@@ -4,7 +4,6 @@ import { Router, RouterStateSnapshot } from '@angular/router';
 import { EjecucionAtencionService } from '../../servicios/ejecucionAtencion.service';
 import { IRecordResponse } from '../../interfaces/recordResponse';
 import { AppGlobals } from 'src/app/app.global';
-import { AppComponent } from 'src/app/app.component';
 
 /**
  * componente que obtiene las categorias y los flujos asociados
@@ -19,20 +18,46 @@ import { AppComponent } from 'src/app/app.component';
  * provee el almacenamiento de categorias y de flujos 
  */
 export class HomeComponent implements OnInit {
-
+  /**
+   * variable que obtiene el listado de flujos
+   */
   public flujoList: any;
+  /**
+   * variable que itera el id del flujo seleccionado
+   */
   private idFlujo: any;
+  /**
+   * variable que obtiene el formulario del componente
+   */
   public formCategorias: FormGroup;
+  /**
+   * variable que evalua la visualizacion del componente
+   */
   public homeComponent: boolean;
+  /**
+   * variable que evalia el envio de la informacion
+   */
   public submitted = false;
+  /**
+   * variabe que conprende el listado de categorias
+   */
   public arregloCat: any;
+  /**
+   * variable de usuario
+   */
   private usuario: any;
+  /**
+   * variable que evalua la creacion e la atencion
+   */
   private crearCategoria: any;
+  /**
+   * 
+   */
   public URL: any;
+  /**
+   * 
+   */
   dataFlujoOrden: any;
-  orden: any;
-  idCatefgoria: any;
-  public categoria: any;
 
   /**
    * variables de secion
@@ -49,7 +74,7 @@ export class HomeComponent implements OnInit {
     this.URL = this.global.url;
     localStorage.setItem('dataFlujoCat', '');
     this.formCategorias = this.formBuilder.group({
-      idCategoria: [''],
+      idCategoria: ['', Validators.required],
       idflujo: ['', Validators.required]
     });
   }
@@ -62,21 +87,9 @@ export class HomeComponent implements OnInit {
    */
   ngOnInit() {
     this.dataFlujoOrden = JSON.parse(localStorage.getItem('dataFlujoOrden'));
-    this.orden=this.dataFlujoOrden.formOrden.orden;
     this.ejecucionAtencionService.getData(this.URL + 'flujo/categorias').subscribe((res: any) => {
       setTimeout(() => {
         this.arregloCat = res;
-        let consult = this.dataFlujoOrden.activityType.split("_")[1];
-        for (let categorias of this.arregloCat) {
-          let NomCategoriaFlujo = categorias.NomCategoriaFlujo;
-          NomCategoriaFlujo = this.global.getCleanedString(NomCategoriaFlujo);
-          NomCategoriaFlujo = NomCategoriaFlujo.toUpperCase();
-          if (NomCategoriaFlujo === consult) {
-            this.categoria = categorias.NomCategoriaFlujo;
-            this.idCatefgoria = categorias.Id_CategoriaFlujo
-          }
-        }
-        this.cargueFlujo(this.idCatefgoria);
       }, 100)
     }, err => {
       console.log(err);
@@ -98,8 +111,8 @@ export class HomeComponent implements OnInit {
    * @param event: id de la categoria seleccionada 
    * @returns flujoList: listado de flujos asociados a la categoria
    */
-  cargueFlujo(id_Catefgoria) {
-    let idCatefgoria = id_Catefgoria;
+  cargueFlujo(event) {
+    let idCatefgoria = event.target.value;
     if (idCatefgoria == null || idCatefgoria == '') {
       this.flujoList = [];
       return
@@ -112,6 +125,8 @@ export class HomeComponent implements OnInit {
       let url = this.URL + 'flujos/por/Categorias/' + idCatefgoria;
       console.log(url);
       this.ejecucionAtencionService.getData(url).subscribe((data: IRecordResponse) => {
+        console.log("resultado lisa flujos");
+        console.log(data);
         this.flujoList = data.recordset;
       })
     }
@@ -140,7 +155,7 @@ export class HomeComponent implements OnInit {
       this.crearCategoria = {
         "CodLogin": 1,
         "CodFlujo": this.idFlujo.Id_Flujo,
-         "NumOrden": this.orden
+        "NumOrden": this.dataFlujoOrden
       };
       this.homeComponent = false;
       let url = this.URL + 'atencion/create/';

@@ -9,8 +9,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './componentes/home-components/home-components.component';
 import { AtencionComponentsComponent } from './componentes/atencion-components/atencion-components.component';
 import { OrdenComponentsComponent } from './componentes/orden-components/orden-components.component';
-import { IntegracionCamaraComponent } from './componentes/integracion-camara/integracion-camara.component';
-import {WebcamModule} from 'ngx-webcam';
 
 @NgModule({
   declarations: [
@@ -18,8 +16,7 @@ import {WebcamModule} from 'ngx-webcam';
     AppComponent,
     HomeComponent,
     AtencionComponentsComponent,
-    OrdenComponentsComponent,
-    IntegracionCamaraComponent
+    OrdenComponentsComponent
   ],
   imports: [
     BrowserModule,
@@ -27,8 +24,7 @@ import {WebcamModule} from 'ngx-webcam';
     HttpClientModule,
     AgGridModule.withComponents([]),
     ReactiveFormsModule,
-    FormsModule,
-    WebcamModule
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

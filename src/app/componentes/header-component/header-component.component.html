@@ -1,23 +1,18 @@
-<div class="container">
 
   <div class="">
     <div class="apolo-icono-mov apolo-centrado-left">
       <img alt="Logo Movistar" src="/assets/imagenes apoloweb/logo-pcpc1.png">
     </div>
-    <div class="float-right ">
+    <div  *ngIf="admin" class="float-right ">
       <label class="apolo-text-type">
-        usuario-prueba
+        {{userview}}
       </label>
       <img alt="Logo Movistar" src="/assets/imagenes apoloweb/icon_mimovistar.png">
     </div>
 
     <div class="apolo-label">
-      <div class="apolo-icono-mov apolo-centrado-left">
-        <img alt="Logo Movistar" src="/assets/imagenes apoloweb/logo-pcpc1.png">
-      </div>
       <div class="titulo-lineamientos">
         Lineamiento de actividades
       </div>
     </div>
-    <router-outlet></router-outlet>
   </div>

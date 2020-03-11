@@ -5,11 +5,11 @@ import config from '../../config';
  * clase de consulta en la base de datos
  */
 export class ApiConsult {
-  private res: any;
+  private res : any;
   private baseUrl: string;
   constructor() {
-    this.res = null;
-    this.baseUrl = config.BASE_URL;
+      this.res = null;
+      this.baseUrl = config.BASE_URL;
   }
 
   /**
@@ -28,15 +28,15 @@ export class ApiConsult {
    * funcion que consulta los flujos con el id de las categorias
    * @param id: id de la categoria a consultar 
    */
-  async  getFlujoPorCategoria(idCategoria) {
-    try {
-      this.res = await axios.get(this.baseUrl + '/api/flujos/por/Categorias/' + idCategoria);
-      return this.res.data;
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
+  async  getFlujoPorCategoria(idCategoria) {
+      try {
+        this.res = await axios.get(this.baseUrl + '/api/flujos/por/Categorias/' + idCategoria);
+        return this.res.data;
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  
   /**
    * funcion que consulta los componentes del flujo
    * @param id: id del flujo a consultar
@@ -64,18 +64,4 @@ export class ApiConsult {
       console.error(error)
     }
   }
-    /**
-   * funcion que consulta el ultimo paso registrado para el boton atras
-   * @param idAtencion: idAtencion de la atencion
-   */
-  async AtencionPasoAtras(idAtencion,idPaso) {
-    try {
-      this.res = await axios.get(this.baseUrl + '/api/atencion/paso/atras/' + idAtencion + '/' + idPaso);
-      return this.res.data;
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-
 }

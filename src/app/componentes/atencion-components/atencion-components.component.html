@@ -1,4 +1,3 @@
-
 <div class="flujo" *ngIf="atencionComponente">
 
     <div class="flujo-title-principales flujo-margen apolo-actividades-principales  rounded">
@@ -8,16 +7,11 @@
         <div class="">
             <!--Informacion de Flujo-->
             <div class="col-12 apolo-text-title-orden">
-                Orden: {{orden}}
+                Orden: {{dataFlujoOrden}}
             </div>
             <div class="col-12 flujo-text ">
                 <label> Flujo: {{nombreFlujo}}</label>
             </div>
-
-            <div *ngIf="loading" style="text-align: center;">
-                <img class="apolo-imagen-loading" alt="Loading" src="/assets/imagenes apoloweb/loader.gif">
-              </div>
-
             <div *ngFor="let paso of ListaPasos">
                 <div *ngIf="pasoActual==paso.Id_Paso">
                     <div class="col-12">
@@ -65,43 +59,32 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <!-- Carga Proceso-->
                         <div *ngIf="ProcesoActual">
                             <!-- Proceso -->
                             <div class="col-12">
-                                <label>
+                                <label style="visibility: hidden">
                                     {{procesoPaso.Descripcion}}
                                 </label>
                             </div>
-                          
-                            <div *ngIf="!loading">
-                                <div class="col-12" *ngIf="!procesoMensage" role="alert">
-                                    <div>
-                                        <label>
-                                            {{respuestaProcesoActual.response.label}}
-                                        </label>
-                                        <img class="flujo-img-proces"
-                                            *ngIf="respuestaProcesoActual.llavePropiedad == 'OK'" alt="CheckOk"
-                                            src="/assets/imagenes apoloweb/successfully.png">
-
-                                        <img class="flujo-img-proces "
-                                            *ngIf="respuestaProcesoActual.llavePropiedad == 'NOOK'" alt="CheckNoOk"
-                                            src="/assets/imagenes apoloweb/wrong.png">
-
-                                    </div>
+                            <div class="col text-center" *ngIf="!finflujo">
+                                <button type="button" class="flujo-button-procesar flujo-fuente"
+                                    style="visibility: hidden" (click)="ejecutarProceso($event)">OK</button>
+                            </div>
+                            <div *ngIf="response" role="alert">
+                                <div class="flujo-text-content">
+                                    <strong class=" mr-auto">
+                                        Estado
+                                    </strong>
+                                </div>
+                                <div class="toast-body">
+                                    <label class="flujo-text">
+                                        {{respuestaProcesoActual.data.response}}
+                                    </label>
                                 </div>
                             </div>
-
-                            <div class="col btnEjecutar" *ngIf="!finflujo">
-                                <button *ngIf="procesButton" type="button" class="flujo-button-procesar flujo-fuente"
-                                    (click)="ejecutarProceso($event)">Ejecutar</button>
-                            </div>
-                            
                         </div>
                     </div>
-
                     <!--Fin Paso tipo actividad-->
                     <div class="col text-center" *ngIf="finflujo">
 
@@ -121,73 +104,25 @@
                                 </div>
                             </div>
                         </div>
-                        <!--button type="button" class="flujo-button-procesar flujo-fuente align-items-center"
-                            [disabled]="seleccionPositiva" (click)="finalizarAtencion(paso.Id_Paso)">Finalizar</button-->
-                        </div>
-
-
-                    <div *ngIf="seleccionObligatoria "class="alert alert-danger alert-dismissible">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Atención!</strong>{{mensajeCampoCuestionario}}
+                        <button type="button" class="flujo-button-procesar flujo-fuente align-items-center"
+                            [disabled]="seleccionPositiva" (click)="finalizarAtencion(paso.Id_Paso)">Finalizar</button>
+                    </div>
+                    <div *ngIf="seleccionObligatoria" class="col-12 apolo-alert-danger   ">
+                        <strong>Atencion!</strong>{{mensajeCampoCuestionario}}
                     </div>
 
-                    <!--app-integracion-camara *ngIf="webCamIntegracion" (pictureTaken)="handleImage($event)"></app-integracion-camara-->
-                    <div *ngIf="webCamIntegracion">
-                    <div class="camara centrado" style="text-align: center;">
-                            <webcam [height]="250" [width]="350" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"
-                                *ngIf="showWebcam" [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
-                                [videoOptions]="videoOptions" [imageQuality]="0.40" (cameraSwitched)="cameraWasSwitched($event)"
-                                (initError)="handleInitError($event)">
-                            </webcam>
-                    </div>
-                        
-                            
-                            <div class="btnacciones centrado" style="text-align: center;">
-                                
-                                <div  class="actionBtn" *ngIf="tomaFoto" (click)="triggerSnapshot();" title="Tomar foto">
-                                        <img class="camaraImg" src="/assets/imagenes apoloweb/camara.jpg" style="width: 40px;">
-                                </div>
-                                <div  class="actionBtnRrefresh" *ngIf="eliminaFoto" (click)="showNextWebcam(true);" title="Eliminar imagen">
-                                        <img class="camaraImg" src="/assets/imagenes apoloweb/refresh.jpg" style="width: 40px;">
-                                </div>
-                                <div  class="actionOk" *ngIf="fotoCargada" (click)="showNextWebcam(true);" title="Ok">
-                                    <img class="camaraImg" src="/assets/imagenes apoloweb/ok.jpg" style="width: 40px;">
-                            </div>                               
-                            </div>
-                            <div class="snapshot foto" *ngIf="webcamImage">
-                                    <img [src]="srcImg" class="camara-root" style="width: 70%;">
-                                    <div class="btn-guardar-foto ">
-                                      <button type="button" class="apolo-button-guardar-foto"
-                                        (click)="guardarFoto()">Guardar foto
-                                      </button>
-                                    </div>
-                            </div>  
-                        </div>
-                   
-                   
-
-
-                    <div class="btnFooterAtrasSig">
+                    <div>
                         <button type="button" class="flujo-button-atras flujo-fuente"
-                            *ngIf="paso.Id_Paso != info.CodPaso_Inicial" (click)="Atras(paso.Id_Paso)">Atras
-                        </button>
-                        <div>
-                        <button type="button" [className] = "seleccionInactiva?'flujo-button-siguiente flujo-fuente':'flujo-button-siguiente-opaco'" class="flujo-fuente" *ngIf="!finflujo"
+                            *ngIf="paso.Id_Paso != info.CodPaso_Inicial" (click)="Atras(paso.Id_Paso)">Atras</button>
+
+                        <button type="button" class="flujo-button-siguiente flujo-fuente" *ngIf="!finflujo"
                             (click)="RegistrarAtencionPaso(paso.Id_Paso)"
                             [disabled]="seleccionPositiva">Siguiente</button>
-
-                            <button type="button" class="flujo-button-procesar flujo-fuente align-items-center btnFinalizar" *ngIf="finflujo"
-                            [disabled]="seleccionPositiva" (click)="finalizarAtencion(paso.Id_Paso)">Finalizar</button>
-                        </div>  
                     </div>
-                    
                 </div>
             </div>
 
 
-        </div>                
-      
+        </div>
     </div>
-    
-
 </div>

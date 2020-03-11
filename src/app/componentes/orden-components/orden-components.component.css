@@ -5,45 +5,6 @@
 .apolo{
     word-spacing:0.1px;
 }
-
-.apolo-button-guardar-foto{
-    border-radius: 8px !important;
-    background-color: #0082B3;
-    width: 100px;
-    height: 30px;
-    font-size: 12px;
-    font-family: "telefonicaReg", Arial, Helvetica, sans-serif;
-    color: #FFF;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 40px;
-    margin-bottom: 40px;
-  }
-.btn-guardar-foto {
-    width: 100%;
-    float: left;
-}
-.snapshot {
-    width: 100%;
-    float: left;
-  }
-  .img-fluid {
-    max-width: 100%;
-   height: auto;
-   display: block;
-   margin-left: auto;
-   margin-right: auto;
-}
-
-.camara  .webcam-wrapper[_ngcontent-ojr-c3] video.mirrored[_ngcontent-ojr-c3] {
-    transform: scale(-1,1);
-    height: auto;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .apolo-cuadriula{
     margin-top: 3px;
     float: left;
@@ -55,13 +16,6 @@
     padding: 20px;
 }
 
-.apolo-imagen-loading {
-    text-align: center !important;
-    width: 140px !important;
-    margin-top: 20px !important;
-    margin-bottom: 20px !important;
-}
-
 .apolo-actividades-principales {
     width: 100%;
     float: left;
@@ -69,7 +23,7 @@
     text-align: left;
     font-family: "telefonica", Arial, Helvetica, sans-serif;
     font-weight: bold;
-    font-size: 15px;
+    font-size: 20px;
     height: auto;
     border: 1px solid #0029A6;
     padding: 15px;
@@ -80,8 +34,8 @@
     border-radius: 8px !important;
     background-color: #0082B3;
     width: 100px;
-    height: 30px;
-    font-size: 12px;
+    height: 40px;
+    font-size: 20px;
 }
 .apolo .apolo-button-crear:hover {
     box-shadow: inset 0 0 20px rgba(49, 138, 172, 0.5), 0 0 20px rgba(49, 138, 172, 0.4);
@@ -89,85 +43,6 @@
     outline-offset: 80px;
     text-shadow: 1px 1px 6px #fff;
   }
-
-  .apolo .select {
-    position: absolute;
-    content: "";
-    top: 14px;
-    right: 10px;
-    border: 6px solid transparent;
-    border-color: 0;
-  }
-  .apolo select {
-    word-wrap: normal;
-    color: #003245;
-    border: 1px solid #003245;
-    font-size: 14px;
-    height: 35px;
-}
-.apolo-alert-danger {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    margin-bottom: 1rem;
-    padding: 0.75rem 1.25rem;
-}
-
-.apolo-alert-confirm {
-    color: #158f1b;
-    background-color: #d7f8d9;
-    border-color: #c6f5d0;
-    margin-bottom: 1rem;
-    padding: 0.75rem 1.25rem;
-}
-
-.boxes {
-    margin: auto;
-    padding: 10px;
-  }
-  
-  /*Checkboxes styles*/
-  input[type="checkbox"] { display: none; }
-  
-  input[type="checkbox"] + label {
-    display: block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 20px;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-  }
-  
-  input[type="checkbox"] + label:last-child { margin-bottom: 0; }
-  
-  input[type="checkbox"] + label:before {
-    content: '';
-    display: block;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #6cc0e5;
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: .6;
-    -webkit-transition: all .12s, border-color .08s;
-    transition: all .12s, border-color .08s;
-  }
-  
-  input[type="checkbox"]:checked + label:before {
-    width: 10px;
-    top: -5px;
-    left: 5px;
-    border-radius: 0;
-    opacity: 1;
-    border-top-color: transparent;
-    border-left-color: transparent;
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-  }
-  
 
 @media only screen and (max-width: 768px) {    
     .apolo-img {
@@ -191,7 +66,7 @@
         width: 100%;
         float: left;
         background-color: #0029A6;
-        font-size: 20px;
+        font-size: 25px;
         height: 65px;
     }   
     .apolo-text {
@@ -204,14 +79,6 @@
         font-family: "telefonica", Arial, Helvetica, sans-serif;
         font-size: 16px;
         margin-top: 30px;
-    }
-
-    
-    .apolo-imagen-loading {
-        text-align: center !important;
-        width: 100px !important;
-        margin-top: 20px !important;
-        margin-bottom: 20px !important;
     }
 
 }
