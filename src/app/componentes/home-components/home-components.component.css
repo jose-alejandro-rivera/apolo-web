@@ -22,7 +22,7 @@
     font-weight: bold;
     color: #003245;
     font-family: "telefonica", Arial, Helvetica, sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     height: auto;
     float: left;
     padding-bottom: 20px
@@ -32,7 +32,7 @@
     font-weight: bold;
     color: #003245;
     font-family: "telefonica", Arial, Helvetica, sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     height: auto;
     width: 10%;
     float: left;
@@ -112,7 +112,7 @@ margin-bottom: 20px;
     text-align: left;
     font-family: "telefonica", Arial, Helvetica, sans-serif;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 17px;
     height: auto;
     border: 1px solid #0029A6;
     padding: 15px;
@@ -131,8 +131,7 @@ margin-bottom: 20px;
     content: "";
     top: 14px;
     right: 10px;
-    width: 0;
-    height: 0;
+
     border: 6px solid transparent;
     border-color: 0;
   }
@@ -244,7 +243,7 @@ margin-bottom: 20px;
         width: 100%;
         float: left;
         background-color: #ffffff;
-        font-size: 25px;
+        font-size: 17px;
         height: 65px;
     }
     .apolo-fuente {

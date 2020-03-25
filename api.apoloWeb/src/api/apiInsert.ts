@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { cors } from 'cors';
+
+import config from '../../config';
 /*
  * constantes de coneccion 
  */
@@ -10,23 +10,22 @@ const bodyParser = require('body-parser'),axios = require("axios");
  */
 export class ApiInsert {
   private res : any;
-  private url: any;
-    constructor(
-    router: Router) {
+  private baseUrl: string;
+  constructor() {
       this.res = null;
-      this.url = null;
+      this.baseUrl = config.BASE_URL;
   }
-
  
   /**
    * funcion que crea la atencion
    * @param params 
    */
   async  postCrearAtencion(params: any) {
+    let resp: any;
     try {
-      this.url = "http://10.203.221.51:3000/api/atencion/create";
-      this.res = await axios.post(this.url, params);
-      return this.res.data;
+      this.res = await axios.post(this.baseUrl +"/api/atencion/create", params);
+      resp = this.res.data;
+      return resp;
     } catch (error) {
       console.error(error)
     }
@@ -36,8 +35,7 @@ export class ApiInsert {
    */
   async postConsumirProceso(body) {
     try {
-      this.url = "http://10.203.221.51:3000/api/proceso/fake";
-      this.res = await axios.post(this.url, body);
+      this.res = await axios.post(this.baseUrl +"/api/proceso/fake", body);
       return this.res.data;
     } catch (error) {
       console.error(error)
@@ -48,8 +46,33 @@ export class ApiInsert {
    */
   async postAtencionPaso(data) {
     try {
-      this.url = "http://10.203.221.51:3000/api/atencion-paso-campo/create";
-      this.res = await axios.post(this.url, data);
+      this.res = await axios.post(this.baseUrl +"/api/atencion-paso-campo/create", data);
+      return this.res.data;
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+   /**
+   * funcion que guarda la foto
+   */
+  async postGuardarFoto(body, params) {
+    try {
+      this.res = await axios.post(this.baseUrl + `/api/registro/fotografico/${params.numOrden}/${params.numpaso}`, body);
+      return this.res.data;
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
+   /**
+   * Función actualiza el registro fotográfico
+   * @param params 
+   */
+  async  pastchActualizaRegistroFotografico(body, params) {
+    try {
+      this.res = await axios.patch(this.baseUrl +`/api/registro/fotografico/${params.numOrden}/${params.numpaso}`, body);
       return this.res.data;
     } catch (error) {
       console.error(error)

@@ -1,25 +1,38 @@
 
-/**
- * @ignore
- */
-const
-    express = require('express'),
-    cors = require('cors'),
-    bodyParser = require('body-parser'),
-    Http = require('http'),
-    request = require("request"),
-    axios = require("axios");
+
+
+let express = require('express');
+let cors = require('cors');
+let bodyParser = require('body-parser');
+let Http = require('http');
+let helmet = require('helmet');
+let axios = require("axios");
+let request = require("request");
+let cookieParser = require('cookie-parser');
+
+let app : any;
+
+
 /**
  * constantes de coneccion
  */
-const app = express();
+
+
+app = express();
+app.use(function(req, res, next) {
+  res.set('X-Frame-Options', 'SAMEORIGIN');
+  res.set('Content-Security-Policy', "frame-ancestors 'none'");
+  next();
+});
+
+app.use(helmet.frameguard());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-var base_url = "http://localhost:8080/api/";
+let base_url = "http://localhost:8080/api/";
 
 describe('pruebas de enrrutamiento api.apoloWeb', () => {
 

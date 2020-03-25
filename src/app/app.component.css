@@ -47,6 +47,11 @@
     border-radius: 8px;
 } 
 
+.apolo-label{
+    margin-top: 30px;
+}
+
+
 @media only screen and (max-width: 768px) {    
     .apolo-img {
         display: none;
@@ -81,7 +86,7 @@
         color: #000000;
         font-family: "telefonica", Arial, Helvetica, sans-serif;
         font-size: 16px;
-        margin-top: 30px;
+        margin-top: 10px;
     }
 
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -8,8 +8,9 @@ import { HttpClient } from '@angular/common/http';
 
 export class DecodeficacionServiceService {
 
-  constructor(private http: HttpClient) { }
-  decodificacionParametro(parametro){
+  constructor(@Optional() private http: HttpClient) { }
+  public decodificacionParametro(parametro){
+    console.log('0parametro ', parametro);
       return this.http.post('http://localhost:8080/api/decodeficacion/parametro', {data: parametro});
   }
 }

@@ -1,7 +1,7 @@
 
 
 .pageError {
-    margin-top: 30% ;
+    margin-top: 20% ;
 }
 .tituloError {
     font-size: 80px;
@@ -9,7 +9,7 @@
     color: #0082B3;
     font-weight: 800;
     width: 100%;
-}
+}   
 .contenError{
     font-size: 50px;
     text-align: center;

@@ -67,6 +67,7 @@ class Server {
      * contenedor de los servicios expuestos
      */
     router() {
+        console.log('asociacionn axios');
         //parametros de consulta
         app.get('/api/testConnection', function (req, res, next) {
             return res.status(200).json('testConnection OK');
@@ -78,19 +79,19 @@ class Server {
             // return response.send(data);
         }));
         app.get('/api/flujo/categorias', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
-            this.data = yield this.apiConsult.getCategoriasFlujo();
+            const data = yield this.apiConsult.getCategoriasFlujo();
             //return response.send(this.data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
         app.get('/api/flujos/por/Categorias/:id', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const data = yield this.apiConsult.getFlujoPorCategoria(request.params.id);
             //return response.send(data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
         app.get('/api/flujo/list/:id', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const data = yield this.apiConsult.getPasosCategoria(request.params.id);
             //return response.send(data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
         //parametros de insercion POS
         app.post('/api/testConnection', function (req, res, next) {
@@ -102,17 +103,17 @@ class Server {
         app.post('/api/atencion/create/', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const data = yield this.apiInsert.postCrearAtencion(request.body);
             //return response.send(data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
         app.post('/api/proceso/fake', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const data = yield this.apiInsert.postConsumirProceso(request.body);
             //return response.send(data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
         app.post('/api/atencion-paso-campo/create', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const data = yield this.apiInsert.postAtencionPaso(request.body);
             //return response.send(data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
         //Registro fotografico 
         app.post('/api/registro/fotografico/:numOrden/:numpaso', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
@@ -121,12 +122,14 @@ class Server {
                 nombreImagen: request.body.nombreImgen,
                 imagen: "imagen.jpeg"
             };
-            this.data = yield this.apiInsert.postGuardarFoto(dataRegistroFoto, request.params);
+            const data = yield this.apiInsert.postGuardarFoto(dataRegistroFoto, request.params);
             // return response.send(this.data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
         app.post('/api/decodeficacion/parametro', (request, response) => __awaiter(this, void 0, void 0, function* () {
+            console.log(request.body);
             let parametro = request.body.data;
+            console.log('parametro ---- ', parametro);
             let dataValidate = Buffer.from(parametro, 'base64').toString();
             for (let index = 0; index < 2; index++) {
                 dataValidate = Buffer.from((dataValidate.substr(1, dataValidate.length)), 'base64').toString();
@@ -139,24 +142,24 @@ class Server {
         // GET parametros de configuaracion de procesos (integraciones) 
         app.get('/api/integracion/apolo/toa/:param/:orden/:tipo', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const data = yield this.apiConsultProces.getOrdenActiva(request.params);
-            // return response.send(data);
-            return response.status(200).json(this.data);
+            //return response.send(data);
+            return response.status(200).json(data);
         }));
         app.get('/api/retoma/apolo/:orden/:param', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const data = yield this.apiConsultProces.getOrdenRetoma(request.params);
             //return response.send(data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
         app.get('/api/autoconfiguracion/rest/:ordenActivity/:autoconfig', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const data = yield this.apiConsultProces.getActivationAutoconfi(request.params);
             //return response.send(data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
         // PASTCH parametros de configuaracion de procesos (integraciones) 
         app.patch('/api/integracion/toa/finaliza/rest/:num_orden', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const data = yield this.apiInsertProces.pastchActualizarOrden(request.params.num_orden, request.body);
             // return response.send(data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
         //Actualiza registro fotografico
         app.patch('/api/registro/fotografico/:numOrden/:numpaso', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
@@ -167,13 +170,13 @@ class Server {
             };
             const data = yield this.apiInsert.pastchActualizaRegistroFotografico(dataRegistroFoto, request.params);
             //return response.send(data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
         app.get('/api/atencion/paso/atras/:idAtencion/:idPaso', (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const { idAtencion, idPaso } = request.params;
             const data = yield this.apiConsult.AtencionPasoAtras(idAtencion, idPaso);
             // return response.send(data);
-            return response.status(200).json(this.data);
+            return response.status(200).json(data);
         }));
     }
     /**

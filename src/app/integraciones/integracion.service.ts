@@ -37,9 +37,9 @@ export class Integracion {
                     } else if (this.dataProces.response.propiedad_value === 'A_ACS_RESULT_CODE') {
                         if (this.dataProces.response.propiedad_key === 'OK') {
                             this.dataProces.llavePropiedad = this.dataProces.response.propiedad_key;
-                        }else{
-                        this.dataProces.llavePropiedad = 'NOOK'
-                        this.dataProces.mensajeError = this.mensajesApolo.mensajeAutoconfigBA;
+                        } else {
+                            this.dataProces.llavePropiedad = 'NOOK'
+                            this.dataProces.mensajeError = this.mensajesApolo.mensajeAutoconfigBA;
                         }
                     } else {
                         this.dataProces.llavePropiedad = 'NOOK'
@@ -59,16 +59,16 @@ export class Integracion {
                     } else if (this.dataProces.response.propiedad_value === 'A_HC_RESULT_CODE') {
                         if (this.dataProces.response.propiedad_key === 'OK') {
                             this.dataProces.llavePropiedad = this.dataProces.response.propiedad_key;
-                        }else{
+                        } else {
                             this.dataProces.llavePropiedad = 'NOOK'
                             this.dataProces.mensajeError = this.mensajesApolo.mensajeActivacionTV;
                         }
                     } else {
-                        
-                        this.dataProces={
-                            "response":{
+
+                        this.dataProces = {
+                            "response": {
                                 "TipoServicio": '',
-                                "Servicio":'',
+                                "Servicio": '',
                                 "Request": '',
                                 "Response": '',
                             },
@@ -79,13 +79,39 @@ export class Integracion {
                     return this.dataProces;
                     break;
                 }
-          
+            case 'VOSTOA':
+                {
+                    //let url =  urlApi + 'api/certificacion/servicio/validarar/tipo_orden/' ;
+                    let url =  urlApi + 'api/certificacion/servicio/validarar/tipo_orden/'+parametrosIntegracion.parametros.ordenAtivity;
+                    //let url = urlApi + 'autoconfiguracion/rest/' + parametrosIntegracion.parametros.ordenAtivity + '/TV';
+                    console.log(this.enivoIntegracion)
+                    this.dataProces = await this.enivoIntegracion.ejecutarProceso(url);
+                    if (this.dataProces.result == 'encontrada') {
+                        if(this.dataProces.A_TOOLBOX_RESULT_VOZ_COD === 'OK' && this.dataProces.A_ASISTEC_RESULT_CODE === 'OK' && this.dataProces.A_TOOLBOX_RESULT_TV_COD === 'OK'){
+                            this.dataProces.llavePropiedad = 'OK';
+                        }else{
+                           this.dataProces.llavePropiedad = 'NOK';
+                        }
+                    } else {
+                        this.dataProces = {
+                            "response": {
+                                "TipoServicio": '',
+                                "Servicio": '',
+                                "Request": '',
+                                "Response": '',
+                            },
+                            "llavePropiedad": 'NOOK'
+                        }
+                    }
+                    return this.dataProces;
+                }
+
             default:
                 {
                     this.dataProces = {
-                        "response":{
+                        "response": {
                             "TipoServicio": '',
-                            "Servicio":'',
+                            "Servicio": '',
                             "Request": '',
                             "Response": '',
                         },

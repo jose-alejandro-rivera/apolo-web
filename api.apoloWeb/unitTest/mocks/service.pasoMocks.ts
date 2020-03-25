@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+// import { Injectable } from '@angular/core';
+// import { Container } from "typescript-ioc";
 
 /**
  * @ignore
  */
-@Injectable({
-    providedIn: 'root'
-})
+// @Injectable({
+//     providedIn: 'root'
+// })
 export class ServicePasoMock {
 
     categoriasData = [{

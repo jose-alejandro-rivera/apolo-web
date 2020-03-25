@@ -82,5 +82,4 @@ export class IntegracionCamaraComponent implements OnInit {
   public get nextWebcamObservable(): Observable<boolean|string> {
     return this.nextWebcam.asObservable();
   }
-  
   }

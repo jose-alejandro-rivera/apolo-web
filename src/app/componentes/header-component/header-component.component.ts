@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DecodeficacionServiceService } from '../../servicios/decodeficacion-service.service';
 import { AppGlobals } from 'src/app/app.global';
 import { Event, Router, ActivatedRoute } from '@angular/router';
+import { AccesoRutasSingleton } from '../../singleton/AccesoRutasSingleton';
 
 
 @Component({
@@ -17,27 +18,29 @@ export class HeaderComponentComponent {
   name: any;
   parametroDecodificado: any;
   parametroChat: any;
-  accesoDenegado : boolean;
+  accesoDenegado: boolean;
+
 
   /**
   * variables de secion
   * @param router 
   */
-  constructor(private decodeficacionServiceService: DecodeficacionServiceService,
+  constructor(
+    private decodeficacionServiceService: DecodeficacionServiceService,
+    // private accesoRutasSingleton : AccesoRutasSingleton,
     private global: AppGlobals,
     private router: Router,
     private _activatedRoute: ActivatedRoute,
   ) {
     this.userview = this.global.usuarioView;
     this.admin = (this.userview != '') ? true : false;
+    this.router.events.subscribe((event: Event) => {
+    });
   }
-
-  //QVFWa3llR2hrYlZaVVkwZEdlV1JIUm5WamVWRjVUVVJKZDAxNldUMD0=
 
   ngOnInit() {
     this._activatedRoute.params.subscribe(params => {
       this.parametroChat = params;
-      console.log('Parametro recibido ----', params);
     })
     this.enrutamiento();
     this.encriptado();
@@ -55,16 +58,15 @@ export class HeaderComponentComponent {
     let key = 'apolo_index_';
     const date = new Date();
     const month = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
-    const day = ((date.getDay() + 1) < 10) ? '0' + (date.getDay() + 1) : (date.getDay());
+    const day = ((date.getDate() + 1) < 10) ? '0' + (date.getDate()) : (date.getDate());
+   // const day = ((date.getDay() + 1) < 10) ? '0' + (date.getDay() + 1) : (date.getDay());
     key = key.concat(date.getFullYear() + '' + month + '' + '' + day);
     key = btoa(key);
+    console.log('key ', key);
     for (let index = 0; index < 2; index++) {
       key = btoa(this.getRdnInteger().concat(key));
     }
     this.parametroDecodificado = key;
-    console.log('this.parametroDecodificad --->', this.parametroDecodificado);
-
-
   }
 
   public getRdnInteger(): string {
@@ -74,26 +76,19 @@ export class HeaderComponentComponent {
     return String.fromCharCode(number);
   }
 
-  private async getDataTokenize() {
- 
-    this.decodeficacionServiceService.decodificacionParametro(this.parametroChat.parametro).subscribe((data: any) => {
-      console.log('dataaa--- ', data.parametro);
-      let key: any;
-      const date = new Date();
-      const month = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
-      const day = ((date.getDay() + 1) < 10) ? '0' + (date.getDay() + 1) : (date.getDay() + 1);
-      key = date.getFullYear() + '' + month + '' + '' + day;
-      let parametro = String(data.parametro).split('_');
-      console.log('parametro ', parametro[2], '+++++ ' +key);
-      if (parametro[2] == key) {
-        this.router.navigate(['home/orden']);
-      } else {
-        this.router.navigate(['autorizado/denegado']);
-        this.accesoDenegado = false;
-      }
-      console.log('data ---+>> ', parametro[2]);
-    });
-
+  async getDataTokenize() {
+   console.log('--------------- ', this.parametroDecodificado);
+    let parametro = AccesoRutasSingleton.getInstance();
+    //this.accesoRutasSingleton.getInstance();
+    await parametro.decodificiacionParametroSingleton(this.parametroChat);
+    let valor = await parametro.instanciaResultado();
+    if (valor == true) {
+      this.router.navigate(['home/orden']);
+      // return false;
+    } else {
+      this.router.navigate(['autorizado/denegado']);
+      //return false;
+    }
   }
 
 }
