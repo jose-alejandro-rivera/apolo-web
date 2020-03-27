@@ -60,7 +60,7 @@ export class AppGlobals {
             this.url = 'http://10.203.220.30:8080/api/'
         }
         if (urlIp.indexOf("https://apilab.telefonica.co") > -1) {
-            this.url = '"https://apilab.telefonica.co:20203/data/api/'
+            this.url = 'https://apilab.telefonica.co:20203/data/api/'
         }
         console.log(this.url);
     }

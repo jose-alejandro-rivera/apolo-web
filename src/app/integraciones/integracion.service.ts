@@ -11,12 +11,12 @@ export class Integracion {
     dataFlujoCat: any;
     dataFlujoOrden: any;
     dataProces: any;
-    private enivoIntegracion: EnvioIntegracion;
+    private envioIntegracion: EnvioIntegracion;
     private mensajesApolo: any;
 
     constructor(
-        @Inject(EnvioIntegracion) enivoIntegracion: EnvioIntegracion) {
-        this.enivoIntegracion = enivoIntegracion;
+        @Inject(EnvioIntegracion) envioIntegracion: EnvioIntegracion) {
+        this.envioIntegracion = envioIntegracion;
     }
 
     ngOnInit() {
@@ -28,8 +28,8 @@ export class Integracion {
             case 'AutoBA':
                 {
                     let url = urlApi + 'autoconfiguracion/rest/' + parametrosIntegracion.parametros.ordenAtivity + '/BA';
-                    console.log(this.enivoIntegracion)
-                    this.dataProces = await this.enivoIntegracion.ejecutarProceso(url);
+                    console.log(this.envioIntegracion)
+                    this.dataProces = await this.envioIntegracion.ejecutarProceso(url);
 
                     if (this.dataProces.response.statusOrden == 'no_encontrada') {
                         this.dataProces.llavePropiedad = 'NOOK'
@@ -51,8 +51,8 @@ export class Integracion {
             case 'ActiTV':
                 {
                     let url = urlApi + 'autoconfiguracion/rest/' + parametrosIntegracion.parametros.ordenAtivity + '/TV';
-                    console.log(this.enivoIntegracion)
-                    this.dataProces = await this.enivoIntegracion.ejecutarProceso(url);
+                    console.log(this.envioIntegracion)
+                    this.dataProces = await this.envioIntegracion.ejecutarProceso(url);
                     if (this.dataProces.response.statusOrden == 'no_encontrada') {
                         this.dataProces.llavePropiedad = 'NOOK'
                         this.dataProces.mensajeError = this.mensajesApolo.mensajeActivacionTV;
@@ -82,15 +82,16 @@ export class Integracion {
             case 'VOSTOA':
                 {
                     //let url =  urlApi + 'api/certificacion/servicio/validarar/tipo_orden/' ;
-                    let url =  urlApi + 'api/certificacion/servicio/validarar/tipo_orden/'+parametrosIntegracion.parametros.ordenAtivity;
+                    let url =  urlApi + 'certificacion/servicio/validarar/tipo_orden/'+parametrosIntegracion.parametros.ordenAtivity;
                     //let url = urlApi + 'autoconfiguracion/rest/' + parametrosIntegracion.parametros.ordenAtivity + '/TV';
-                    console.log(this.enivoIntegracion)
-                    this.dataProces = await this.enivoIntegracion.ejecutarProceso(url);
+                    this.dataProces = await this.envioIntegracion.ejecutarProceso(url);
                     if (this.dataProces.result == 'encontrada') {
                         if(this.dataProces.A_TOOLBOX_RESULT_VOZ_COD === 'OK' && this.dataProces.A_ASISTEC_RESULT_CODE === 'OK' && this.dataProces.A_TOOLBOX_RESULT_TV_COD === 'OK'){
+                           console.log('consulta ok');
                             this.dataProces.llavePropiedad = 'OK';
                         }else{
                            this.dataProces.llavePropiedad = 'NOK';
+                           console.log('consulta nok');
                         }
                     } else {
                         this.dataProces = {

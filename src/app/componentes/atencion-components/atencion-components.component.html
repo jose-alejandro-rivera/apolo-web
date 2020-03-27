@@ -126,7 +126,7 @@
                     </div>
 
 
-                    <div *ngIf="seleccionObligatoria " class="alert alert-danger alert-dismissible">
+                    <div *ngIf="seleccionObligatoria" class="alert alert-danger alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Atención!</strong>{{mensajeCampoCuestionario}}
                     </div>
@@ -208,13 +208,18 @@
                             *ngIf="paso.Id_Paso != info.CodPaso_Inicial" (click)="Atras(paso.Id_Paso)">Atras
                         </button>
                         <div>
-                            <button type="button" class="flujo-fuente flujo-button-siguiente"
-                                (click)="RegistrarAtencionPaso(paso.Id_Paso)" *ngIf="!finflujo"
-                                [disabled]="seleccionPositiva">
+                            <button type="button" class="flujo-fuente flujo-button-siguiente" (click)="RegistrarAtencionPaso(paso.Id_Paso)" *ngIf="!finflujo" [disabled]="seleccionPositiva">
                                 Siguiente
                             </button>
+                            
+
+                            <!-- Esta seccion se debe descomentar cuando se vaya a integrar la funcionalidad de registro fotografico -->
 
                             <!--button type="button" [className] = "seleccionInactiva?'flujo-button-siguiente flujo-fuente':'flujo-button-siguiente-opaco'" class="flujo-fuente" *ngIf="!finflujo"
+                            (click)="RegistrarAtencionPaso(paso.Id_Paso)"
+                            [disabled]="seleccionPositiva">Siguiente</button-->
+
+                            <!--button type="button" class="flujo-fuente flujo-button-siguiente flujo-fuente" *ngIf="!finflujo"
                             (click)="RegistrarAtencionPaso(paso.Id_Paso)"
                             [disabled]="seleccionPositiva">Siguiente</button-->
 

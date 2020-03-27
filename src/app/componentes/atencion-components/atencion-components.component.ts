@@ -58,7 +58,7 @@ export class AtencionComponentsComponent implements OnInit {
   mapaTrazabilidad: any[] = [];
   dataFlujoOrden: any;
   orden: any;
-  ordenActivity: any; 
+  ordenActivity: any;
   seleccionCampo: any;
   retoma: any;
   url: any;
@@ -73,12 +73,12 @@ export class AtencionComponentsComponent implements OnInit {
   public actividadhada: string;
   public solocobre: string;
   public resultNoOk: string;
-  public msgresultNoOk:boolean;
+  public msgresultNoOk: boolean;
   public msgcertificacionAhora: string;
-  public certificacionAhora:boolean;
-  public aseguraCertificacion:string;
-  public msgaseguraCertificacion:boolean;
-  private resultadoIntegracionHada:string;
+  public certificacionAhora: boolean;
+  public aseguraCertificacion: string;
+  public msgaseguraCertificacion: boolean;
+  private resultadoIntegracionHada: string;
 
   // toggle webcam on/off
   public showWebcam = true;
@@ -194,7 +194,6 @@ export class AtencionComponentsComponent implements OnInit {
       return info;
     }).then(data => {
       this.info = data;
-      console.log('----> data ---> ', data);
       this.pasoActual = data.CodPaso_Inicial;
       this.ListaPasos = data.Pasos;
       this.flujoPaso = data.FlujoPasos.find(x => x.CodPaso_Origen == this.pasoActual);
@@ -335,7 +334,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.seleccionInactiva = true;
     this.integracionhada = false;
     this.certificacionAhora = false;
-    this.msgaseguraCertificacion=false;
+    this.msgaseguraCertificacion = false;
     // let obtenerFoto = JSON.parse(localStorage.getItem('registroFotografico')); 
     //buscar el siguiente paso a visualizar
     const actualPaso = this.info.Pasos.find(x => x.Id_Paso == Id_Paso);
@@ -381,7 +380,7 @@ export class AtencionComponentsComponent implements OnInit {
       this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
       // this.ActivarDesactivarCamara(this.codComponentePasos.Sigla);
       this.ProcesoActual = true;
-      //this.seleccionPositiva = true;
+      this.seleccionPositiva = true;
       this.fotoCargada = false;
     }
     if (this.finflujo) {
@@ -416,7 +415,7 @@ export class AtencionComponentsComponent implements OnInit {
    * @returns pasoActual: id del paso anterior que sera visualizado 
    */
   Atras(Id_Paso: any) {
-    this.msgaseguraCertificacion=false;
+    this.msgaseguraCertificacion = false;
     this.integracionhada = false;
     this.certificacionAhora = false;
     this.seleccionInactiva = true;
@@ -488,7 +487,7 @@ export class AtencionComponentsComponent implements OnInit {
         this.codComponentePasos = this.ListaPasos.find(x => x.Id_Paso == this.pasoActual);
         //this.ActivarDesactivarCamara(this.codComponentePasos.Sigla);
         this.ProcesoActual = true;
-        //this.seleccionPositiva = true;
+        this.seleccionPositiva = true;
       }
       //se evalua si el anterior paso finaliza la atencion
       if (this.actualPaso.finaliza) {
@@ -522,6 +521,7 @@ export class AtencionComponentsComponent implements OnInit {
     this.procesoMensage = true;
     this.seleccionObligatoria = false;
     this.webCamIntegracion = false;
+    this.respuestaProcesoActual = '';
   }
   /**
    * Funcion que realiza el registro del seguimiento e los pasos ejecutados
@@ -917,73 +917,78 @@ export class AtencionComponentsComponent implements OnInit {
    * 
    */
   public integracionHada(actividad: string) {
+    this.seleccionObligatoria = false;
     let servicioCobre = this.solocobre.indexOf("cobre");
-    console.log('validaCertificacionHada ---> ', actividad, '----- >>> ', this.solocobre, ' <<<----->>>> ', servicioCobre);
+    let encontrada = this.respuestaProcesoActual;
     if (actividad === 'Certificación HADA' && servicioCobre >= 0) {
       this.integracionhada = true;
       this.seleccionPositiva = true;
-      this.certificacionAhora=false;
-      this.msgaseguraCertificacion=false;
-      this.procesButton=false;
+      this.certificacionAhora = false;
+      this.msgaseguraCertificacion = false;
+      this.procesButton = false;
+      this.seleccionObligatoria = false;
       this.certificacionRealizada = this.global.mensajeCertificacionRealizada;
 
     } else {
+      this.seleccionObligatoria = false;
       this.integracionhada = false;
     }
   }
-  public validaTipoOrdenMedioAcceso(valor) {
-    console.log('Seleccion ---- > ', valor);
-    this.procesButton=false;
+  async validaTipoOrdenMedioAcceso(valor) {
+    this.seleccionObligatoria = false;
+    this.procesButton = false;
     this.seleccionPositiva = true;
     this.integracionhada = false;
-    this.msgaseguraCertificacion=false;
-    this.procesButton=false;
-    if(valor == 1){
-      this.procesButton=false;
+    this.msgaseguraCertificacion = false;
+    this.procesButton = false;
+    if (valor == 1) {
+      this.seleccionObligatoria = false;
+      this.procesButton = false;
       this.loading = true;
-    
-      this.ejecutarProceso('');
 
-      // this.ordenActivity = this.dataFlujoOrden.activityId;
-      // console.log('---- pasa por el if e imprime el activityId ', this.ordenActivity);
-      // this.resultadoIntegracionHada = this.integracionHadaComponent.validaCertificacionHada(this.ordenActivity);
-      // console.log('this.resultadoIntegracionHada ', this.resultadoIntegracionHada) ;
-      console.log('this.respuestaProcesoActual.llavePropiedad ----> ', this.respuestaProcesoActual.llavePropiedad);
-      if(this.respuestaProcesoActual.llavePropiedad ==='OK'){
-        this.certificacionAhora=false;
+      await this.ejecutarProceso('1');
+      this.seleccionObligatoria = false;
+      if (this.respuestaProcesoActual.llavePropiedad === 'OK') {
+        this.seleccionObligatoria = false;
+        this.certificacionAhora = false;
         this.seleccionPositiva = false;
-        this.procesButton=false;
-      }else{
+        this.procesButton = false;
+        this.msgresultNoOk = false;
+      } else {
+        this.seleccionObligatoria = false;
         this.seleccionPositiva = true;
-        console.log('resultado no ok');
-        this.certificacionAhora=true;
-        this.procesButton=false;
-        this.msgresultNoOk= true;
+        this.certificacionAhora = true;
+        this.procesButton = false;
+        this.msgresultNoOk = true;
         this.resultNoOk = this.global.mensajeNoEvidenciaToa;
         this.msgcertificacionAhora = this.global.mensajecertificacionAhora;
       }
+      this.seleccionObligatoria = false;
       this.loading = false;
-      this.procesButton=false;
-    }else{
+      this.procesButton = false;
+    } else {
+      this.seleccionObligatoria = false;
       //nos vamos por el no}
     }
+    this.seleccionObligatoria = false;
   }
 
-  public asegurarCertificacionServicio(valor){
+  public asegurarCertificacionServicio(valor) {
+    this.seleccionObligatoria = false;
     this.seleccionPositiva = true;
-    console.log('valor ---> ', valor);
-    if(valor == 1){
-      this.procesButton=false;
-
-      console.log('---->>> mensajeAseguraCertificacion por el si');
-    }else{
-      this.msgaseguraCertificacion=true;
-      this.certificacionAhora=false;
-      this.msgresultNoOk= false;
-      this.procesButton=false;
-       //si no
-       this.aseguraCertificacion = this.global.mensajeAseguraCertificacion;
+    if (valor == 1) {
+      this.seleccionObligatoria = false;
+      this.procesButton = false;
+    } else {
+      this.seleccionObligatoria = false;
+      this.msgaseguraCertificacion = true;
+      this.certificacionAhora = false;
+      this.msgresultNoOk = false;
+      this.procesButton = false;
+      //si no
+      this.aseguraCertificacion = this.global.mensajeAseguraCertificacion;
     }
+    this.seleccionObligatoria = false;
   }
 
 

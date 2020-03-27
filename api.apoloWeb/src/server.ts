@@ -167,21 +167,9 @@ export class Server {
     });
 
     //Integracion con hada --get
-    app.get('api/certificacion/servicio/validarar/tipo_orden/:activityId', async (request, response, next) => {
+    app.get('/api/certificacion/servicio/validarar/tipo_orden/:activityId', async (request, response, next) => {
       console.log('Entra al servicio en el server');
-      const data = await this.apiConsultProces.getIntegracionHada(request.body);
-      //return response.send(data);
-      // return response.status(200).json(data);
-     /* let resultado = { {"data":"prueba"};
-        /*
-       "status": 200,
-       "result": "encontrada",
-       "A_TOOLBOX_RESULT_TV_COD": "NOK",
-       "request": "8248284",
-       "servicio": "https://api.etadirect.com/rest/ofscCore/v1/activities/8248284",
-       "response": "{\"activityId\":8248284,\"resourceId\":\"1013595813\",\"resourceInternalId\":3260,\"apptNumber\":\"64848039_64848039_2226\",\"recordType\":\"regular\",\"status\":\"pending\",\"activityType\":\"MASIVO_AVERIA\",\"workZone\":\"TOL_GUAMO_SANLUIS\",\"duration\":30,\"travelTime\":12,\"timeSlot\":\"AM\",\"customerName\":\"PRUEBAS NO REGISTRA TBX3\",\"customerNumber\":\"30723052\",\"customerPhone\":\"68518496\",\"customerEmail\":\"yessica.velasquez@telefonica.com\",\"customerCell\":\"3176486316\",\"streetAddress\":\"CL 11 KR 10 16 LAT:4.03197468 LON:-74.97164056\",\"city\":\"BOGOTA\",\"stateProvince\":\"Bogotá D.C\",\"language\":\"es\",\"languageISO\":\"es-ES\",\"reminderTime\":20,\"timeZone\":\"America/Bogota\",\"timeZoneIANA\":\"America/Bogota\",\"longitude\":-74.06953,\"latitude\":4.69757,\"serviceWindowStart\":\"07:00:00\",\"serviceWindowEnd\":\"12:00:00\",\"timeOfBooking\":\"2019-06-05 14:51:23\",\"timeOfAssignment\":\"2019-06-05 23:00:07\",\"firstManualOperation\":\"UNSCHEDULE\",\"firstManualOperationUser\":\"message_engine\",\"resourceTimeZone\":\"America/Bogota\",\"resourceTimeZoneIANA\":\"America/Bogota\",\"resourceTimeZoneDiff\":-300,\"XA_APPOINTMENT_SCHEDULER\":\"CLI\",\"XA_SOURCE_SYSTEM\":\"ATIEMPO\",\"XA_CUSTOMER_ID_TYPE\":\"00\",\"XA_CUSTOMER_SUBSEGMENT\":\"MASIVO\",\"XA_CUSTOMER_VIP\":1,\"XA_CONTACT_NAME\":\"CLARA\",\"XA_CONTACT_PHONE_NUMBER_2\":\"997903224\",\"XA_CONTACT_PHONE_NUMBER_3\":\"997903225\",\"XA_CONTACT_PHONE_NUMBER_4\":\"997903226\",\"XA_CITY_CODE\":\"76001000\",\"XA_STATE_CODE\":\"73\",\"XA_NEIGHBORHOOD\":\"ATAHUALPA\",\"XA_CONTACT_PHONE_NUMBER_5\":\"997903226\",\"XA_CONTACT_PHONE_NUMBER_6\":\"997903226\",\"XA_QUADRANT\":\"-8843:8669\",\"XA_WORK_ZONE_KEY\":\"733190532_RD6\",\"XA_WORK_TYPE\":\"INCIDENCIATV\",\"XA_NOT_ACCOMPLISHED\":0,\"XA_ACCESS_TECHNOLOGY\":\"COBRE\",\"XA_CENTRAL\":\"8\",\"XA_CREATION_DATE\":\"2017-03-07\",\"XA_CUSTOMER_SEGMENT\":\"RESIDENCIAL\",\"XA_ORDER_ATIS\":\"64848039\",\"XA_REGLAS\":\"1,3,5,6,7\",\"XA_ACTUACION\":\"IT64848039-20190307053600\",\"A_DATE_MOVE\":\"3000-01-01\",\"XA_ESTRATO\":\"R ESTRATO 3 MEDIO BA\",\"XA_ROUTE\":\"1\",\"XA_AWORKZONE\":\"TOL_GUAMO_SANLUIS\",\"Parrilla_Plan_cine_nacional\":\"PlanCineNacional.jpg\",\"Parrilla_Plan_diamante_nacional\":\"PlanDiamanteNacional.jpg\",\"Parrilla_Plan_HD_plus_nacional\":\"PlanHDPlusNacional.jpg\",\"Parrilla_Plan_HD_total_nacional\":\"PlanHDTotalNacional.jpg\",\"Parrilla_Plan_Zafiro_nacional\":\"PlanZafiroNacional.jpg\",\"Parrilla_Plan_zafiro_San_Andrés\":\"PlanZafiroSanAndres.jpg\",\"A_AUTH_COM_FLAG_CIEASEG\":1,\"A_ID_ACT\":\"8248284\",\"A_DATE_MOVE_CLI2\":\"3000-01-01\",\"XA_LINEAMIENTO_ACT\":1,\"requiredInventories\":{\"links\":[{\"rel\":\"canonical\",\"href\":\"https://api.etadirect.com/rest/ofscCore/v1/activities/8248284/requiredInventories\"}]},\"linkedActivities\":{\"links\":[{\"rel\":\"canonical\",\"href\":\"https://api.etadirect.com/rest/ofscCore/v1/activities/8248284/linkedActivities\"}]},\"resourcePreferences\":{\"links\":[{\"rel\":\"canonical\",\"href\":\"https://api.etadirect.com/rest/ofscCore/v1/activities/8248284/resourcePreferences\"}]},\"workSkills\":{\"links\":[{\"rel\":\"canonical\",\"href\":\"https://api.etadirect.com/rest/ofscCore/v1/activities/8248284/workSkills\"}]},\"links\":[{\"rel\":\"canonical\",\"href\":\"https://api.etadirect.com/rest/ofscCore/v1/activities/8248284\"},{\"rel\":\"describedby\",\"href\":\"https://api.etadirect.com/rest/ofscCore/v1/metadata-catalog/activities\"}]}"
-       "TipoServicio": "rest|GET"
-       } */
+       const data = await this.apiConsultProces.getIntegracionHada(request.params);
         return response.status(200).json(data);
 
       });

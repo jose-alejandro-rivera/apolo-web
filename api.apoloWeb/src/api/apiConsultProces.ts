@@ -54,8 +54,9 @@ export class ApiConsultProces {
    * funcion que consume el servicio para integracion con HADA
    */
   async getIntegracionHada(params) {
+    console.log('params ---> ', params);
     try {
-      this.res = await axios.get(this.baseUrl + `api/certificacion/servicio/validarar/tipo_orden/${params.numOrden}`);
+      this.res = await axios.get(this.baseUrl + `/api/certificacion/servicio/validarar/tipo_orden/${params.activityId}`);
       return this.res.data;
     } catch (error) {
       console.error(error)
