@@ -126,8 +126,6 @@ export class Integracion {
         }
 
     }
-
-
     mensajesIntegraciones() {
         this.mensajesApolo = {
             mensajeProcesNotFound: ' El proceso de encuentra sin integración',
